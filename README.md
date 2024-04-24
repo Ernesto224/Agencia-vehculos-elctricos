@@ -1,4 +1,4 @@
-# Proyecto-Pactico-IF5100-Agencia-de-vehculos-elctricos
+# Proyecto-Pactico-IF5100-Agencia-de-vehiculos-electricos
 
 Agencia de vehículos eléctricos.
 El objetivo de este proyecto es crear una solución completa y avanzada de datos para un
