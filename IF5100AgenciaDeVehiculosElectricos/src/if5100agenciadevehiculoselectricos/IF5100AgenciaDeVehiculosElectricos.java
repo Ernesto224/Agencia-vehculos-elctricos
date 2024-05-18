@@ -1,5 +1,6 @@
 package if5100agenciadevehiculoselectricos;
 
+import GUI.JIFGenerarFactura;
 import GUI.JIFListarVehiculos;
 import GUI.JIFReservarProducto;
 import javax.swing.JFrame;
@@ -17,13 +18,18 @@ public class IF5100AgenciaDeVehiculosElectricos {
 
         // Crear una instancia del JInternalFrame que quieres mostrar
         JIFReservarProducto jIFReservarProducto = new JIFReservarProducto();
-
+        JIFListarVehiculos jIFListarVehiculos = new JIFListarVehiculos();
+        JIFGenerarFactura fGenerarFactura = new JIFGenerarFactura();
+        
         // Agregar el JInternalFrame al escritorio
+        desktopPane.add(jIFListarVehiculos);
         desktopPane.add(jIFReservarProducto);
-
+        desktopPane.add(fGenerarFactura);
         // Hacer visible el JInternalFrame
         jIFReservarProducto.setVisible(true);
-
+        jIFListarVehiculos.setVisible(true);
+        fGenerarFactura.setVisible(true);
+        
         // Agregar el escritorio al marco principal
         frame.add(desktopPane);
 
