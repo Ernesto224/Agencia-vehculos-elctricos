@@ -9,32 +9,16 @@ package Domain;
  * @author User
  */
 public class Vehiculo {
-    private int IDVehiculo;
+
     private String Marca;
     private String Modelo;
-    private String PaisImportación;
-    private String DestinadoVenta;
-    private int IDProducto;
-    private int IDTpoVehiculo;
+    private float Precio;
 
     // Constructor
-    public Vehiculo(int IDVehiculo, String Marca, String Modelo, String PaisImportación, String DestinadoVenta, int IDProducto, int IDTpoVehiculo) {
-        this.IDVehiculo = IDVehiculo;
+    public Vehiculo(String Marca, String Modelo, float Precio) {
         this.Marca = Marca;
         this.Modelo = Modelo;
-        this.PaisImportación = PaisImportación;
-        this.DestinadoVenta = DestinadoVenta;
-        this.IDProducto = IDProducto;
-        this.IDTpoVehiculo = IDTpoVehiculo;
-    }
-
-    // Getters y Setters
-    public int getIDVehiculo() {
-        return IDVehiculo;
-    }
-
-    public void setIDVehiculo(int IDVehiculo) {
-        this.IDVehiculo = IDVehiculo;
+        this.Precio = Precio;
     }
 
     public String getMarca() {
@@ -53,49 +37,12 @@ public class Vehiculo {
         this.Modelo = Modelo;
     }
 
-    public String getPaisinportación() {
-        return PaisImportación;
+    public float getPrecio() {
+        return Precio;
     }
 
-    public void setPaisinportación(String PaisImportación) {
-        this.PaisImportación = PaisImportación;
+    public void setPrecio(float Precio) {
+        this.Precio = Precio;
     }
 
-    public String isDestinadoVenta() {
-        return DestinadoVenta;
-    }
-
-    public void setDestinadoVenta(String DestinadoVenta) {
-        this.DestinadoVenta = DestinadoVenta;
-    }
-
-    public int getIDProducto() {
-        return IDProducto;
-    }
-
-    public void setIDProducto(int IDProducto) {
-        this.IDProducto = IDProducto;
-    }
-
-    public int getIDTpoVehiculo() {
-        return IDTpoVehiculo;
-    }
-
-    public void setIDTpoVehiculo(int IDTpoVehiculo) {
-        this.IDTpoVehiculo = IDTpoVehiculo;
-    }
-
-    // Método para mostrar la información del vehículo
-    @Override
-    public String toString() {
-        return "Vehiculo{" +
-                "IDVehiculo=" + IDVehiculo +
-                ", Marca='" + Marca + '\'' +
-                ", Modelo='" + Modelo + '\'' +
-                ", Paisinportación='" + PaisImportación + '\'' +
-                ", DestinadoVenta=" + DestinadoVenta +
-                ", IDProducto=" + IDProducto +
-                ", IDTpoVehiculo=" + IDTpoVehiculo +
-                '}';
-    }
 }
