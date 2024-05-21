@@ -1,11 +1,13 @@
-CREATE DATABASE AgenciaDeVehiculos;
+CREATE DATABASE Agencia_De_Vehiculos_Electricos;
 GO
 
-USE AgenciaDeVehiculos
+USE Agencia_De_Vehiculos_Electricos
 GO
 
 CREATE SCHEMA Stock
 GO
+
+BEGIN
 
 -- Tabla: Producto 3NF
 CREATE TABLE Stock.Producto (
@@ -22,8 +24,8 @@ CREATE TABLE Stock.TipoVehiculo (
 -- Tabla: Vehículo 3NF
 CREATE TABLE Stock.Vehiculo (
     IDVehiculo INT PRIMARY KEY IDENTITY,
-    Marca VARCHAR(50) NOT NULL,
-    Modelo VARCHAR(100) NOT NULL,
+    MarcaVehiculo VARCHAR(50) NOT NULL,
+    ModeloVehiculo VARCHAR(100) NOT NULL,
     PaisImportacion VARCHAR(100) NOT NULL,
     DestinadoVenta VARCHAR(50) CHECK (DestinadoVenta IN ('Publica', 'Privada')),
 	IDProducto INT,
@@ -76,9 +78,9 @@ CREATE TABLE Stock.Almacen (
 -- Tabla: MovimientoInventario 3NF
 CREATE TABLE Stock.MovimientoInventario (
     IDMovimiento INT PRIMARY KEY IDENTITY,
-    Fecha DATE NOT NULL,
+    FechaMovimiento DATE NOT NULL,
     TipoMovimiento VARCHAR(100) NOT NULL,
-    Cantidad INT NOT NULL,
+    CantidadMovida INT NOT NULL,
     IDProducto INT,
     IDAlmacen INT,
 	CONSTRAINT fk_Producto_MovimientoInventario
@@ -93,7 +95,7 @@ CREATE TABLE Stock.MovimientoInventario (
 CREATE TABLE Stock.Stock (
     IDProducto INT,
     IDAlmacen INT,
-    Stock INT,
+    CantidadProducto INT,
     Disponible BIT NOT NULL,
     PRIMARY KEY (IDProducto, IDAlmacen),
 	CONSTRAINT fk_Producto_Stock
@@ -103,6 +105,8 @@ CREATE TABLE Stock.Stock (
 	FOREIGN KEY (IDAlmacen)
 	REFERENCES Stock.Almacen(IDAlmacen)
 );
+
+END
 
 BEGIN
 
@@ -133,15 +137,15 @@ INSERT INTO Stock.TipoVehiculo (Nombre) VALUES ('Automovil');
 INSERT INTO Stock.TipoVehiculo (Nombre) VALUES ('Motocicleta');
 INSERT INTO Stock.TipoVehiculo (Nombre) VALUES ('Bicicleta');
 
-INSERT INTO Stock.Vehiculo (Marca, Modelo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
+INSERT INTO Stock.Vehiculo (MarcaVehiculo, ModeloVehiculo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
 VALUES ('Mercedes', 'Citaro', 'Germany', 'Publica', 1, 1);
-INSERT INTO Stock.Vehiculo (Marca, Modelo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
+INSERT INTO Stock.Vehiculo (MarcaVehiculo, ModeloVehiculo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
 VALUES ('Siemens', 'Velaro', 'Germany', 'Publica', 2, 2);
-INSERT INTO Stock.Vehiculo (Marca, Modelo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
+INSERT INTO Stock.Vehiculo (MarcaVehiculo, ModeloVehiculo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
 VALUES ('Toyota', 'Corolla', 'Japan', 'Privada', 3, 3);
-INSERT INTO Stock.Vehiculo (Marca, Modelo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
+INSERT INTO Stock.Vehiculo (MarcaVehiculo, ModeloVehiculo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
 VALUES ('Honda', 'CBR600RR', 'Japan', 'Privada', 4, 4);
-INSERT INTO Stock.Vehiculo (Marca, Modelo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
+INSERT INTO Stock.Vehiculo (MarcaVehiculo, ModeloVehiculo, PaisImportacion, DestinadoVenta, IDProducto, IDTipoVehiculo)
 VALUES ('Giant', 'Escape 3', 'Taiwan', 'Privada', 5, 5);
 
 INSERT INTO Stock.Componente (NombreComponente, MarcaComponente, DescripcionComponente, CategoriaComponente, IDProducto, IDVehiculo)
@@ -172,66 +176,59 @@ INSERT INTO Stock.Almacen (NombreAlmacen, Ubicacion) VALUES ('West Warehouse', '
 INSERT INTO Stock.Almacen (NombreAlmacen, Ubicacion) VALUES ('North Warehouse', '101 North St, Springfield');
 INSERT INTO Stock.Almacen (NombreAlmacen, Ubicacion) VALUES ('South Warehouse', '202 South St, Springfield');
 
-INSERT INTO Stock.MovimientoInventario (Fecha, TipoMovimiento, Cantidad, IDProducto, IDAlmacen)
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
 VALUES ('2023-05-01', 'Entrada', 100, 1, 1);
-INSERT INTO Stock.MovimientoInventario (Fecha, TipoMovimiento, Cantidad, IDProducto, IDAlmacen)
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
 VALUES ('2023-05-02', 'Entrada', 50, 2, 2);
-INSERT INTO Stock.MovimientoInventario (Fecha, TipoMovimiento, Cantidad, IDProducto, IDAlmacen)
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
 VALUES ('2023-05-03', 'Entrada', 75, 3, 3);
-INSERT INTO Stock.MovimientoInventario (Fecha, TipoMovimiento, Cantidad, IDProducto, IDAlmacen)
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
 VALUES ('2023-05-04', 'Entrada', 25, 4, 4);
-INSERT INTO Stock.MovimientoInventario (Fecha, TipoMovimiento, Cantidad, IDProducto, IDAlmacen)
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
 VALUES ('2023-05-05', 'Entrada', 60, 5, 5);
 
-INSERT INTO Stock.Stock (IDProducto, IDAlmacen, Stock, Disponible)
+INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (1, 1, 50, 1);
-INSERT INTO Stock.Stock (IDProducto, IDAlmacen, Stock, Disponible)
+INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (2, 2, 40, 1);
-INSERT INTO Stock.Stock (IDProducto, IDAlmacen, Stock, Disponible)
+INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (3, 3, 30, 1);
-INSERT INTO Stock.Stock (IDProducto, IDAlmacen, Stock, Disponible)
+INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (4, 4, 20, 1);
-INSERT INTO Stock.Stock (IDProducto, IDAlmacen, Stock, Disponible)
+INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (5, 5, 10, 1);
-
--- Componente: Motor (Producto ID 6), Almacén ID 1
-INSERT INTO Stock.Stock (IDProducto, IDAlmacen, Stock, Disponible)
+INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (6, 1, 50, 1);
-
--- Componente: Bogies (Producto ID 7), Almacén ID 2
-INSERT INTO Stock.Stock (IDProducto, IDAlmacen, Stock, Disponible)
+INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (7, 2, 30, 1);
-
--- Accesorio: GPS (Producto ID 11), Almacén ID 1
-INSERT INTO Stock.Stock (IDProducto, IDAlmacen, Stock, Disponible)
+INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (11, 1, 20, 1);
-
--- Accesorio: Cubreasientos (Producto ID 12), Almacén ID 2
-INSERT INTO Stock.Stock (IDProducto, IDAlmacen, Stock, Disponible)
+INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (12, 2, 40, 1);
 
 -- Movimiento de inventario para Componente: Motor (Producto ID 6), Almacén ID 1
-INSERT INTO Stock.MovimientoInventario (Fecha, TipoMovimiento, Cantidad, IDProducto, IDAlmacen)
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
 VALUES (GETDATE(), 'Entrada', 50, 6, 1);
 
 -- Movimiento de inventario para Componente: Bogies (Producto ID 7), Almacén ID 2
-INSERT INTO Stock.MovimientoInventario (Fecha, TipoMovimiento, Cantidad, IDProducto, IDAlmacen)
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
 VALUES (GETDATE(), 'Entrada', 30, 7, 2);
 
 -- Movimiento de inventario para Accesorio: GPS (Producto ID 11), Almacén ID 1
-INSERT INTO Stock.MovimientoInventario (Fecha, TipoMovimiento, Cantidad, IDProducto, IDAlmacen)
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
 VALUES (GETDATE(), 'Entrada', 20, 11, 1);
 
 -- Movimiento de inventario para Accesorio: Cubreasientos (Producto ID 12), Almacén ID 2
-INSERT INTO Stock.MovimientoInventario (Fecha, TipoMovimiento, Cantidad, IDProducto, IDAlmacen)
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
 VALUES (GETDATE(), 'Entrada', 40, 12, 2);
-
 
 END
 
 
 CREATE SCHEMA FinanzaVenta
 GO
+
+BEGIN
 
 -- Tabla: Cliente 3NF
 CREATE TABLE FinanzaVenta.Cliente (
@@ -279,8 +276,13 @@ CREATE TABLE FinanzaVenta.MovimientoPedido (
 	REFERENCES  Stock.MovimientoInventario(IDMovimiento)
 );
 
+
+END
+
 CREATE SCHEMA Servicio
 GO
+
+BEGIN
 
 -- Tabla: Servicio 3FN
 CREATE TABLE Servicio.Servicio (
@@ -302,6 +304,8 @@ CREATE TABLE Servicio.ServicioPedido (
 	REFERENCES FinanzaVenta.Pedido(IDPedido)
 );
 
+END
+
 BEGIN
 
 -- Insertar datos en la tabla Servicio.Servicio
@@ -318,6 +322,7 @@ END
 
 CREATE SCHEMA RRHH
 GO
+BEGIN
 
 -- Tabla: Departamento 3FN
 CREATE TABLE RRHH.Departamento (
@@ -335,7 +340,7 @@ CREATE TABLE RRHH.Puesto (
 
 -- Tabla: Empleado 3NF
 CREATE TABLE RRHH.Empleado (
-    IDEmpleado INT PRIMARY KEY,
+    IDEmpleado INT PRIMARY KEY IDENTITY,
     Nombre VARCHAR(20) NOT NULL,
     Apellido VARCHAR(30) NOT NULL,
     FechaContratacion DATE NOT NULL,
@@ -362,6 +367,9 @@ CREATE TABLE RRHH.UsuarioAplicacion(
 	REFERENCES RRHH.Empleado(IDEmpleado),
 	PRIMARY KEY(IDEmpleado)
 )
+
+
+END
 
 BEGIN
 
@@ -398,20 +406,20 @@ INSERT INTO RRHH.Puesto (NombrePuesto, Descripcion)
 VALUES ('Administrador de Sistemas', 'Encargado de la administración de sistemas y tecnologías de la información.');
 
 -- Insertar datos en la tabla RRHH.Empleado
-INSERT INTO RRHH.Empleado (IDEmpleado, Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
-VALUES (1, 'Juan', 'Perez', '2020-01-15', 50000.00, 'juan.perez@example.com', '1234567890', 1, 1, 1);
+INSERT INTO RRHH.Empleado (Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
+VALUES ('Juan', 'Perez', '2020-01-15', 50000.00, 'juan.perez@example.com', '1234567890', 1, 1, 1);
 
-INSERT INTO RRHH.Empleado (IDEmpleado, Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
-VALUES (2, 'Ana', 'Garcia', '2019-03-10', 55000.00, 'ana.garcia@example.com', '0987654321', 1, 2, 2);
+INSERT INTO RRHH.Empleado (Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
+VALUES ('Ana', 'Garcia', '2019-03-10', 55000.00, 'ana.garcia@example.com', '0987654321', 1, 2, 2);
 
-INSERT INTO RRHH.Empleado (IDEmpleado, Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
-VALUES (3, 'Carlos', 'Lopez', '2018-07-25', 45000.00, 'carlos.lopez@example.com', '1122334455', 1, 3, 3);
+INSERT INTO RRHH.Empleado (Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
+VALUES ('Carlos', 'Lopez', '2018-07-25', 45000.00, 'carlos.lopez@example.com', '1122334455', 1, 3, 3);
 
-INSERT INTO RRHH.Empleado (IDEmpleado, Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
-VALUES (4, 'Marta', 'Hernandez', '2021-11-30', 47000.00, 'marta.hernandez@example.com', '6677889900', 1, 4, 4);
+INSERT INTO RRHH.Empleado (Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
+VALUES ('Marta', 'Hernandez', '2021-11-30', 47000.00, 'marta.hernandez@example.com', '6677889900', 1, 4, 4);
 
-INSERT INTO RRHH.Empleado (IDEmpleado, Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
-VALUES (5, 'Luis', 'Martinez', '2022-05-20', 52000.00, 'luis.martinez@example.com', '4455667788', 1, 5, 5);
+INSERT INTO RRHH.Empleado (Nombre, Apellido, FechaContratacion, Salario, CorreoElectronico, Telefono, Activo, IDPuesto, IDDepartamento)
+VALUES ('Luis', 'Martinez', '2022-05-20', 52000.00, 'luis.martinez@example.com', '4455667788', 1, 5, 5);
 
 --inserts de usuarios de aplicacion
 
@@ -435,6 +443,8 @@ END
 CREATE SCHEMA Ensamblaje
 GO
 
+BEGIN
+
 -- Tabla: Mantenimiento 3NF
 CREATE TABLE Ensamblaje.Mantenimiento (
     IDMantenimiento INT PRIMARY KEY IDENTITY,
@@ -456,12 +466,44 @@ CREATE TABLE Ensamblaje.Mantenimiento (
 	REFERENCES Servicio.Servicio(IDServicio),
 );
 
---LOGINS
-BEGIN
 END
-GO
+
 --ROLES
 BEGIN
+
+CREATE SERVER ROLE RolSYSAdmin;
+ALTER SERVER ROLE RolSYSAdmin ADD MEMBER sa;
+GRANT CONTROL SERVER TO RolSYSAdmin;
+
+CREATE ROLE RolDBOwner;
+GRANT CONTROL ON DATABASE::Agencia_De_Vehiculos_Electricos TO RolDBOwner;
+
+CREATE ROLE RolVentas;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::FinanzaVenta TO RolVentas;
+GRANT EXECUTE ON SCHEMA::FinanzaVenta TO RolVentas;
+
+CREATE ROLE RolMantenimiento;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::Ensamblaje TO RolMantenimiento;
+GRANT EXECUTE ON SCHEMA::Ensamblaje TO RolMantenimiento;
+
+CREATE ROLE RolRRHH;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::RRHH TO RolRRHH;
+GRANT EXECUTE ON SCHEMA::RRHH TO RolRRHH;
+
+CREATE ROLE RolContabilidad;
+GRANT SELECT ON SCHEMA::FinanzaVenta TO RolContabilidad;
+GRANT EXECUTE ON SCHEMA::FinanzaVenta TO RolContabilidad;
+
+END
+GO
+
+--LOGINS
+BEGIN
+
+CREATE LOGIN LoginDBOwner WITH PASSWORD = '123DBOWNER';
+CREATE USER UserDBOwner FOR LOGIN LoginDBOwner;
+ALTER ROLE RolDBOwner ADD MEMBER UserDBOwner;
+
 END
 GO
 
@@ -536,6 +578,113 @@ BEGIN
 END--REVISAR Estado = Pendiente
 GO
 
+--Requerimiento 2
+
+CREATE OR ALTER VIEW Stock.view_AccesoriosDisponibles
+AS
+SELECT 
+	Producto.IDProducto,
+	Accesorio.NombreAccesorio,
+	Accesorio.MarcaAccesorio,
+	Accesorio.DescripcionAccesorio,
+	Accesorio.CategoriaAccesorio,
+	Stock.CantidadProducto,
+	Almacen.NombreAlmacen+', '+Almacen.Ubicacion AS Ubicacion,
+	Stock.Disponible
+FROM Stock.Producto AS Producto
+	INNER JOIN Stock.Accesorio AS Accesorio
+		ON Producto.IDProducto = Accesorio.IDProducto
+			INNER JOIN Stock.Stock AS Stock
+				ON Producto.IDProducto = Stock.IDProducto
+					INNER JOIN Stock.Almacen AS Almacen
+					ON Stock.IDAlmacen = Almacen.IDAlmacen
+WHERE Stock.Disponible = 1
+GO
+
+CREATE OR ALTER PROCEDURE Stock.sp_FiltararAccesoriosDisponibles
+	@MarcaAccesorio VARCHAR(50),
+	@NombreAccesorio VARCHAR(50),
+	@CategoriaAccesorio VARCHAR(50)
+AS
+BEGIN
+	BEGIN TRY
+		
+		SELECT
+			ViewAccesorios.IDProducto,
+			ViewAccesorios.NombreAccesorio,
+			ViewAccesorios.MarcaAccesorio,
+			ViewAccesorios.DescripcionAccesorio,
+			ViewAccesorios.CategoriaAccesorio,
+			ViewAccesorios.CantidadProducto,
+			ViewAccesorios.Ubicacion,
+			ViewAccesorios.Disponible
+		FROM view_AccesoriosDisponibles AS ViewAccesorios
+		WHERE (ViewAccesorios.MarcaAccesorio = @MarcaAccesorio OR @MarcaAccesorio IS NULL)
+			AND (ViewAccesorios.NombreAccesorio = @NombreAccesorio OR @NombreAccesorio IS NULL)
+			AND (ViewAccesorios.CategoriaAccesorio = @CategoriaAccesorio OR @CategoriaAccesorio IS NULL)
+
+	END TRY
+	BEGIN CATCH
+		SELECT 'NO DATA' AS Respuesta
+	END CATCH
+END
+GO
+
+--Requermineto 3
+CREATE OR ALTER VIEW Stock.view_VehiculosDisponibles
+AS
+	SELECT
+		Vehiculo.IDProducto,
+		Vehiculo.MarcaVehiculo,
+		Vehiculo.ModeloVehiculo,
+		Vehiculo.PaisImportacion,
+		Vehiculo.DestinadoVenta,
+		Producto.Precio,
+		Stock.CantidadProducto,
+		Almacen.NombreAlmacen+', '+Almacen.Ubicacion AS Ubicacion
+	FROM Stock.Vehiculo AS Vehiculo
+	INNER JOIN Stock.Stock AS Stock
+		ON Vehiculo.IDProducto = Stock.IDProducto
+		INNER JOIN Stock.Almacen AS Almacen
+			ON Stock.IDAlmacen = Almacen.IDAlmacen
+			INNER JOIN Stock.Producto AS Producto
+				ON Producto.IDProducto = Vehiculo.IDProducto
+	WHERE Stock.Disponible = 1
+GO
+
+CREATE OR ALTER PROCEDURE Stock.sp_FiltrarVehiculosDisponibles
+	@Marca VARCHAR(50),
+	@Modelo VARCHAR(100),
+	@Precio DECIMAL(19,2)
+AS
+BEGIN
+	BEGIN TRY
+
+		SELECT 
+			ViewVehiculos.IDProducto,
+			ViewVehiculos.MarcaVehiculo,
+			ViewVehiculos.ModeloVehiculo,
+			ViewVehiculos.PaisImportacion,
+			ViewVehiculos.DestinadoVenta,
+			ViewVehiculos.Precio,
+			ViewVehiculos.CantidadProducto,
+			ViewVehiculos.CantidadProducto
+		FROM view_VehiculosDisponibles AS ViewVehiculos
+		WHERE (ViewVehiculos.MarcaVehiculo = @Marca OR @Marca IS NULL)
+			AND(ViewVehiculos.ModeloVehiculo = @Modelo OR @Modelo IS NULL)
+			AND(ViewVehiculos.Precio = @Precio OR @Precio IS NULL)
+
+	END TRY
+	BEGIN CATCH
+		SELECT 'NO DATA' AS Respuesta
+	END CATCH
+END
+GO
+
+--Requerimiento 4
+
+--Requerimiento 5
+
 CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarCliente
 	@NombreCliente VARCHAR(50),
 	@TelefonoCliente VARCHAR(15),
@@ -578,7 +727,7 @@ BEGIN
 END
 GO
 
---Requerimiento 2
+--Requerimiento 6
 CREATE OR ALTER VIEW Stock.view_ComponentesDisponibles
 AS
 SELECT 
@@ -587,7 +736,7 @@ SELECT
 	Componente.MarcaComponente,
 	Componente.DescripcionComponente,
 	Componente.CategoriaComponente,
-	Stock.Stock,
+	Stock.CantidadProducto,
 	Almacen.NombreAlmacen+', '+Almacen.Ubicacion AS Ubicacion,
 	Stock.Disponible
 FROM Stock.Producto AS Producto
@@ -616,7 +765,7 @@ BEGIN
 			ViewComponentes.MarcaComponente,
 			ViewComponentes.DescripcionComponente,
 			ViewComponentes.CategoriaComponente,
-			ViewComponentes.Stock,
+			ViewComponentes.CantidadProducto,
 			ViewComponentes.Ubicacion,
 			ViewComponentes.Disponible
 		FROM view_ComponentesDisponibles AS ViewComponentes
@@ -631,115 +780,59 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER VIEW Stock.view_AccesoriosDisponibles
+--Requerimiento 7
+CREATE OR ALTER VIEW Stock.view_VehiculosVendidos 
 AS
 SELECT 
-	Producto.IDProducto,
-	Accesorio.NombreAccesorio,
-	Accesorio.MarcaAccesorio,
-	Accesorio.DescripcionAccesorio,
-	Accesorio.CategoriaAccesorio,
-	Stock.Stock,
-	Almacen.NombreAlmacen+', '+Almacen.Ubicacion AS Ubicacion,
-	Stock.Disponible
-FROM Stock.Producto AS Producto
-	INNER JOIN Stock.Accesorio AS Accesorio
-		ON Producto.IDProducto = Accesorio.IDProducto
-			INNER JOIN Stock.Stock AS Stock
-				ON Producto.IDProducto = Stock.IDProducto
-					INNER JOIN Stock.Almacen AS Almacen
-					ON Stock.IDAlmacen = Almacen.IDAlmacen
-WHERE Stock.Disponible = 1
+    Vehiculo.IDVehiculo,
+    Vehiculo.MarcaVehiculo,
+    Vehiculo.ModeloVehiculo,
+    Producto.Precio,
+    Pedido.IDPedido,
+    Factura.Fecha AS FechaVenta,
+    Cliente.NombreCliente,
+    Cliente.Correo AS CorreoCliente,
+    Factura.Total AS PrecioVenta
+FROM Stock.Vehiculo AS Vehiculo
+INNER JOIN Stock.Producto AS Producto 
+	ON Vehiculo.IDProducto = Producto.IDProducto
+    INNER JOIN FinanzaVenta.Pedido AS Pedido 
+		ON Pedido.IDPedido = Vehiculo.IDVehiculo
+		INNER JOIN FinanzaVenta.Cliente AS Cliente 
+			ON Pedido.IDCliente = Cliente.IDCliente
+			INNER JOIN FinanzaVenta.Factura AS Factura 
+				ON Pedido.IDFactura = Factura.IDFactura
+WHERE Pedido.Estado = 'Vendido';
 GO
 
-CREATE OR ALTER PROCEDURE Stock.sp_FiltararAccesoriosDisponibles
-	@MarcaAccesorio VARCHAR(50),
-	@NombreAccesorio VARCHAR(50),
-	@CategoriaAccesorio VARCHAR(50)
+CREATE OR ALTER PROCEDURE Stock.sp_FiltrarVehiculosVendidos
+    @FechaInicio DATE,
+    @FechaFin DATE,
+    @Marca VARCHAR(50) = NULL,
+    @Modelo VARCHAR(100) = NULL,
+    @IDTipoVehiculo INT = NULL
 AS
 BEGIN
-	BEGIN TRY
-		
-		SELECT
-			ViewAccesorios.IDProducto,
-			ViewAccesorios.NombreAccesorio,
-			ViewAccesorios.MarcaAccesorio,
-			ViewAccesorios.DescripcionAccesorio,
-			ViewAccesorios.CategoriaAccesorio,
-			ViewAccesorios.Stock,
-			ViewAccesorios.Ubicacion,
-			ViewAccesorios.Disponible
-		FROM view_AccesoriosDisponibles AS ViewAccesorios
-		WHERE (ViewAccesorios.MarcaAccesorio = @MarcaAccesorio OR @MarcaAccesorio IS NULL)
-			AND (ViewAccesorios.NombreAccesorio = @NombreAccesorio OR @NombreAccesorio IS NULL)
-			AND (ViewAccesorios.CategoriaAccesorio = @CategoriaAccesorio OR @CategoriaAccesorio IS NULL)
-
-	END TRY
-	BEGIN CATCH
-		SELECT 'NO DATA' AS Respuesta
-	END CATCH
+    BEGIN TRY
+        SELECT 
+            VehiculoVendidos.IDVehiculo,
+            VehiculoVendidos.MarcaVehiculo,
+            VehiculoVendidos.ModeloVehiculo,
+            VehiculoVendidos.Precio,
+            VehiculoVendidos.IDPedido,
+            VehiculoVendidos.FechaVenta,
+            VehiculoVendidos.NombreCliente,
+            VehiculoVendidos.CorreoCliente,
+            VehiculoVendidos.PrecioVenta
+        FROM Stock.view_VehiculosVendidos AS VehiculoVendidos
+        INNER JOIN Stock.Vehiculo AS Vehiculo ON VehiculoVendidos.IDVehiculo = Vehiculo.IDVehiculo
+        WHERE VehiculoVendidos.FechaVenta BETWEEN @FechaInicio AND @FechaFin
+            AND (VehiculoVendidos.MarcaVehiculo = @Marca OR @Marca IS NULL)
+            AND (VehiculoVendidos.ModeloVehiculo = @Modelo OR @Modelo IS NULL)
+            AND (Vehiculo.IDTipoVehiculo = @IDTipoVehiculo OR @IDTipoVehiculo IS NULL);
+    END TRY
+    BEGIN CATCH
+        SELECT 'NO DATA' AS Respuesta;
+    END CATCH
 END
 GO
-
---Requermineto 3
-CREATE OR ALTER VIEW Stock.view_VehiculosDisponibles
-AS
-	SELECT
-		Vehiculo.IDProducto,
-		Vehiculo.Marca,
-		Vehiculo.Modelo,
-		Vehiculo.PaisImportacion,
-		Vehiculo.DestinadoVenta,
-		Producto.Precio,
-		Stock.Stock,
-		Almacen.NombreAlmacen
-	FROM Stock.Vehiculo AS Vehiculo
-	INNER JOIN Stock.Stock AS Stock
-		ON Vehiculo.IDProducto = Stock.IDProducto
-		INNER JOIN Stock.Almacen AS Almacen
-			ON Stock.IDAlmacen = Almacen.IDAlmacen
-			INNER JOIN Stock.Producto AS Producto
-				ON Producto.IDProducto = Vehiculo.IDProducto
-	WHERE Stock.Disponible = 1
-GO
-
-CREATE OR ALTER PROCEDURE Stock.sp_FiltrarVehiculosDisponibles
-	@Marca VARCHAR(50),
-	@Modelo VARCHAR(100),
-	@Precio DECIMAL(19,2)
-AS
-BEGIN
-	BEGIN TRY
-
-		SELECT 
-			ViewVehiculos.IDProducto,
-			ViewVehiculos.Marca,
-			ViewVehiculos.Modelo,
-			ViewVehiculos.PaisImportacion,
-			ViewVehiculos.DestinadoVenta,
-			ViewVehiculos.Precio,
-			ViewVehiculos.Stock,
-			ViewVehiculos.NombreAlmacen
-		FROM view_VehiculosDisponibles AS ViewVehiculos
-		WHERE (ViewVehiculos.Marca = @Marca OR @Marca IS NULL)
-			AND(ViewVehiculos.Modelo = @Modelo OR @Modelo IS NULL)
-			AND(ViewVehiculos.Precio = @Precio OR @Precio IS NULL)
-
-	END TRY
-	BEGIN CATCH
-		SELECT 'NO DATA' AS Respuesta
-	END CATCH
-END
-GO
-
---Requerimiento 4
-
---Requerimiento 5
-
---Requerimiento 6
-
---VIEWS
---LBAC
-CREATE TABLE [USER](
-	IDUser INT PRIMARY KEY
-)
