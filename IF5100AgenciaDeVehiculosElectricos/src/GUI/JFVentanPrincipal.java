@@ -155,7 +155,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jm1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm1ActionPerformed
-        JFVentanaVentaAccesoriosParte jFVentanaVentaAccesoriosParte = new JFVentanaVentaAccesoriosParte();
+        JIFVentanaVentaAccesoriosParte jFVentanaVentaAccesoriosParte = new JIFVentanaVentaAccesoriosParte();
         jDesktopPane1.add(jFVentanaVentaAccesoriosParte);
         jFVentanaVentaAccesoriosParte.setVisible(true);
     }//GEN-LAST:event_jm1ActionPerformed
