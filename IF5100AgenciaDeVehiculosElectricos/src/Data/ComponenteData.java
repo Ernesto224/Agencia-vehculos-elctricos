@@ -39,6 +39,7 @@ public class ComponenteData extends BaseData{
     return resultStringBuilder.toString();
 }
 
-    
+   //ID del producto, nombre, marca, categoria y precio
+    //hacer un combo, para
     
 }
