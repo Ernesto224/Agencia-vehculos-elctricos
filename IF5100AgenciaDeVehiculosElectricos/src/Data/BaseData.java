@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public abstract class BaseData {
-   private final String sqlUrl = "jdbc:sqlserver://163.178.107.10;User Id=Laboratorios;Password=TUy&)&nfC7QqQau.%278UQ24/=%;Initial Catalog=Agencia_De_Vehiculos_Electricos;TrustServerCertificate=true;";
+   private final String sqlUrl = "jdbc:sqlserver://163.178.107.10:1433;databaseName=Agencia_De_Vehiculos_Electricos;user=laboratorios;password=TUy&)&nfC7QqQau.%278UQ24/=%;encrypt=false";
     public Connection getSqlConnection() throws SQLException {
         Connection connection = DriverManager.getConnection(sqlUrl);
         return connection;
