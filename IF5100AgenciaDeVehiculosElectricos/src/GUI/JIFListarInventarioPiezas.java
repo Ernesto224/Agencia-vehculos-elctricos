@@ -4,6 +4,10 @@
  */
 package GUI;
 
+import Data.AccesorioData;
+import Domain.Accesorio;
+import Domain.AccesorioAux;
+import java.util.ArrayList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -20,8 +24,11 @@ public class JIFListarInventarioPiezas extends javax.swing.JInternalFrame {
     private JTable tablaAccesoriosPartes;
     private DefaultTableModel dftModeloTabla;
     private JScrollPane scrollPane;
+    private AccesorioData accesorioData;
+
     public JIFListarInventarioPiezas() {
         initComponents();
+        this.accesorioData = new AccesorioData();
         this.dftModeloTabla = new DefaultTableModel();
         this.tablaAccesoriosPartes = new JTable();
         this.tablaAccesoriosPartes.setModel(this.dftModeloTabla);
@@ -29,21 +36,42 @@ public class JIFListarInventarioPiezas extends javax.swing.JInternalFrame {
         this.scrollPane.setBounds(5, 10, 750, 400);
         this.add(this.scrollPane);
         this.crearTabla();
-        
+
     }
+
     private void crearTabla() {
-    try {
-        this.dftModeloTabla.addColumn("IDComponente");
-        this.dftModeloTabla.addColumn("NombreComponente");
-        this.dftModeloTabla.addColumn("Marca Componente");
-        this.dftModeloTabla.addColumn("DescripcionComponente");
-        this.dftModeloTabla.addColumn("CategoriaComponente");
-        this.dftModeloTabla.addColumn("IDProducto");
-        this.dftModeloTabla.addColumn("IDVehiculo");
-    } catch (Exception e) {
-        e.printStackTrace();
+        try {
+            this.dftModeloTabla.addColumn("IDProducto");
+            this.dftModeloTabla.addColumn("NombreAccesorio");
+            this.dftModeloTabla.addColumn("MarcaAccesorio");
+            this.dftModeloTabla.addColumn("DescripcionAccesorio");
+            this.dftModeloTabla.addColumn("CategoriaAccesorio");
+            this.dftModeloTabla.addColumn("Stock");
+            this.dftModeloTabla.addColumn("Ubicacion");
+            this.dftModeloTabla.addColumn("Disponible");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-}
+
+    public void cargarDatos() {
+        ArrayList<AccesorioAux> accesorios = this.accesorioData.obtenerAccesorios(new Accesorio(null, null, null));
+        for (AccesorioAux accesorio : accesorios) {
+            Object[] rowData = {
+                accesorio.getIdProducto(),
+                accesorio.getNombreAccesorio(),
+                accesorio.getMarcaAccesorio(),
+                accesorio.getDescripcionAccesorio(),
+                accesorio.getCategoriaAccesorio(),
+                accesorio.getStock(),
+                accesorio.getUbicacion(),
+                accesorio.isDisponible()
+            };
+            dftModeloTabla.addRow(rowData);
+        }
+        this.repaint();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

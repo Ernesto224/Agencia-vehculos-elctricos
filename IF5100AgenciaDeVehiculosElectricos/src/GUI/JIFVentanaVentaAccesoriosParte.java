@@ -4,6 +4,11 @@
  */
 package GUI;
 
+import Data.AccesorioData;
+import Data.ComponenteData;
+import Domain.AccesorioAux;
+import Domain.ComponenteAux;
+import java.util.ArrayList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -20,28 +25,76 @@ public class JIFVentanaVentaAccesoriosParte extends javax.swing.JInternalFrame {
     private JTable tablaAccesoriosPartes;
     private DefaultTableModel dftModeloTabla;
     private JScrollPane scrollPane;
+    private ComponenteData componenteData;
+    private AccesorioData accesorioData;
+
     public JIFVentanaVentaAccesoriosParte() {
         initComponents();
-        
+        this.jComboBox1.removeAllItems();
+        this.jComboBox1.addItem("Accesorio");
+        this.jComboBox1.addItem("Componente");
+        this.componenteData = new ComponenteData();
+        this.accesorioData = new AccesorioData();
         this.dftModeloTabla = new DefaultTableModel();
         this.tablaAccesoriosPartes = new JTable();
+        this.crearTablaDatos();
         this.tablaAccesoriosPartes.setModel(this.dftModeloTabla);
         this.scrollPane = new JScrollPane(this.tablaAccesoriosPartes);
         this.scrollPane.setBounds(5, 10, 750, 400);
         this.add(this.scrollPane);
     }
-    private void crearTabla() {
-            this.dftModeloTabla.addColumn("ID SOCCER TEAM");
-            this.dftModeloTabla.addColumn("NAME TEAM");
-            this.dftModeloTabla.addColumn("LOCALIZATION");
-            this.dftModeloTabla.addColumn("YEAR FUNDATION");
-            this.dftModeloTabla.addColumn("ERASED SOCCER TEAM");
-            
-            this.dftModeloTabla.addColumn("ID SOCCER PLAYER");
-            this.dftModeloTabla.addColumn("NAME");
-            this.dftModeloTabla.addColumn("SHIRT NUMBER");
-            this.dftModeloTabla.addColumn("SALARY");
-            this.dftModeloTabla.addColumn("DELETE SOCCER PLAYER");
+
+    private void crearTablaDatos() {
+        try {
+            this.dftModeloTabla.addColumn("IDProducto");
+            this.dftModeloTabla.addColumn("NombreAccesorio");
+            this.dftModeloTabla.addColumn("MarcaAccesorio");
+            this.dftModeloTabla.addColumn("DescripcionAccesorio");
+            this.dftModeloTabla.addColumn("CategoriaAccesorio");
+            this.dftModeloTabla.addColumn("Stock");
+            this.dftModeloTabla.addColumn("Ubicacion");
+            this.dftModeloTabla.addColumn("Disponible");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void llenarTablaAccesorio() {
+        if (this.jComboBox1.getSelectedIndex() == 0) {
+            ArrayList<AccesorioAux> accesorios = this.accesorioData.obtenerAccesorios(null);
+            for (AccesorioAux accesorio : accesorios) {
+                Object[] rowData = {
+                    accesorio.getIdProducto(),
+                    accesorio.getNombreAccesorio(),
+                    accesorio.getMarcaAccesorio(),
+                    accesorio.getDescripcionAccesorio(),
+                    accesorio.getCategoriaAccesorio(),
+                    accesorio.getStock(),
+                    accesorio.getUbicacion(),
+                    accesorio.isDisponible()
+                };
+                dftModeloTabla.addRow(rowData);
+            }
+        } else {
+            ArrayList<ComponenteAux> componentes = this.componenteData.obtenerComponentes(null);
+            for (ComponenteAux componenteAux : componentes) {
+                Object[] rowData = {
+                    componenteAux.getIdProducto(),
+                    componenteAux.getNombreComponente(),
+                    componenteAux.getMarcaComponente(),
+                    componenteAux.getDescripcionComponente(),
+                    componenteAux.getCategoriaComponente(),
+                    componenteAux.getStock(),
+                    componenteAux.getUbicacion(),
+                    componenteAux.isDisponible()
+                };
+                dftModeloTabla.addRow(rowData);
+            }
+        }
+    }
+
+    private void llenarTablaComponente() {
+
     }
 
     /**
@@ -81,6 +134,11 @@ public class JIFVentanaVentaAccesoriosParte extends javax.swing.JInternalFrame {
         jButton3.setText("Agregar al carrito");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("ID Producto: ");
 
@@ -158,6 +216,10 @@ public class JIFVentanaVentaAccesoriosParte extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
