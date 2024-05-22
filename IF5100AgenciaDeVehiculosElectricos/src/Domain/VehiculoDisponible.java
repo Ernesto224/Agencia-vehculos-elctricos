@@ -8,9 +8,8 @@ package Domain;
  *
  * @author User
  */
-public class VehiculoAux {
+public class VehiculoDisponible {
 
-    // Atributos
     private int idProducto;
     private String marca;
     private String modelo;
@@ -21,8 +20,8 @@ public class VehiculoAux {
     private String nombreAlmacen;
 
     // Constructor
-    public VehiculoAux(int idProducto, String marca, String modelo, String paisImportacion,
-            boolean destinadoVenta, double precio, int stock, String nombreAlmacen) {
+    public VehiculoDisponible(int idProducto, String marca, String modelo, String paisImportacion,
+                              boolean destinadoVenta, double precio, int stock, String nombreAlmacen) {
         this.idProducto = idProducto;
         this.marca = marca;
         this.modelo = modelo;

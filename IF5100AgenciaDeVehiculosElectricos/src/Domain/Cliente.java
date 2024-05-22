@@ -13,6 +13,7 @@ public class Cliente {
     private String nombreCliente;
     private String telefono;
     private String correo;
+    private int identificador;
 
     // Constructor
     public Cliente(String nombreCliente, String telefono, String correo) {

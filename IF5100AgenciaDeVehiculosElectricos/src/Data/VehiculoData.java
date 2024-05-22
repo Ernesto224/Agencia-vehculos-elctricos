@@ -4,7 +4,7 @@
  */
 package Data;
 
-import Domain.VehiculoAux;
+import Domain.VehiculoDisponible;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +20,8 @@ public class VehiculoData extends BaseData{
 
     public VehiculoData() {
     }
-    public ArrayList<VehiculoAux> obtenerVehiculos(VehiculoAux vehiculo) {
-        ArrayList<VehiculoAux> vehiculos = new ArrayList<>();
+    public ArrayList<VehiculoDisponible> obtenerVehiculos(VehiculoDisponible vehiculo) {
+        ArrayList<VehiculoDisponible> vehiculos = new ArrayList<>();
 
         String sqlCallStoreProcedure = "{call sp_FiltrarVehiculosDisponibles(?,?,?)}";
 
@@ -32,20 +32,23 @@ public class VehiculoData extends BaseData{
             callable.setString(2, vehiculo.getModelo());
             callable.setString(3, vehiculo.getPaisImportacion());
 
-            ResultSet resultSet = callable.executeQuery();
+            try (ResultSet resultSet = callable.executeQuery()) {
+                while (resultSet.next()) {
+                    int idProducto = resultSet.getInt("IDProducto");
+                    String marca = resultSet.getString("Marca");
+                    String modelo = resultSet.getString("Modelo");
+                    String paisImportacion = resultSet.getString("PaisImportacion");
+                    boolean destinadoVenta = resultSet.getBoolean("DestinadoVenta");
+                    double precio = resultSet.getDouble("Precio");
+                    int stock = resultSet.getInt("Stock");
+                    String nombreAlmacen = resultSet.getString("NombreAlmacen");
 
-            while (resultSet.next()) {
-                int idProducto = resultSet.getInt("IDProducto");
-                String marca = resultSet.getString("Marca");
-                String modelo = resultSet.getString("Modelo");
-                String paisImportacion = resultSet.getString("PaisImportacion");
-                boolean destinadoVenta = resultSet.getBoolean("DestinadoVenta");
-                double precio = resultSet.getDouble("Precio");
-                int stock = resultSet.getInt("Stock");
-                String nombreAlmacen = resultSet.getString("NombreAlmacen");
-
-                VehiculoAux vehiculoAux = new VehiculoAux(idProducto, marca, modelo, paisImportacion, destinadoVenta, precio, stock, nombreAlmacen);
-                vehiculos.add(vehiculoAux);
+                    VehiculoDisponible vehiculoAux = new VehiculoDisponible(
+                            idProducto, marca, modelo, paisImportacion,
+                            destinadoVenta, precio, stock, nombreAlmacen
+                    );
+                    vehiculos.add(vehiculoAux);
+                }
             }
 
         } catch (SQLException ex) {
