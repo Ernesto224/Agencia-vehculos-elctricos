@@ -494,103 +494,275 @@ BEGIN
 	BEGIN CATCH
 		SELECT 'NO EXISTE EL USUARIO' AS Respuesta
 	END CATCH
-END--Asignar a aplicacion
+END
 GO
 
 CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarPedido
+    @IDCliente INT
+AS
+BEGIN
+    DECLARE @IDPedido INT;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Validar existencia del cliente
+        IF NOT EXISTS (SELECT 1 FROM FinanzaVenta.Cliente WHERE IDCliente = @IDCliente)
+        BEGIN
+            RAISERROR('Cliente no existe', 16, 1);
+            ROLLBACK;
+            RETURN -1;
+        END
+
+        -- Insertar el pedido
+        INSERT INTO FinanzaVenta.Pedido (FechaPedido, IDCliente)
+        VALUES (GETDATE(), @IDCliente);
+
+        -- Obtener el ID del pedido insertado
+        SET @IDPedido = SCOPE_IDENTITY();
+
+        COMMIT;
+        RETURN @IDPedido;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        RETURN -1;
+    END CATCH;
+END
+GO
+
+CREATE OR ALTER PROCEDURE FinanzaVenta.sp_CalcularMontoTotalPedido
+    @IDPedido INT
+AS
+BEGIN
+	DECLARE @MontoTotal DECIMAL(19, 2);
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Validar existencia del pedido
+        IF NOT EXISTS (SELECT 1 FROM FinanzaVenta.Pedido WHERE IDPedido = @IDPedido)
+        BEGIN
+            ROLLBACK;
+            RETURN -1;
+        END
+
+        -- Calcular el monto total sumando los precios de 
+		--los productos asociados al pedido en los movimientos de inventario
+        SELECT @MontoTotal = SUM(p.Precio * mi.CantidadMovida)
+        FROM Stock.MovimientoInventario mi
+        JOIN Stock.Producto p ON mi.IDProducto = p.IDProducto
+        WHERE mi.IDPedido = @IDPedido;
+
+        -- Validar si el pedido no tiene movimientos de inventario asociados
+        IF @MontoTotal IS NULL
+        BEGIN
+            SET @MontoTotal = 0;
+        END
+
+        -- Actualizar el monto del pedido en la tabla Pedido
+        UPDATE FinanzaVenta.Pedido
+        SET MontoPedido = @MontoTotal
+        WHERE IDPedido = @IDPedido;
+
+        COMMIT;
+        -- Retornar el monto total
+        RETURN @MontoTotal;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        RETURN -1;
+    END CATCH;
+END
+GO
+
+CREATE OR ALTER PROCEDURE Stock.sp_ReducirCantidadProducto
     @IDProducto INT,
-    @IDCliente INT,
-    @Monto DECIMAL(19, 2)
+    @IDAlmacen INT,
+    @CantidadReducir INT
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Verificar si el producto existe
-        IF NOT EXISTS (SELECT IDProducto FROM Stock.Producto WHERE IDProducto = @IDProducto)
+        -- Verificar la existencia del producto en el almacén
+        IF NOT EXISTS (SELECT 1 FROM Stock.Stock WHERE IDProducto = @IDProducto AND IDAlmacen = @IDAlmacen)
         BEGIN
             ROLLBACK;
-            SELECT 'NO EXISTE EL PRODUCTO' AS Respuesta;
-            RETURN 0;
+            RETURN -1;
         END
 
-        -- Verificar si el cliente existe
-        IF NOT EXISTS (SELECT IDCliente FROM FinanzaVenta.Cliente WHERE IDCliente = @IDCliente)
+        -- Obtener la cantidad actual del producto en el almacén
+        DECLARE @CantidadActual INT;
+        SELECT @CantidadActual = CantidadProducto FROM Stock.Stock WHERE IDProducto = @IDProducto AND IDAlmacen = @IDAlmacen;
+
+        -- Verificar si la cantidad a reducir no excede la cantidad actual
+        IF @CantidadActual < @CantidadReducir
         BEGIN
             ROLLBACK;
-            SELECT 'NO EXISTE EL CLIENTE' AS Respuesta;
-            RETURN 0;
+            RETURN -1;
         END
 
-        -- Insertar el pedido
-        DECLARE @FechaPedido DATE = GETDATE();
-        DECLARE @Estado VARCHAR(30) = 'Pendiente';
+        -- Reducir la cantidad del producto en el almacén
+        UPDATE Stock.Stock
+        SET CantidadProducto = CantidadProducto - @CantidadReducir
+        WHERE IDProducto = @IDProducto AND IDAlmacen = @IDAlmacen;
 
-        INSERT INTO FinanzaVenta.Pedido (Fecha, Estado, Monto, IDCliente)
-        VALUES (@FechaPedido, @Estado, @Monto, @IDCliente);
+        -- Verificar si la cantidad resultante es igual a 0 para actualizar el bit de disponibilidad
+        IF (@CantidadActual - @CantidadReducir) = 0
+        BEGIN
+            UPDATE Stock.Stock
+            SET Disponible = 0
+            WHERE IDProducto = @IDProducto AND IDAlmacen = @IDAlmacen;
+        END
 
         COMMIT;
         RETURN 1;
     END TRY
     BEGIN CATCH
         ROLLBACK;
-        RETURN 0;
+        RETURN -1;
     END CATCH;
 END
 GO
 
-CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarMovimientoInventario
+CREATE OR ALTER PROCEDURE Stock.sp_AgregarMovimientoInventario
+    @CantidadMovida INT,
     @IDProducto INT,
     @IDAlmacen INT,
-    @Cantidad INT,
-    @TipoMovimiento VARCHAR(100),
+    @IDEmpleado INT,
     @IDPedido INT
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- Verificar si el producto existe
-        IF NOT EXISTS (SELECT IDProducto FROM Stock.Producto WHERE IDProducto = @IDProducto)
+        -- Validar existencia del producto
+        IF NOT EXISTS (SELECT 1 FROM Stock.Producto WHERE IDProducto = @IDProducto)
         BEGIN
             ROLLBACK;
-            SELECT 'NO EXISTE EL PRODUCTO' AS Respuesta;
-            RETURN 0;
+            RETURN -1;
         END
 
-        -- Verificar si el almacén existe
-        IF NOT EXISTS (SELECT IDAlmacen FROM Stock.Almacen WHERE IDAlmacen = @IDAlmacen)
+        -- Validar existencia del almacén
+        IF NOT EXISTS (SELECT 1 FROM Stock.Almacen WHERE IDAlmacen = @IDAlmacen)
         BEGIN
             ROLLBACK;
-            SELECT 'NO EXISTE EL ALMACEN' AS Respuesta;
-            RETURN 0;
+            RETURN -1;
         END
 
-		-- Verificar si el dato de stock es correcto
-        IF NOT EXISTS (SELECT IDAlmacen FROM Stock.Stock WHERE IDProducto = @IDPedido AND IDAlmacen = @IDAlmacen)
+        -- Validar existencia del empleado
+        IF NOT EXISTS (SELECT 1 FROM RRHH.Empleado WHERE IDEmpleado = @IDEmpleado AND IDPuesto = 3)
         BEGIN
             ROLLBACK;
-            SELECT 'LA INFROMACION DE COMPRA ESTA INCORRECTA' AS Respuesta;
-            RETURN 0;
+            RETURN -1;
         END
 
-        -- Insertar movimiento de inventario
-        DECLARE @FechaMovimiento DATE = GETDATE();
-        INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-        VALUES (@FechaMovimiento, @TipoMovimiento, @Cantidad, @IDProducto, @IDAlmacen);
+        -- Validar existencia del pedido si se proporciona
+        IF NOT EXISTS (SELECT 1 FROM FinanzaVenta.Pedido WHERE IDPedido = @IDPedido)
+        BEGIN
+            ROLLBACK;
+            RETURN -1;
+        END
 
-        DECLARE @IDMovimiento INT = SCOPE_IDENTITY();
+        -- Llamar al procedimiento para reducir la cantidad del producto en el almacén
+        DECLARE @ResultadoReduccion INT;
+        EXEC @ResultadoReduccion = Stock.sp_ReducirCantidadProducto @IDProducto, @IDAlmacen, @CantidadMovida;
 
-        -- Insertar en tabla intermedia
-        INSERT INTO FinanzaVenta.MovimientoPedido (IDPedido, IDMovimiento)
-        VALUES (@IDPedido, @IDMovimiento);
+        -- Verificar el resultado del procedimiento de reducción de cantidad
+        IF @ResultadoReduccion <> 1
+        BEGIN
+            ROLLBACK;
+            RETURN -1;
+        END
+
+        -- Insertar el movimiento de inventario
+        INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen, IDEmpleado, IDPedido)
+        VALUES (GETDATE(), 'salida', @CantidadMovida, @IDProducto, @IDAlmacen, @IDEmpleado, @IDPedido);
+
+        COMMIT;
+        RETURN 0; -- Éxito
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        RETURN -1;
+    END CATCH;
+END
+GO
+
+CREATE OR ALTER PROCEDURE Stock.sp_RestaurarCantidadProducto
+    @IDProducto INT,
+    @IDAlmacen INT,
+    @CantidadAumentar INT
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Verificar la existencia del producto en el almacén
+        IF NOT EXISTS (SELECT 1 FROM Stock.Stock WHERE IDProducto = @IDProducto AND IDAlmacen = @IDAlmacen)
+        BEGIN
+            ROLLBACK;
+            RETURN -1;
+        END
+
+        -- Obtener la cantidad actual del producto en el almacén
+        DECLARE @CantidadActual INT;
+        SELECT @CantidadActual = CantidadProducto FROM Stock.Stock WHERE IDProducto = @IDProducto AND IDAlmacen = @IDAlmacen;
+
+        -- Verificar si la cantidad a reducir no excede la cantidad actual
+        IF @CantidadAumentar < 0
+        BEGIN
+            ROLLBACK;
+            RETURN -1;
+        END
+
+        -- Reducir la cantidad del producto en el almacén
+        UPDATE Stock.Stock
+        SET CantidadProducto = CantidadProducto + @CantidadAumentar,
+		Disponible = 1
+        WHERE IDProducto = @IDProducto AND IDAlmacen = @IDAlmacen;
 
         COMMIT;
         RETURN 1;
     END TRY
     BEGIN CATCH
         ROLLBACK;
-        RETURN 0;
+        RETURN -1;
+    END CATCH;
+END
+GO
+
+CREATE OR ALTER PROCEDURE Stock.sp_EliminarMovimientoInventario
+    @IDPedido INT,
+    @IDProducto INT
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Validar existencia del movimiento de inventario
+        IF NOT EXISTS (SELECT 1 FROM Stock.MovimientoInventario WHERE IDPedido = @IDPedido AND IDProducto = @IDProducto)
+        BEGIN
+            ROLLBACK;
+            RETURN -1;
+        END
+
+        -- Restaurar la cantidad del producto eliminado
+        DECLARE @IDAlmacen INT, @CantidadEliminada INT;
+        SELECT @IDAlmacen = IDAlmacen, @CantidadEliminada = CantidadMovida FROM Stock.MovimientoInventario 
+		WHERE IDPedido = @IDPedido AND IDProducto = @IDProducto;
+        EXEC Stock.sp_RestaurarCantidadProducto @IDProducto, @IDAlmacen, @CantidadEliminada;
+
+		-- Eliminar el movimiento de inventario
+        DELETE FROM Stock.MovimientoInventario
+        WHERE IDPedido = @IDPedido AND IDProducto = @IDProducto;
+
+        COMMIT;
+        RETURN 0; -- Éxito
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        RETURN -1; -- Error
     END CATCH;
 END
 GO
@@ -614,7 +786,7 @@ FROM Stock.Producto AS Producto
 				ON Producto.IDProducto = Stock.IDProducto
 					INNER JOIN Stock.Almacen AS Almacen
 					ON Stock.IDAlmacen = Almacen.IDAlmacen
-WHERE Stock.Disponible = 1--asiganar a ventas
+WHERE Stock.Disponible = 1
 GO
 
 CREATE OR ALTER PROCEDURE Stock.sp_FiltrarAccesoriosDisponibles
@@ -748,47 +920,81 @@ BEGIN
 END
 GO
 
---Requerimiento 4*
+--Requerimiento 3
+CREATE OR ALTER PROCEDURE FinanzaVenta.sp_ListarPedidosPendientesPorCliente
+    @IDCliente INT
+AS
+BEGIN
+    SELECT 
+		Pedido.IDPedido, 
+		Pedido.FechaPedido, 
+		Pedido.EstadoPedido, 
+		Pedido.MontoPedido
+    FROM FinanzaVenta.Pedido AS Pedido
+    WHERE Pedido.IDCliente = @IDCliente 
+		AND Pedido.EstadoPedido = 'pendiente';
+END
+GO
+
 CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarFactura
     @IDPedido INT,
-    @Total DECIMAL(19, 2),
+    @IDCliente INT,
     @ProvedorEnvio VARCHAR(100) = NULL,
-    @DireccionEnvio VARCHAR(255) = NULL
+    @DireccionEnvio VARCHAR(300) = NULL,
+    @TrakingPedido VARCHAR(50) = NULL
 AS
 BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
         -- Verificar si el pedido existe
-        IF NOT EXISTS (SELECT IDPedido FROM FinanzaVenta.Pedido WHERE IDPedido = @IDPedido)
+        IF NOT EXISTS (SELECT 1 FROM FinanzaVenta.Pedido WHERE IDPedido = @IDPedido)
         BEGIN
             ROLLBACK;
-            SELECT 'NO EXISTE EL PEDIDO' AS Respuesta;
-            RETURN 0;
+            RETURN -1; -- Error: El pedido no existe
         END
 
-        -- Insertar la factura
-        INSERT INTO FinanzaVenta.Factura (Fecha, Total, ProvedorEnvio, DireccionEnvio)
-        VALUES (GETDATE(), @Total, @ProvedorEnvio, @DireccionEnvio);
+        -- Verificar si el cliente existe
+        IF NOT EXISTS (SELECT 1 FROM FinanzaVenta.Cliente WHERE IDCliente = @IDCliente)
+        BEGIN
+            ROLLBACK;
+            RETURN -1; -- Error: El cliente no existe
+        END
 
-        DECLARE @IDFactura INT = SCOPE_IDENTITY();
+        -- Insertar una nueva factura
+        DECLARE @IDFactura INT;
+        INSERT INTO FinanzaVenta.Factura (FechaFactura, TotalFactura, ProvedorEnvio, DireccionEnvio, TrakingPedido)
+        VALUES (GETDATE(), 0, @ProvedorEnvio, @DireccionEnvio, @TrakingPedido);
 
-        -- Asociar la factura al pedido y cambiar el estado del pedido a 'Vendido'
+        -- Obtener el ID de la factura recién insertada
+        SET @IDFactura = SCOPE_IDENTITY();
+
+        -- Calcular el monto total del pedido
+        DECLARE @MontoTotal DECIMAL(19, 2);
+        EXEC @MontoTotal = FinanzaVenta.sp_CalcularMontoTotalPedido @IDPedido;
+
+        -- Actualizar el total de la factura con el monto total calculado
+        UPDATE FinanzaVenta.Factura
+        SET TotalFactura = @MontoTotal
+        WHERE IDFactura = @IDFactura;
+
+        -- Asociar la factura al pedido
         UPDATE FinanzaVenta.Pedido
-        SET IDFactura = @IDFactura, Estado = 'Vendido'
+        SET IDFactura = @IDFactura,
+		EstadoPedido = 'vendido'
         WHERE IDPedido = @IDPedido;
 
         COMMIT;
-        RETURN 1;
+        RETURN @IDFactura;
     END TRY
     BEGIN CATCH
         ROLLBACK;
-        RETURN 0;
+        RETURN -1;
     END CATCH;
 END
 GO
 
---Requerimiento 5*
+--Requerimiento 4
 CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarCliente
 	@NombreCliente VARCHAR(50),
 	@TelefonoCliente VARCHAR(15),
@@ -837,7 +1043,7 @@ BEGIN
 END
 GO
 
---Requerimiento 7*
+--Requerimiento 5
 CREATE OR ALTER VIEW Stock.view_VehiculosVendidos 
 AS
 SELECT 
@@ -846,10 +1052,10 @@ SELECT
     Vehiculo.ModeloVehiculo,
     Producto.Precio,
     Pedido.IDPedido,
-    Factura.Fecha AS FechaVenta,
+    Factura.FechaFactura AS FechaVenta,
     Cliente.NombreCliente,
-    Cliente.Correo AS CorreoCliente,
-    Factura.Total AS PrecioVenta
+    Cliente.CorreoElectronico AS CorreoCliente,
+    Factura.TotalFactura AS PrecioVenta
 FROM Stock.Vehiculo AS Vehiculo
 INNER JOIN Stock.Producto AS Producto 
 	ON Vehiculo.IDProducto = Producto.IDProducto
@@ -859,7 +1065,7 @@ INNER JOIN Stock.Producto AS Producto
 			ON Pedido.IDCliente = Cliente.IDCliente
 			INNER JOIN FinanzaVenta.Factura AS Factura 
 				ON Pedido.IDFactura = Factura.IDFactura
-WHERE Pedido.Estado = 'Vendido';
+WHERE Pedido.EstadoPedido = 'vendido';
 GO
 
 CREATE OR ALTER PROCEDURE Stock.sp_FiltrarVehiculosVendidos
@@ -894,6 +1100,8 @@ BEGIN
 END
 GO
 
+--Requerimiento 6
+
 --ROLES
 BEGIN
 
@@ -922,6 +1130,22 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Cliente TO Zafiro;
 GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Pedido TO Zafiro;
 GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Factura TO Zafiro;
 
+-- Permisos específicos para procedimientos almacenados y vistas
+-- Ajustar según los procedimientos y vistas definidos en el sistema
+
+-- Ejemplo de permisos en procedimientos almacenados
+GRANT EXECUTE ON OBJECT::RRHH.sp_InicioSesion TO Zafiro;
+GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_RegistrarPedido TO Zafiro;
+GRANT EXECUTE ON OBJECT::Stock.sp_AgregarMovimientoInventario TO Zafiro;
+GRANT EXECUTE ON OBJECT::Stock.sp_FiltrarAccesoriosDisponibles TO Zafiro;
+GRANT EXECUTE ON OBJECT::Stock.sp_FiltrarVehiculosDisponibles TO Zafiro;
+GRANT EXECUTE ON OBJECT::Stock.sp_FiltararComponentesDisponibles TO Zafiro;
+
+-- Ejemplo de permisos en vistas
+GRANT SELECT ON OBJECT::Stock.vw_ProductosDisponibles TO ZafiroRojo;
+GRANT SELECT ON OBJECT::FinanzaVenta.vw_ReporteVentas TO ZafiroVerde;
+
+
 -- Asignar permisos al rol ZafiroRojo (Ventas)
 GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Cliente TO ZafiroRojo;
 GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Pedido TO ZafiroRojo;
@@ -947,20 +1171,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON RRHH.Empleado TO Amatista;
 GRANT SELECT, INSERT, UPDATE, DELETE ON RRHH.Departamento TO Amatista;
 GRANT SELECT, INSERT, UPDATE, DELETE ON RRHH.Puesto TO Amatista;
 GRANT SELECT, INSERT, UPDATE, DELETE ON RRHH.UsuarioAplicacion TO Amatista;
-
--- Permisos específicos para procedimientos almacenados y vistas
--- Ajustar según los procedimientos y vistas definidos en el sistema
-
--- Ejemplo de permisos en procedimientos almacenados
-GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_RealizarPedido TO ZafiroRojo;
-GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_GenerarFactura TO ZafiroRojo;
-
--- Ejemplo de permisos en vistas
-GRANT SELECT ON OBJECT::Stock.vw_ProductosDisponibles TO ZafiroRojo;
-GRANT SELECT ON OBJECT::FinanzaVenta.vw_ReporteVentas TO ZafiroVerde;
-
--- Permisos adicionales pueden ser necesarios dependiendo de la implementación detallada de procedimientos y vistas
-
 
 END
 GO
