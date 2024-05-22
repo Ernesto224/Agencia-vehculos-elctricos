@@ -45,6 +45,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jmiVenta = new javax.swing.JMenuItem();
         jm3 = new javax.swing.JMenuItem();
         jm5 = new javax.swing.JMenuItem();
         jm6 = new javax.swing.JMenuItem();
@@ -70,6 +71,14 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         );
 
         jMenu1.setText("Gestionar");
+
+        jmiVenta.setText("Venta");
+        jmiVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiVentaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jmiVenta);
 
         jm3.setText("Generar Factura");
         jm3.addActionListener(new java.awt.event.ActionListener() {
@@ -145,6 +154,13 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
 //        jIFListarVehiculos.setVisible(true);
     }//GEN-LAST:event_jm5ActionPerformed
 
+    private void jmiVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiVentaActionPerformed
+        // TODO add your handling code here:
+        JIFVentaProducto ventaProducto = new JIFVentaProducto();
+        jDesktopPane1.add(ventaProducto);
+        ventaProducto.setVisible(true);
+    }//GEN-LAST:event_jmiVentaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -189,5 +205,6 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jm5;
     private javax.swing.JMenuItem jm6;
     private javax.swing.JMenuItem jm7;
+    private javax.swing.JMenuItem jmiVenta;
     // End of variables declaration//GEN-END:variables
 }
