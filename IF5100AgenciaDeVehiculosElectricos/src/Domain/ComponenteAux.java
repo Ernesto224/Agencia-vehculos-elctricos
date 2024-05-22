@@ -9,26 +9,26 @@ package Domain;
  * @author User
  */
 public class ComponenteAux {
-    // Atributos
+
     private int idProducto;
     private String nombreComponente;
     private String marcaComponente;
     private String descripcionComponente;
     private String categoriaComponente;
-    private int stock;
+    private int cantidadProducto; // Renombrado de stock a cantidadProducto
     private String ubicacion;
     private boolean disponible;
 
     // Constructor
-    public ComponenteAux(int idProducto, String nombreComponente, String marcaComponente, 
-                      String descripcionComponente, String categoriaComponente, 
-                      int stock, String ubicacion, boolean disponible) {
+    public ComponenteAux(int idProducto, String nombreComponente, String marcaComponente,
+            String descripcionComponente, String categoriaComponente,
+            int cantidadProducto, String ubicacion, boolean disponible) {
         this.idProducto = idProducto;
         this.nombreComponente = nombreComponente;
         this.marcaComponente = marcaComponente;
         this.descripcionComponente = descripcionComponente;
         this.categoriaComponente = categoriaComponente;
-        this.stock = stock;
+        this.cantidadProducto = cantidadProducto;
         this.ubicacion = ubicacion;
         this.disponible = disponible;
     }
@@ -74,12 +74,12 @@ public class ComponenteAux {
         this.categoriaComponente = categoriaComponente;
     }
 
-    public int getStock() {
-        return stock;
+    public int getCantidadProducto() { // Renombrado de getStock a getCantidadProducto
+        return cantidadProducto;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setCantidadProducto(int cantidadProducto) { // Renombrado de setStock a setCantidadProducto
+        this.cantidadProducto = cantidadProducto;
     }
 
     public String getUbicacion() {
@@ -101,15 +101,15 @@ public class ComponenteAux {
     // Método toString para imprimir los detalles del componente
     @Override
     public String toString() {
-        return "Componente{" +
-                "idProducto=" + idProducto +
-                ", nombreComponente='" + nombreComponente + '\'' +
-                ", marcaComponente='" + marcaComponente + '\'' +
-                ", descripcionComponente='" + descripcionComponente + '\'' +
-                ", categoriaComponente='" + categoriaComponente + '\'' +
-                ", stock=" + stock +
-                ", ubicacion='" + ubicacion + '\'' +
-                ", disponible=" + disponible +
-                '}';
+        return "Componente{"
+                + "idProducto=" + idProducto
+                + ", nombreComponente='" + nombreComponente + '\''
+                + ", marcaComponente='" + marcaComponente + '\''
+                + ", descripcionComponente='" + descripcionComponente + '\''
+                + ", categoriaComponente='" + categoriaComponente + '\''
+                + ", cantidadProducto=" + cantidadProducto
+                + ", ubicacion='" + ubicacion + '\''
+                + ", disponible=" + disponible
+                + '}';
     }
 }

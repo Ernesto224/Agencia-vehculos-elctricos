@@ -50,7 +50,9 @@ public class JIFCarroCompras extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
 
+        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMaximizable(true);
 
         jLabel1.setText("Carrito de compras.");
 

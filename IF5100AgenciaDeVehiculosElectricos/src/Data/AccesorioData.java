@@ -6,7 +6,6 @@ package Data;
 
 import Domain.Accesorio;
 import Domain.AccesorioAux;
-import Domain.ComponenteAux;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,21 +17,40 @@ import java.util.logging.Logger;
  *
  * @author User
  */
-public class AccesorioData extends BaseData{
+public class AccesorioData extends BaseData {
 
     public AccesorioData() {
     }
-    public ArrayList<AccesorioAux> obtenerAccesorios(Accesorio accesorio){
+
+    public ArrayList<AccesorioAux> obtenerAccesorios(Accesorio accesorio) {
         ArrayList<AccesorioAux> accesorios = new ArrayList<>();
 
-        String sqlCallStoreProcedure = "{call sp_FiltrarAccesoriosDisponibles(?,?,?)}";
+        String sqlCallStoreProcedure = "{call [Stock].[sp_FiltararAccesoriosDisponibles](?,?,?)}";
 
-        try (java.sql.Connection connection = getSqlConnection();
-             CallableStatement callable = connection.prepareCall(sqlCallStoreProcedure)) {
+        try ( java.sql.Connection connection = getSqlConnection();  CallableStatement callable = connection.prepareCall(sqlCallStoreProcedure)) {
+            if (accesorio != null) {
+                if (!accesorio.getMarcaAccesorio().isEmpty()) {
+                    callable.setString(1, accesorio.getMarcaAccesorio());
+                } else {
+                    callable.setNull(1, java.sql.Types.VARCHAR);
+                }
 
-            callable.setString(1, accesorio.getMarcaAccesorio());
-            callable.setString(2, accesorio.getNombreAccesorio());
-            callable.setString(3, accesorio.getCategoriaAccesorio());
+                if (!accesorio.getNombreAccesorio().isEmpty()) {
+                    callable.setString(2, accesorio.getNombreAccesorio());
+                } else {
+                    callable.setNull(2, java.sql.Types.VARCHAR);
+                }
+
+                if (!accesorio.getCategoriaAccesorio().isEmpty()) {
+                    callable.setString(3, accesorio.getCategoriaAccesorio());
+                } else {
+                    callable.setNull(3, java.sql.Types.VARCHAR);
+                }
+            } else {
+                callable.setNull(1, java.sql.Types.VARCHAR);
+                callable.setNull(2, java.sql.Types.VARCHAR);
+                callable.setNull(3, java.sql.Types.VARCHAR);
+            }
 
             ResultSet resultSet = callable.executeQuery();
 
@@ -42,7 +60,7 @@ public class AccesorioData extends BaseData{
                 String marcaAccesorio = resultSet.getString("MarcaAccesorio");
                 String descripcionAccesorio = resultSet.getString("DescripcionAccesorio");
                 String categoriaAccesorio = resultSet.getString("CategoriaAccesorio");
-                int stock = resultSet.getInt("Stock");
+                int stock = resultSet.getInt("CantidadProducto");
                 String ubicacion = resultSet.getString("Ubicacion");
                 boolean disponible = resultSet.getBoolean("Disponible");
 
@@ -53,7 +71,7 @@ public class AccesorioData extends BaseData{
         } catch (SQLException ex) {
             Logger.getLogger(AccesorioData.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return accesorios;
     }
+
 }

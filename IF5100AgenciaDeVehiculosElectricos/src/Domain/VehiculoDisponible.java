@@ -8,29 +8,28 @@ package Domain;
  *
  * @author User
  */
-public class VehiculoAux {
+public class VehiculoDisponible {
 
-    // Atributos
     private int idProducto;
-    private String marca;
-    private String modelo;
+    private String marcaVehiculo;
+    private String modeloVehiculo;
     private String paisImportacion;
     private boolean destinadoVenta;
     private double precio;
-    private int stock;
-    private String nombreAlmacen;
+    private int cantidadProducto;
+    private String ubicacion;
 
     // Constructor
-    public VehiculoAux(int idProducto, String marca, String modelo, String paisImportacion,
-            boolean destinadoVenta, double precio, int stock, String nombreAlmacen) {
+    public VehiculoDisponible(int idProducto, String marcaVehiculo, String modeloVehiculo, String paisImportacion,
+                              boolean destinadoVenta, double precio, int cantidadProducto, String ubicacion) {
         this.idProducto = idProducto;
-        this.marca = marca;
-        this.modelo = modelo;
+        this.marcaVehiculo = marcaVehiculo;
+        this.modeloVehiculo = modeloVehiculo;
         this.paisImportacion = paisImportacion;
         this.destinadoVenta = destinadoVenta;
         this.precio = precio;
-        this.stock = stock;
-        this.nombreAlmacen = nombreAlmacen;
+        this.cantidadProducto = cantidadProducto;
+        this.ubicacion = ubicacion;
     }
 
     // Getters y Setters
@@ -42,20 +41,20 @@ public class VehiculoAux {
         this.idProducto = idProducto;
     }
 
-    public String getMarca() {
-        return marca;
+    public String getMarcaVehiculo() {
+        return marcaVehiculo;
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
+    public void setMarcaVehiculo(String marcaVehiculo) {
+        this.marcaVehiculo = marcaVehiculo;
     }
 
-    public String getModelo() {
-        return modelo;
+    public String getModeloVehiculo() {
+        return modeloVehiculo;
     }
 
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
+    public void setModeloVehiculo(String modeloVehiculo) {
+        this.modeloVehiculo = modeloVehiculo;
     }
 
     public String getPaisImportacion() {
@@ -82,19 +81,19 @@ public class VehiculoAux {
         this.precio = precio;
     }
 
-    public int getStock() {
-        return stock;
+    public int getCantidadProducto() {
+        return cantidadProducto;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setCantidadProducto(int cantidadProducto) {
+        this.cantidadProducto = cantidadProducto;
     }
 
-    public String getNombreAlmacen() {
-        return nombreAlmacen;
+    public String getUbicacion() {
+        return ubicacion;
     }
 
-    public void setNombreAlmacen(String nombreAlmacen) {
-        this.nombreAlmacen = nombreAlmacen;
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 }

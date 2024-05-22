@@ -16,25 +16,27 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         this.puesto = puesto.toLowerCase();
         
         switch (this.puesto) {
-            case "ventas":
-                jm1.setVisible(true);
-                jm2.setVisible(true);
+            case "vendedor":
                 jm3.setVisible(true);
-                jm4.setVisible(true);
                 jm5.setVisible(true);
                 jm6.setVisible(true);
                 jm7.setVisible(true);
+                jmiVenta.setVisible(true);
                 break;
-            case "contabilidad":
-                jm1.setVisible(false);
-                jm2.setVisible(false);
+            case "contador":
                 jm3.setVisible(false);
-                jm4.setVisible(true);
                 jm5.setVisible(true);
                 jm6.setVisible(false);
                 jm7.setVisible(false);
+                jmiVenta.setVisible(false);
                 break;
             default:
+                jm3.setVisible(false);
+                jm5.setVisible(false);
+                jm6.setVisible(false);
+                jm7.setVisible(false);
+                jmiVenta.setVisible(false);
+                break;
         }
     }
 
@@ -48,53 +50,49 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jm1 = new javax.swing.JMenuItem();
-        jm2 = new javax.swing.JMenuItem();
+        jmiVenta = new javax.swing.JMenuItem();
         jm3 = new javax.swing.JMenuItem();
-        jm4 = new javax.swing.JMenuItem();
         jm5 = new javax.swing.JMenuItem();
         jm6 = new javax.swing.JMenuItem();
         jm7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton2.setBackground(new java.awt.Color(152, 197, 197));
-        jButton2.setForeground(new java.awt.Color(152, 197, 197));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpeg"))); // NOI18N
+        jDesktopPane1.setBackground(new java.awt.Color(152, 197, 197));
 
-        jDesktopPane1.setLayer(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpeg"))); // NOI18N
+
+        jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 1073, Short.MAX_VALUE)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(226, 226, 226)
+                .addComponent(jLabel1)
+                .addContainerGap(237, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 863, Short.MAX_VALUE)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jLabel1)
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Gestionar");
 
-        jm1.setText("Venta Accesorios");
-        jm1.addActionListener(new java.awt.event.ActionListener() {
+        jmiVenta.setText("Venta");
+        jmiVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jm1ActionPerformed(evt);
+                jmiVentaActionPerformed(evt);
             }
         });
-        jMenu1.add(jm1);
-
-        jm2.setText("Venta Vehículo");
-        jm2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jm2ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jm2);
+        jMenu1.add(jmiVenta);
 
         jm3.setText("Generar Factura");
         jm3.addActionListener(new java.awt.event.ActionListener() {
@@ -104,14 +102,6 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm3);
 
-        jm4.setText("Listar Inventario Piezas");
-        jm4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jm4ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jm4);
-
         jm5.setText("Listar  Vehículos Vendidos");
         jm5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,7 +110,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm5);
 
-        jm6.setText("Reservar Producto");
+        jm6.setText("Generar Pedido");
         jm6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jm6ActionPerformed(evt);
@@ -154,35 +144,11 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jm1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm1ActionPerformed
-        JIFVentanaVentaAccesoriosParte jFVentanaVentaAccesoriosParte = new JIFVentanaVentaAccesoriosParte();
-        jDesktopPane1.add(jFVentanaVentaAccesoriosParte);
-        jFVentanaVentaAccesoriosParte.setVisible(true);
-    }//GEN-LAST:event_jm1ActionPerformed
-
-    private void jm4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm4ActionPerformed
-       JIFListarInventarioPiezas jIFListarInventarioPiezas = new JIFListarInventarioPiezas();
-       jDesktopPane1.add(jIFListarInventarioPiezas);
-       jIFListarInventarioPiezas.setVisible(true);
-    }//GEN-LAST:event_jm4ActionPerformed
-
-    private void jm2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm2ActionPerformed
-        JIFVentaVehiculo jIFVentaVehiculo = new JIFVentaVehiculo();
-        jDesktopPane1.add(jIFVentaVehiculo);
-        jIFVentaVehiculo.setVisible(true);
-    }//GEN-LAST:event_jm2ActionPerformed
-
     private void jm3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm3ActionPerformed
         JIFGenerarFactura jIFGenerarFactura = new JIFGenerarFactura();
         jDesktopPane1.add(jIFGenerarFactura);
         jIFGenerarFactura.setVisible(true);
     }//GEN-LAST:event_jm3ActionPerformed
-
-    private void jm5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm5ActionPerformed
-        JIFListarVehiculos jIFListarVehiculos = new JIFListarVehiculos();
-        jDesktopPane1.add(jIFListarVehiculos);
-        jIFListarVehiculos.setVisible(true);
-    }//GEN-LAST:event_jm5ActionPerformed
 
     private void jm6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm6ActionPerformed
         JIFReservarProducto jIFReservarProducto = new JIFReservarProducto();
@@ -195,6 +161,19 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
        jDesktopPane1.add(jIFRegistrarCliente);
        jIFRegistrarCliente.setVisible(true);
     }//GEN-LAST:event_jm7ActionPerformed
+
+    private void jm5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm5ActionPerformed
+//        JIFListarVehiculos jIFListarVehiculos = new JIFListarVehiculos();
+//        jDesktopPane1.add(jIFListarVehiculos);
+//        jIFListarVehiculos.setVisible(true);
+    }//GEN-LAST:event_jm5ActionPerformed
+
+    private void jmiVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiVentaActionPerformed
+        // TODO add your handling code here:
+        JIFVentaProducto ventaProducto = new JIFVentaProducto();
+        jDesktopPane1.add(ventaProducto);
+        ventaProducto.setVisible(true);
+    }//GEN-LAST:event_jmiVentaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,16 +211,14 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jm1;
-    private javax.swing.JMenuItem jm2;
     private javax.swing.JMenuItem jm3;
-    private javax.swing.JMenuItem jm4;
     private javax.swing.JMenuItem jm5;
     private javax.swing.JMenuItem jm6;
     private javax.swing.JMenuItem jm7;
+    private javax.swing.JMenuItem jmiVenta;
     // End of variables declaration//GEN-END:variables
 }
