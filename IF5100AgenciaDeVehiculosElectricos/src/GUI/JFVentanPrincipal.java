@@ -16,19 +16,27 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         this.puesto = puesto.toLowerCase();
         
         switch (this.puesto) {
-            case "ventas":
+            case "vendedor":
                 jm3.setVisible(true);
                 jm5.setVisible(true);
                 jm6.setVisible(true);
                 jm7.setVisible(true);
+                jmiVenta.setVisible(true);
                 break;
-            case "contabilidad":
+            case "contador":
                 jm3.setVisible(false);
                 jm5.setVisible(true);
                 jm6.setVisible(false);
                 jm7.setVisible(false);
+                jmiVenta.setVisible(false);
                 break;
             default:
+                jm3.setVisible(false);
+                jm5.setVisible(false);
+                jm6.setVisible(false);
+                jm7.setVisible(false);
+                jmiVenta.setVisible(false);
+                break;
         }
     }
 
@@ -42,7 +50,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jmiVenta = new javax.swing.JMenuItem();
@@ -53,21 +61,27 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton2.setBackground(new java.awt.Color(152, 197, 197));
-        jButton2.setForeground(new java.awt.Color(152, 197, 197));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpeg"))); // NOI18N
+        jDesktopPane1.setBackground(new java.awt.Color(152, 197, 197));
 
-        jDesktopPane1.setLayer(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpeg"))); // NOI18N
+
+        jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 1073, Short.MAX_VALUE)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(226, 226, 226)
+                .addComponent(jLabel1)
+                .addContainerGap(237, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 863, Short.MAX_VALUE)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jLabel1)
+                .addContainerGap(129, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Gestionar");
@@ -96,7 +110,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm5);
 
-        jm6.setText("Reservar Producto");
+        jm6.setText("Generar Pedido");
         jm6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jm6ActionPerformed(evt);
@@ -197,8 +211,8 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jm3;
