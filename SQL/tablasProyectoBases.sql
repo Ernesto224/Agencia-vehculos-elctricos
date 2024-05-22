@@ -6,7 +6,6 @@ GO
 
 CREATE SCHEMA Stock
 GO
-
 BEGIN
 
 -- Tabla: Producto 3NF
@@ -27,9 +26,10 @@ CREATE TABLE Stock.Vehiculo (
     MarcaVehiculo VARCHAR(50) NOT NULL,
     ModeloVehiculo VARCHAR(100) NOT NULL,
     PaisImportacion VARCHAR(100) NOT NULL,
-    DestinadoVenta VARCHAR(50) CHECK (DestinadoVenta IN ('Publica', 'Privada')),
-	IDProducto INT,
-	IDTipoVehiculo INT,
+    DestinadoVenta VARCHAR(10) NOT NULL 
+	CHECK (DestinadoVenta IN ('Publica', 'Privada')),
+	IDProducto INT NOT NULL,
+	IDTipoVehiculo INT NOT NULL,
 	CONSTRAINT fk_Producto_Vehiculo
 	FOREIGN KEY (IDProducto)
 	REFERENCES Stock.Producto(IDProducto),
@@ -44,9 +44,9 @@ CREATE TABLE Stock.Componente (
     NombreComponente VARCHAR(100) NOT NULL,
 	MarcaComponente VARCHAR(50) NOT NULL,
     DescripcionComponente VARCHAR(100),
-	CategoriaComponente VARCHAR(50),
-    IDProducto INT,
-    IDVehiculo INT,
+	CategoriaComponente VARCHAR(50) NOT NULL,
+    IDProducto INT NOT NULL,
+    IDVehiculo INT NOT NULL,
 	CONSTRAINT fk_Producto_Componente
 	FOREIGN KEY (IDProducto)
 	REFERENCES Stock.Producto(IDProducto),
@@ -61,8 +61,8 @@ CREATE TABLE Stock.Accesorio (
     NombreAccesorio VARCHAR(100) NOT NULL,
 	MarcaAccesorio VARCHAR(50) NOT NULL,
     DescripcionAccesorio VARCHAR(100),
-	CategoriaAccesorio VARCHAR(50),
-    IDProducto INT,
+	CategoriaAccesorio VARCHAR(50) NOT NULL,
+    IDProducto INT NOT NULL,
 	CONSTRAINT fk_Producto_Accesorio
 	FOREIGN KEY (IDProducto)
 	REFERENCES Stock.Producto(IDProducto)
@@ -72,30 +72,14 @@ CREATE TABLE Stock.Accesorio (
 CREATE TABLE Stock.Almacen (
     IDAlmacen INT PRIMARY KEY IDENTITY,
     NombreAlmacen VARCHAR(100) NOT NULL,
-    Ubicacion VARCHAR(255) NOT NULL
-);
-
--- Tabla: MovimientoInventario 3NF
-CREATE TABLE Stock.MovimientoInventario (
-    IDMovimiento INT PRIMARY KEY IDENTITY,
-    FechaMovimiento DATE NOT NULL,
-    TipoMovimiento VARCHAR(100) NOT NULL,
-    CantidadMovida INT NOT NULL,
-    IDProducto INT,
-    IDAlmacen INT,
-	CONSTRAINT fk_Producto_MovimientoInventario
-	FOREIGN KEY (IDProducto)
-	REFERENCES Stock.Producto(IDProducto),
-	CONSTRAINT fk_Almacen_MovimientoInventario
-	FOREIGN KEY (IDAlmacen)
-	REFERENCES Stock.Almacen(IDAlmacen)
+    Ubicacion VARCHAR(300) NOT NULL
 );
 
 -- Tabla: Stock 3NF
 CREATE TABLE Stock.Stock (
-    IDProducto INT,
-    IDAlmacen INT,
-    CantidadProducto INT,
+    IDProducto INT NOT NULL,
+    IDAlmacen INT NOT NULL,
+    CantidadProducto INT NOT NULL,
     Disponible BIT NOT NULL,
     PRIMARY KEY (IDProducto, IDAlmacen),
 	CONSTRAINT fk_Producto_Stock
@@ -107,7 +91,7 @@ CREATE TABLE Stock.Stock (
 );
 
 END
-
+GO
 BEGIN
 
 -- Productos para Vehículos
@@ -176,17 +160,6 @@ INSERT INTO Stock.Almacen (NombreAlmacen, Ubicacion) VALUES ('West Warehouse', '
 INSERT INTO Stock.Almacen (NombreAlmacen, Ubicacion) VALUES ('North Warehouse', '101 North St, Springfield');
 INSERT INTO Stock.Almacen (NombreAlmacen, Ubicacion) VALUES ('South Warehouse', '202 South St, Springfield');
 
-INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-VALUES ('2023-05-01', 'Entrada', 100, 1, 1);
-INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-VALUES ('2023-05-02', 'Entrada', 50, 2, 2);
-INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-VALUES ('2023-05-03', 'Entrada', 75, 3, 3);
-INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-VALUES ('2023-05-04', 'Entrada', 25, 4, 4);
-INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-VALUES ('2023-05-05', 'Entrada', 60, 5, 5);
-
 INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (1, 1, 50, 1);
 INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
@@ -206,54 +179,39 @@ VALUES (11, 1, 20, 1);
 INSERT INTO Stock.Stock (IDProducto, IDAlmacen, CantidadProducto, Disponible)
 VALUES (12, 2, 40, 1);
 
--- Movimiento de inventario para Componente: Motor (Producto ID 6), Almacén ID 1
-INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-VALUES (GETDATE(), 'Entrada', 50, 6, 1);
-
--- Movimiento de inventario para Componente: Bogies (Producto ID 7), Almacén ID 2
-INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-VALUES (GETDATE(), 'Entrada', 30, 7, 2);
-
--- Movimiento de inventario para Accesorio: GPS (Producto ID 11), Almacén ID 1
-INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-VALUES (GETDATE(), 'Entrada', 20, 11, 1);
-
--- Movimiento de inventario para Accesorio: Cubreasientos (Producto ID 12), Almacén ID 2
-INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
-VALUES (GETDATE(), 'Entrada', 40, 12, 2);
-
 END
-
+GO
 
 CREATE SCHEMA FinanzaVenta
 GO
-
 BEGIN
 
 -- Tabla: Cliente 3NF
 CREATE TABLE FinanzaVenta.Cliente (
     IDCliente INT PRIMARY KEY IDENTITY,
-    NombreCliente VARCHAR(50) NOT NULL,
+    Identificacion VARCHAR(64) NOT NULL,
+	NombreCliente VARCHAR(50) NOT NULL,
     Telefono VARCHAR(15),
-    Correo VARCHAR(100) NOT NULL
+    CorreoElectronico VARCHAR(100) NOT NULL
 );
 
 -- Tabla: Factura 3NF
 CREATE TABLE FinanzaVenta.Factura (
     IDFactura INT PRIMARY KEY IDENTITY,
-    Fecha DATE NOT NULL,
-    Total DECIMAL(19, 2) NOT NULL,
+    FechaFactura DATE NOT NULL,
+    TotalFactura DECIMAL(19, 2) NOT NULL,
     ProvedorEnvio VARCHAR(100),
-    DireccionEnvio VARCHAR(255)
+    DireccionEnvio VARCHAR(300),
+	TrakingPedido VARCHAR(50)
 );
 
 -- Tabla: Pedido 3NF
 CREATE TABLE FinanzaVenta.Pedido (
     IDPedido INT PRIMARY KEY IDENTITY,
-    Fecha DATE NOT NULL,
-    Estado VARCHAR(30),
-    Monto DECIMAL(19, 2),
-    IDCliente INT,
+    FechaPedido DATE NOT NULL,
+    EstadoPedido VARCHAR(10) NOT NULL DEFAULT('pendiente'),
+    MontoPedido DECIMAL(19, 2),
+    IDCliente INT NOT NULL,
 	IDFactura INT,
 	CONSTRAINT fk_Cliente_Pedido
 	FOREIGN KEY (IDCliente)
@@ -263,62 +221,36 @@ CREATE TABLE FinanzaVenta.Pedido (
 	REFERENCES FinanzaVenta.Factura(IDFactura)
 );
 
--- Tabla: MovimientoPedido
-CREATE TABLE FinanzaVenta.MovimientoPedido (
-    IDPedido INT,
-    IDMovimiento INT,
-    PRIMARY KEY (IDPedido, IDMovimiento),
-	CONSTRAINT fk_Pedido_MovimientoPedido
-	FOREIGN KEY (IDPedido)
-	REFERENCES FinanzaVenta.Pedido(IDPedido),
-	CONSTRAINT fk_Movimiento_MovimientoPedido
-	FOREIGN KEY (IDMovimiento)
-	REFERENCES  Stock.MovimientoInventario(IDMovimiento)
-);
-
-
 END
+GO
 
 CREATE SCHEMA Servicio
 GO
-
 BEGIN
 
 -- Tabla: Servicio 3FN
 CREATE TABLE Servicio.Servicio (
     IDServicio INT PRIMARY KEY IDENTITY,
-    Nombre VARCHAR(100) NOT NULL,
-    Descripcion VARCHAR(255)
-);
-
--- Tabla: Servicio_Pedido 
-CREATE TABLE Servicio.ServicioPedido (
-    IDServicio INT,
-    IDPedido INT,
-    PRIMARY KEY (IDServicio, IDPedido),
-	CONSTRAINT fk_Servicio_ServicioPedido
-	FOREIGN KEY (IDServicio)
-	REFERENCES Servicio.Servicio(IDServicio),
-	CONSTRAINT fk_Pedido_ServicioPedido
-	FOREIGN KEY (IDPedido)
-	REFERENCES FinanzaVenta.Pedido(IDPedido)
+    NombreServicio VARCHAR(100) NOT NULL,
+    Descripcion VARCHAR(300)
 );
 
 END
-
+GO
 BEGIN
 
 -- Insertar datos en la tabla Servicio.Servicio
-INSERT INTO Servicio.Servicio (Nombre, Descripcion)
+INSERT INTO Servicio.Servicio (NombreServicio, Descripcion)
 VALUES ('Mantenimiento General', 'Servicio completo de mantenimiento para vehículos, incluyendo cambios de aceite, revisiones y ajustes.');
 
-INSERT INTO Servicio.Servicio (Nombre, Descripcion)
+INSERT INTO Servicio.Servicio (NombreServicio, Descripcion)
 VALUES ('Inspección de Seguridad', 'Inspección completa de seguridad vehicular, incluyendo frenos, luces y sistemas de dirección.');
 
-INSERT INTO Servicio.Servicio (Nombre, Descripcion)
+INSERT INTO Servicio.Servicio (NombreServicio, Descripcion)
 VALUES ('Diagnóstico Electrónico', 'Diagnóstico y reparación de sistemas electrónicos y computarizados de vehículos.');
 
 END
+GO
 
 CREATE SCHEMA RRHH
 GO
@@ -328,14 +260,14 @@ BEGIN
 CREATE TABLE RRHH.Departamento (
     IDDepartamento INT PRIMARY KEY IDENTITY,
     NombreDepartamento VARCHAR(50) NOT NULL,
-    Descripcion VARCHAR(100)
+    Descripcion VARCHAR(300)
 );
 
 -- Tabla: Puesto 3NF
 CREATE TABLE RRHH.Puesto (
     IDPuesto INT PRIMARY KEY IDENTITY,
     NombrePuesto VARCHAR(50) NOT NULL,
-    Descripcion VARCHAR(100)
+    Descripcion VARCHAR(300)
 );
 
 -- Tabla: Empleado 3NF
@@ -347,9 +279,9 @@ CREATE TABLE RRHH.Empleado (
     Salario DECIMAL(19, 2) NOT NULL,
     CorreoElectronico VARCHAR(100) NOT NULL,
     Telefono VARCHAR(15),
-    Activo BIT,
-    IDPuesto INT,
-    IDDepartamento INT,
+    Activo BIT NOT NULL,
+    IDPuesto INT NOT NULL,
+    IDDepartamento INT NOT NULL,
 	CONSTRAINT fk_Puesto_Empleado
 	FOREIGN KEY (IDPuesto)
 	REFERENCES RRHH.Puesto(IDPuesto),
@@ -358,19 +290,19 @@ CREATE TABLE RRHH.Empleado (
 	REFERENCES RRHH.Departamento(IDDepartamento)
 );
 
+-- Tabla: UsuarioAplicacion
 CREATE TABLE RRHH.UsuarioAplicacion(
-	IDEmpleado INT,
-	NombreUsuario VARCHAR(20),
-	Contrasenia VARCHAR(18),
+	IDEmpleado INT NOT NULL,
+	NombreUsuario VARCHAR(20) NOT NULL,
+	Contrasenia VARCHAR(200) NOT NULL,
 	CONSTRAINT fk_Empleado_UsuarioAplicacion
 	FOREIGN KEY (IDEmpleado)
 	REFERENCES RRHH.Empleado(IDEmpleado),
 	PRIMARY KEY(IDEmpleado)
 )
 
-
 END
-
+GO
 BEGIN
 
 -- Insertar datos en la tabla RRHH.Departamento
@@ -422,28 +354,19 @@ INSERT INTO RRHH.Empleado (Nombre, Apellido, FechaContratacion, Salario, CorreoE
 VALUES ('Luis', 'Martinez', '2022-05-20', 52000.00, 'luis.martinez@example.com', '4455667788', 1, 5, 5);
 
 --inserts de usuarios de aplicacion
-
-INSERT INTO RRHH.UsuarioAplicacion (IDEmpleado, NombreUsuario, Contrasenia)
-VALUES (1, 'jperez', 'password123');
-
 INSERT INTO RRHH.UsuarioAplicacion (IDEmpleado, NombreUsuario, Contrasenia)
 VALUES (2, 'agarcia', 'securepass456');
 
 INSERT INTO RRHH.UsuarioAplicacion (IDEmpleado, NombreUsuario, Contrasenia)
 VALUES (3, 'clopez', 'mypassword789');
 
-INSERT INTO RRHH.UsuarioAplicacion (IDEmpleado, NombreUsuario, Contrasenia)
-VALUES (4, 'mhernandez', 'password012');
-
-INSERT INTO RRHH.UsuarioAplicacion (IDEmpleado, NombreUsuario, Contrasenia)
-VALUES (5, 'lmartinez', 'password345');
-
 END
+GO
 
 CREATE SCHEMA Ensamblaje
 GO
-
 BEGIN
+
 
 -- Tabla: Mantenimiento 3NF
 CREATE TABLE Ensamblaje.Mantenimiento (
@@ -452,8 +375,8 @@ CREATE TABLE Ensamblaje.Mantenimiento (
     Estado VARCHAR(20) NOT NULL,
     PruebasQA BIT,
     Listo BIT,
-    IDVehiculo INT,
-    IDDepartamento INT,
+    IDVehiculo INT NOT NULL,
+    IDDepartamento INT NOT NULL,
     IDServicio INT,
 	CONSTRAINT fk_Vehiculo_Mantenimiento
 	FOREIGN KEY (IDVehiculo)
@@ -467,59 +390,95 @@ CREATE TABLE Ensamblaje.Mantenimiento (
 );
 
 END
+GO
 
---ROLES
+--TABLAS DE FLUJO MOVIMIENTO INVENTARIO Y SERVICIO PEDIDO
 BEGIN
 
-CREATE SERVER ROLE RolSYSAdmin;
-ALTER SERVER ROLE RolSYSAdmin ADD MEMBER sa;
-GRANT CONTROL SERVER TO RolSYSAdmin;
+-- Tabla: MovimientoInventario 3NF
+CREATE TABLE Stock.MovimientoInventario (
+    IDMovimiento INT PRIMARY KEY IDENTITY,
+    FechaMovimiento DATE NOT NULL,
+    TipoMovimiento VARCHAR(100) NOT NULL,
+    CantidadMovida INT NOT NULL,
+    IDProducto INT NOT NULL,
+    IDAlmacen INT NOT NULL,
+	IDEmpleado INT NOT NULL,
+	IDPedido INT,
+	CONSTRAINT fk_Producto_MovimientoInventario
+	FOREIGN KEY (IDProducto)
+	REFERENCES Stock.Producto(IDProducto),
+	CONSTRAINT fk_Almacen_MovimientoInventario
+	FOREIGN KEY (IDAlmacen)
+	REFERENCES Stock.Almacen(IDAlmacen),
+	CONSTRAINT fk_Empleado_MovimientoInventario
+	FOREIGN KEY (IDEmpleado)
+	REFERENCES RRHH.Empleado(IDEmpleado),
+	CONSTRAINT fk_Pedido_MovimientoInventario
+	FOREIGN KEY (IDPedido)
+	REFERENCES FinanzaVenta.Pedido(IDPedido)
+);
 
-CREATE ROLE RolDBOwner;
-GRANT CONTROL ON DATABASE::Agencia_De_Vehiculos_Electricos TO RolDBOwner;
+-- Tabla: Servicio_Pedido 
+CREATE TABLE Servicio.ServicioPedido (
+    IDServicio INT NOT NULL,
+    IDPedido INT NOT NULL,
+	IDEmpleado INT NOT NULL,
+	CONSTRAINT fk_Servicio_ServicioPedido
+	FOREIGN KEY (IDServicio)
+	REFERENCES Servicio.Servicio(IDServicio),
+	CONSTRAINT fk_Pedido_ServicioPedido
+	FOREIGN KEY (IDPedido)
+	REFERENCES FinanzaVenta.Pedido(IDPedido),
+	CONSTRAINT fk_Empleado_ServicioPedido
+	FOREIGN KEY (IDEmpleado)
+	REFERENCES RRHH.Empleado(IDEmpleado),
+    PRIMARY KEY (IDServicio, IDPedido)
+);
 
-CREATE ROLE RolVentas;
-GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::FinanzaVenta TO RolVentas;
-GRANT EXECUTE ON SCHEMA::FinanzaVenta TO RolVentas;
-
-CREATE ROLE RolMantenimiento;
-GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::Ensamblaje TO RolMantenimiento;
-GRANT EXECUTE ON SCHEMA::Ensamblaje TO RolMantenimiento;
-
-CREATE ROLE RolRRHH;
-GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA::RRHH TO RolRRHH;
-GRANT EXECUTE ON SCHEMA::RRHH TO RolRRHH;
-
-CREATE ROLE RolContabilidad;
-GRANT SELECT ON SCHEMA::FinanzaVenta TO RolContabilidad;
-GRANT EXECUTE ON SCHEMA::FinanzaVenta TO RolContabilidad;
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen , IDEmpleado)
+VALUES ('2023-05-01', 'entrada', 100, 1, 1, 4);
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen , IDEmpleado)
+VALUES ('2023-05-02', 'entrada', 50, 2, 2, 4);
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen , IDEmpleado)
+VALUES ('2023-05-03', 'entrada', 75, 3, 3, 4);
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen , IDEmpleado)
+VALUES ('2023-05-04', 'entrada', 25, 4, 4, 4);
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen , IDEmpleado)
+VALUES ('2023-05-05', 'entrada', 60, 5, 5, 4);
+-- Movimiento de inventario para Componente: Motor (Producto ID 6), Almacén ID 1
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen , IDEmpleado)
+VALUES (GETDATE(), 'entrada', 50, 6, 1, 4);
+-- Movimiento de inventario para Componente: Bogies (Producto ID 7), Almacén ID 2
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen , IDEmpleado)
+VALUES (GETDATE(), 'entrada', 30, 7, 2, 4);
+-- Movimiento de inventario para Accesorio: GPS (Producto ID 11), Almacén ID 1
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen , IDEmpleado)
+VALUES (GETDATE(), 'entrada', 20, 11, 1, 4);
+-- Movimiento de inventario para Accesorio: Cubreasientos (Producto ID 12), Almacén ID 2
+INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen , IDEmpleado)
+VALUES (GETDATE(), 'entrada', 40, 12, 2, 4);
 
 END
 GO
 
---LOGINS
-BEGIN
-
-CREATE LOGIN LoginDBOwner WITH PASSWORD = '123DBOWNER';
-CREATE USER UserDBOwner FOR LOGIN LoginDBOwner;
-ALTER ROLE RolDBOwner ADD MEMBER UserDBOwner;
-
-END
-GO
-
---VIEWS y SPS
+--Vistas y spas
 --Requerimento 1
 CREATE OR ALTER PROCEDURE RRHH.sp_InicioSesion
 	@NombreUsuario VARCHAR(20),
-	@Contrasenia VARCHAR(18)
+	@Contrasenia VARCHAR(200)
 AS
 BEGIN
 	BEGIN TRY
 
-		IF EXISTS (SELECT TOP(1) * FROM RRHH.UsuarioAplicacion WHERE NombreUsuario = @NombreUsuario AND Contrasenia = @Contrasenia)
+		--Se verifica que exista ese usuario con esa password
+		IF EXISTS (SELECT TOP 1 1 FROM RRHH.UsuarioAplicacion 
+					WHERE NombreUsuario = @NombreUsuario 
+					AND Contrasenia = @Contrasenia)
 		BEGIN
 
 			SELECT 
+				Usuario.IDEmpleado,
 				Puesto.NombrePuesto AS Respuesta
 			FROM RRHH.UsuarioAplicacion AS Usuario
 			INNER JOIN RRHH.Empleado AS Empleado
@@ -535,51 +494,108 @@ BEGIN
 	BEGIN CATCH
 		SELECT 'NO EXISTE EL USUARIO' AS Respuesta
 	END CATCH
+END--Asignar a aplicacion
+GO
+
+CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarPedido
+    @IDProducto INT,
+    @IDCliente INT,
+    @Monto DECIMAL(19, 2)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Verificar si el producto existe
+        IF NOT EXISTS (SELECT IDProducto FROM Stock.Producto WHERE IDProducto = @IDProducto)
+        BEGIN
+            ROLLBACK;
+            SELECT 'NO EXISTE EL PRODUCTO' AS Respuesta;
+            RETURN 0;
+        END
+
+        -- Verificar si el cliente existe
+        IF NOT EXISTS (SELECT IDCliente FROM FinanzaVenta.Cliente WHERE IDCliente = @IDCliente)
+        BEGIN
+            ROLLBACK;
+            SELECT 'NO EXISTE EL CLIENTE' AS Respuesta;
+            RETURN 0;
+        END
+
+        -- Insertar el pedido
+        DECLARE @FechaPedido DATE = GETDATE();
+        DECLARE @Estado VARCHAR(30) = 'Pendiente';
+
+        INSERT INTO FinanzaVenta.Pedido (Fecha, Estado, Monto, IDCliente)
+        VALUES (@FechaPedido, @Estado, @Monto, @IDCliente);
+
+        COMMIT;
+        RETURN 1;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        RETURN 0;
+    END CATCH;
 END
 GO
 
-CREATE OR ALTER PROCEDURE sp_ReservarProducto
-	@IDProducto INT,
-	@Cantidad INT,
-	@IDAlmacen INT,
-	@IDCliente INT
+CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarMovimientoInventario
+    @IDProducto INT,
+    @IDAlmacen INT,
+    @Cantidad INT,
+    @TipoMovimiento VARCHAR(100),
+    @IDPedido INT
 AS
 BEGIN
-	BEGIN TRY
-		BEGIN TRANSACTION;
+    BEGIN TRY
+        BEGIN TRANSACTION;
 
-		IF NOT EXISTS (SELECT IDProducto FROM Stock.Producto WHERE IDProducto = @IDProducto)
-		BEGIN
-			ROLLBACK;
-			SELECT 'NO EXISTE EL PRODUCTO' AS Respuesta;
-		END
+        -- Verificar si el producto existe
+        IF NOT EXISTS (SELECT IDProducto FROM Stock.Producto WHERE IDProducto = @IDProducto)
+        BEGIN
+            ROLLBACK;
+            SELECT 'NO EXISTE EL PRODUCTO' AS Respuesta;
+            RETURN 0;
+        END
 
-		IF NOT EXISTS (SELECT IDAlmacen FROM Stock.Almacen WHERE IDAlmacen = @IDAlmacen)
-		BEGIN
-			ROLLBACK;
-			SELECT 'NO EXISTE EL ALMACEN' AS Respuesta;
-		END
+        -- Verificar si el almacén existe
+        IF NOT EXISTS (SELECT IDAlmacen FROM Stock.Almacen WHERE IDAlmacen = @IDAlmacen)
+        BEGIN
+            ROLLBACK;
+            SELECT 'NO EXISTE EL ALMACEN' AS Respuesta;
+            RETURN 0;
+        END
 
-		IF NOT EXISTS (SELECT IDCliente FROM FinanzaVenta.Cliente WHERE IDCliente = @IDCliente)
-		BEGIN
-			ROLLBACK;
-			SELECT 'NO EXISTE EL CLIENTE' AS Respuesta;
-		END
+		-- Verificar si el dato de stock es correcto
+        IF NOT EXISTS (SELECT IDAlmacen FROM Stock.Stock WHERE IDProducto = @IDPedido AND IDAlmacen = @IDAlmacen)
+        BEGIN
+            ROLLBACK;
+            SELECT 'LA INFROMACION DE COMPRA ESTA INCORRECTA' AS Respuesta;
+            RETURN 0;
+        END
 
+        -- Insertar movimiento de inventario
+        DECLARE @FechaMovimiento DATE = GETDATE();
+        INSERT INTO Stock.MovimientoInventario (FechaMovimiento, TipoMovimiento, CantidadMovida, IDProducto, IDAlmacen)
+        VALUES (@FechaMovimiento, @TipoMovimiento, @Cantidad, @IDProducto, @IDAlmacen);
 
+        DECLARE @IDMovimiento INT = SCOPE_IDENTITY();
 
-		COMMIT;
-		RETURN 1;
-	END TRY
-	BEGIN CATCH
-		ROLLBACK;
-		RETURN 0;
-	END CATCH
-END--REVISAR Estado = Pendiente
+        -- Insertar en tabla intermedia
+        INSERT INTO FinanzaVenta.MovimientoPedido (IDPedido, IDMovimiento)
+        VALUES (@IDPedido, @IDMovimiento);
+
+        COMMIT;
+        RETURN 1;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        RETURN 0;
+    END CATCH;
+END
 GO
 
 --Requerimiento 2
-
 CREATE OR ALTER VIEW Stock.view_AccesoriosDisponibles
 AS
 SELECT 
@@ -598,10 +614,10 @@ FROM Stock.Producto AS Producto
 				ON Producto.IDProducto = Stock.IDProducto
 					INNER JOIN Stock.Almacen AS Almacen
 					ON Stock.IDAlmacen = Almacen.IDAlmacen
-WHERE Stock.Disponible = 1
+WHERE Stock.Disponible = 1--asiganar a ventas
 GO
 
-CREATE OR ALTER PROCEDURE Stock.sp_FiltararAccesoriosDisponibles
+CREATE OR ALTER PROCEDURE Stock.sp_FiltrarAccesoriosDisponibles
 	@MarcaAccesorio VARCHAR(50),
 	@NombreAccesorio VARCHAR(50),
 	@CategoriaAccesorio VARCHAR(50)
@@ -630,7 +646,6 @@ BEGIN
 END
 GO
 
---Requermineto 3
 CREATE OR ALTER VIEW Stock.view_VehiculosDisponibles
 AS
 	SELECT
@@ -668,7 +683,7 @@ BEGIN
 			ViewVehiculos.DestinadoVenta,
 			ViewVehiculos.Precio,
 			ViewVehiculos.CantidadProducto,
-			ViewVehiculos.CantidadProducto
+			ViewVehiculos.Ubicacion
 		FROM view_VehiculosDisponibles AS ViewVehiculos
 		WHERE (ViewVehiculos.MarcaVehiculo = @Marca OR @Marca IS NULL)
 			AND(ViewVehiculos.ModeloVehiculo = @Modelo OR @Modelo IS NULL)
@@ -681,53 +696,6 @@ BEGIN
 END
 GO
 
---Requerimiento 4
-
---Requerimiento 5
-
-CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarCliente
-	@NombreCliente VARCHAR(50),
-	@TelefonoCliente VARCHAR(15),
-	@CorreoCliente VARCHAR(100)
-AS
-BEGIN
-	BEGIN TRY
-		BEGIN TRANSACTION RegistroCliente;
-
-		IF @NombreCliente IS NULL OR LEN(@NombreCliente) < 5
-		BEGIN
-			ROLLBACK TRANSACTION RegistroCliente;
-			RETURN 0;
-		END
-
-		IF @TelefonoCliente IS NULL OR LEN(@TelefonoCliente) < 10 
-			OR LEN(@TelefonoCliente) > 10 
-		BEGIN
-			ROLLBACK TRANSACTION RegistroCliente;
-			RETURN 0;
-		END
-
-		IF @CorreoCliente IS NULL OR LEN(@CorreoCliente) < 10
-		BEGIN
-			ROLLBACK TRANSACTION RegistroCliente;
-			RETURN 0;
-		END
-
-		INSERT INTO FinanzaVenta.Cliente
-		(NombreCliente, Telefono, Correo)
-		VALUES (@NombreCliente, @TelefonoCliente, @CorreoCliente)
-		
-		COMMIT TRANSACTION RegistroCliente;
-		RETURN 1;
-	END TRY
-	BEGIN CATCH
-		ROLLBACK TRANSACTION RegistroCliente;
-		RETURN 0;
-	END CATCH
-END
-GO
-
---Requerimiento 6
 CREATE OR ALTER VIEW Stock.view_ComponentesDisponibles
 AS
 SELECT 
@@ -780,7 +748,96 @@ BEGIN
 END
 GO
 
---Requerimiento 7
+--Requerimiento 4*
+CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarFactura
+    @IDPedido INT,
+    @Total DECIMAL(19, 2),
+    @ProvedorEnvio VARCHAR(100) = NULL,
+    @DireccionEnvio VARCHAR(255) = NULL
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Verificar si el pedido existe
+        IF NOT EXISTS (SELECT IDPedido FROM FinanzaVenta.Pedido WHERE IDPedido = @IDPedido)
+        BEGIN
+            ROLLBACK;
+            SELECT 'NO EXISTE EL PEDIDO' AS Respuesta;
+            RETURN 0;
+        END
+
+        -- Insertar la factura
+        INSERT INTO FinanzaVenta.Factura (Fecha, Total, ProvedorEnvio, DireccionEnvio)
+        VALUES (GETDATE(), @Total, @ProvedorEnvio, @DireccionEnvio);
+
+        DECLARE @IDFactura INT = SCOPE_IDENTITY();
+
+        -- Asociar la factura al pedido y cambiar el estado del pedido a 'Vendido'
+        UPDATE FinanzaVenta.Pedido
+        SET IDFactura = @IDFactura, Estado = 'Vendido'
+        WHERE IDPedido = @IDPedido;
+
+        COMMIT;
+        RETURN 1;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK;
+        RETURN 0;
+    END CATCH;
+END
+GO
+
+--Requerimiento 5*
+CREATE OR ALTER PROCEDURE FinanzaVenta.sp_RegistrarCliente
+	@NombreCliente VARCHAR(50),
+	@TelefonoCliente VARCHAR(15),
+	@CorreoCliente VARCHAR(100),
+	@Identificacion VARCHAR(100)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION;
+
+		IF @NombreCliente IS NULL
+		BEGIN
+			ROLLBACK;
+			RETURN 0;
+		END
+
+		IF @TelefonoCliente IS NULL  
+		BEGIN
+			ROLLBACK;
+			RETURN 0;
+		END
+
+		IF @CorreoCliente IS NULL
+		BEGIN
+			ROLLBACK;
+			RETURN 0;
+		END
+
+		IF @Identificacion IS NULL
+		BEGIN
+			ROLLBACK;
+			RETURN 0;
+		END
+
+		INSERT INTO FinanzaVenta.Cliente
+		(NombreCliente, Telefono, [CorreoElectronico], Identificacion)
+		VALUES (@NombreCliente, @TelefonoCliente, @CorreoCliente, @Identificacion)
+		
+		COMMIT;
+		RETURN 1;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK;
+		RETURN 0;
+	END CATCH
+END
+GO
+
+--Requerimiento 7*
 CREATE OR ALTER VIEW Stock.view_VehiculosVendidos 
 AS
 SELECT 
@@ -834,5 +891,128 @@ BEGIN
     BEGIN CATCH
         SELECT 'NO DATA' AS Respuesta;
     END CATCH
+END
+GO
+
+--ROLES
+BEGIN
+
+-- Crear roles
+CREATE ROLE Topacio;
+CREATE ROLE Rubi;
+CREATE ROLE Zafiro;
+CREATE ROLE ZafiroRojo;
+CREATE ROLE ZafiroVerde;
+CREATE ROLE Bronce;
+CREATE ROLE Amatista;
+
+-- Asignar permisos al rol Topacio (SYSAdmin)*
+ALTER SERVER ROLE sysadmin ADD MEMBER Topacio;
+
+-- Asignar permisos al rol Rubi (DBOwner)+
+ALTER ROLE db_owner ADD MEMBER Rubi;
+
+-- Asignar permisos al rol Zafiro (Aplicación)
+GRANT EXECUTE ON SCHEMA::Stock TO Zafiro;
+GRANT EXECUTE ON SCHEMA::FinanzaVenta TO Zafiro;
+GRANT EXECUTE ON SCHEMA::Servicio TO Zafiro;
+GRANT EXECUTE ON SCHEMA::RRHH TO Zafiro;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Stock.Producto TO Zafiro;
+GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Cliente TO Zafiro;
+GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Pedido TO Zafiro;
+GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Factura TO Zafiro;
+
+-- Asignar permisos al rol ZafiroRojo (Ventas)
+GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Cliente TO ZafiroRojo;
+GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Pedido TO ZafiroRojo;
+GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Factura TO ZafiroRojo;
+GRANT SELECT ON Stock.Producto TO ZafiroRojo;
+GRANT SELECT ON Stock.Stock TO ZafiroRojo;
+
+-- Asignar permisos al rol ZafiroVerde (Contabilidad)
+GRANT SELECT ON FinanzaVenta.Cliente TO ZafiroVerde;
+GRANT SELECT ON FinanzaVenta.Pedido TO ZafiroVerde;
+GRANT SELECT ON FinanzaVenta.Factura TO ZafiroVerde;
+GRANT SELECT ON Stock.Producto TO ZafiroVerde;
+GRANT SELECT ON Stock.Stock TO ZafiroVerde;
+
+-- Asignar permisos al rol Bronce (Mantenimiento)+
+GRANT SELECT, INSERT, UPDATE, DELETE ON Ensamblaje.Mantenimiento TO Bronce;
+GRANT SELECT ON Stock.Componente TO Bronce;
+GRANT SELECT ON Stock.Stock TO Bronce;
+GRANT SELECT ON Stock.Almacen TO Bronce;
+
+-- Asignar permisos al rol Amatista (Recursos Humanos)+
+GRANT SELECT, INSERT, UPDATE, DELETE ON RRHH.Empleado TO Amatista;
+GRANT SELECT, INSERT, UPDATE, DELETE ON RRHH.Departamento TO Amatista;
+GRANT SELECT, INSERT, UPDATE, DELETE ON RRHH.Puesto TO Amatista;
+GRANT SELECT, INSERT, UPDATE, DELETE ON RRHH.UsuarioAplicacion TO Amatista;
+
+-- Permisos específicos para procedimientos almacenados y vistas
+-- Ajustar según los procedimientos y vistas definidos en el sistema
+
+-- Ejemplo de permisos en procedimientos almacenados
+GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_RealizarPedido TO ZafiroRojo;
+GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_GenerarFactura TO ZafiroRojo;
+
+-- Ejemplo de permisos en vistas
+GRANT SELECT ON OBJECT::Stock.vw_ProductosDisponibles TO ZafiroRojo;
+GRANT SELECT ON OBJECT::FinanzaVenta.vw_ReporteVentas TO ZafiroVerde;
+
+-- Permisos adicionales pueden ser necesarios dependiendo de la implementación detallada de procedimientos y vistas
+
+
+END
+GO
+
+--LOGINS
+BEGIN
+
+-- Crear login y usuario para el rol Topacio (SYSAdmin)
+CREATE LOGIN TopacioLogin WITH PASSWORD = 'YourSecurePassword1!';
+CREATE USER TopacioUser FOR LOGIN TopacioLogin;
+ALTER SERVER ROLE sysadmin ADD MEMBER TopacioLogin;
+
+-- Crear login y usuario para el rol Rubi (DBOwner)*
+CREATE LOGIN RubiLogin WITH PASSWORD = 'rubi123';
+CREATE USER RubiUser FOR LOGIN RubiLogin;
+ALTER ROLE Rubi ADD MEMBER RubiUser;
+
+-- Crear login y usuario para el rol Zafiro (Aplicación)
+CREATE LOGIN ZafiroLogin WITH PASSWORD = 'zafiro123';
+CREATE USER ZafiroUser FOR LOGIN ZafiroLogin;
+EXEC sp_addrolemember 'Zafiro', 'ZafiroUser';
+
+-- Crear login y usuario para el rol ZafiroRojo (Ventas)
+CREATE LOGIN ZafiroRojoLogin WITH PASSWORD = 'YourSecurePassword4!';
+CREATE USER ZafiroRojoUser FOR LOGIN ZafiroRojoLogin;
+EXEC sp_addrolemember 'ZafiroRojo', 'ZafiroRojoUser';
+
+-- Crear login y usuario para el rol ZafiroVerde (Contabilidad)
+CREATE LOGIN ZafiroVerdeLogin WITH PASSWORD = 'YourSecurePassword5!';
+CREATE USER ZafiroVerdeUser FOR LOGIN ZafiroVerdeLogin;
+EXEC sp_addrolemember 'ZafiroVerde', 'ZafiroVerdeUser';
+
+-- Crear login y usuario para el rol Bronce (Mantenimiento)*
+CREATE LOGIN BronceLogin WITH PASSWORD = 'bronce123';
+CREATE USER BronceUser FOR LOGIN BronceLogin;
+EXEC sp_addrolemember 'Bronce', 'BronceUser';
+
+-- Crear login y usuario para el rol Amatista (Recursos Humanos)*
+CREATE LOGIN AmatistaLogin WITH PASSWORD = 'amatista123';
+CREATE USER AmatistaUser FOR LOGIN AmatistaLogin;
+EXEC sp_addrolemember 'Amatista', 'AmatistaUser';
+
+
+-- Asignar roles a los usuarios
+ALTER ROLE Topacio ADD MEMBER [NombreUsuarioTopacio];
+ALTER ROLE Rubi ADD MEMBER [NombreUsuarioRubi];
+ALTER ROLE Zafiro ADD MEMBER [NombreUsuarioZafiro];
+ALTER ROLE ZafiroRojo ADD MEMBER [NombreUsuarioZafiroRojo];
+ALTER ROLE ZafiroVerde ADD MEMBER [NombreUsuarioZafiroVerde];
+ALTER ROLE Bronce ADD MEMBER [NombreUsuarioBronce];
+ALTER ROLE Amatista ADD MEMBER [NombreUsuarioAmatista];
+
+
 END
 GO
