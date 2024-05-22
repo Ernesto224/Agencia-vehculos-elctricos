@@ -40,6 +40,7 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
 
         setClosable(true);
+        setMaximizable(true);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Generar Pedido");

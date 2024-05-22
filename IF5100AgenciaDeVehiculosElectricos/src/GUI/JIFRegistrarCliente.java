@@ -34,6 +34,9 @@ public class JIFRegistrarCliente extends javax.swing.JInternalFrame {
         jTextField3 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
+        setClosable(true);
+        setMaximizable(true);
+
         jLabel1.setText("Nombre Completo:");
 
         jLabel2.setText("Numero Telefono:");

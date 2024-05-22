@@ -4,7 +4,20 @@
  */
 package GUI;
 
+import Data.AccesorioData;
+import Data.ComponenteData;
+import Data.VehiculoData;
+import Domain.Accesorio;
+import Domain.AccesorioAux;
+import Domain.Componente;
+import Domain.ComponenteAux;
+import Domain.Vehiculo;
+import Domain.VehiculoDisponible;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -29,13 +42,19 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
     private int posXText3;
     private int posYText3;
     private int contador;
+    private JTable tablaAccesoriosPartes;
+    private DefaultTableModel dftModeloTabla;
+    private JScrollPane scrollPane;
+    private ComponenteData componenteData;
+    private AccesorioData accesorioData;
+    private VehiculoData vehiculoData;
 
     public JIFVentaProducto() {
         initComponents();
         this.jComboBox2.removeAllItems();
         this.jComboBox2.addItem("Vehiculo");
-        this.jComboBox2.addItem("Componente");
         this.jComboBox2.addItem("Accesorio");
+        this.jComboBox2.addItem("Componente");
         this.jLabel1.setVisible(false);
         this.jLabel2.setVisible(false);
         this.jLabel3.setVisible(false);
@@ -49,8 +68,50 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
         this.jTextField5.setVisible(false);
         this.jTextField6.setVisible(false);
         this.jButton1.setVisible(false);
+        this.componenteData = new ComponenteData();
+        this.accesorioData = new AccesorioData();
+        this.vehiculoData = new VehiculoData();
         this.indiceComboBox = 0;
         this.contador = 0;
+        this.dftModeloTabla = new DefaultTableModel();
+        this.tablaAccesoriosPartes = new JTable();
+        this.tablaAccesoriosPartes.setModel(this.dftModeloTabla);
+        this.scrollPane = new JScrollPane(this.tablaAccesoriosPartes);
+        this.scrollPane.setBounds(3, 260, 750, 200);
+        this.add(this.scrollPane);
+    }
+
+    private void crearTablaDatos(int indiceCambio) {
+        try {
+            // Limpiar las columnas existentes en el modelo de la tabla
+            if (this.dftModeloTabla != null) {
+                this.dftModeloTabla.setColumnCount(0);
+
+                if (indiceCambio == 0) {
+                    this.dftModeloTabla.addColumn("IDProducto");
+                    this.dftModeloTabla.addColumn("Marca Vehiculo");
+                    this.dftModeloTabla.addColumn("Modelo Vehiculo");
+                    this.dftModeloTabla.addColumn("Pais Importacion");
+                    this.dftModeloTabla.addColumn("Destinado Venta");
+                    this.dftModeloTabla.addColumn("Precio");
+                    this.dftModeloTabla.addColumn("Cantidad Producto");
+                    this.dftModeloTabla.addColumn("Ubicacion");
+                } else if (indiceCambio >= 1) {
+                    this.dftModeloTabla.addColumn("IDProducto");
+                    this.dftModeloTabla.addColumn("Nombre Componente");
+                    this.dftModeloTabla.addColumn("Marca Componente");
+                    this.dftModeloTabla.addColumn("Descripcion Componente");
+                    this.dftModeloTabla.addColumn("Categoria Componente");
+                    this.dftModeloTabla.addColumn("Cantidad Producto");
+                    this.dftModeloTabla.addColumn("Ubicacion");
+                    this.dftModeloTabla.addColumn("Disponible");
+                }
+
+            }
+            this.repaint();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -82,6 +143,9 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
         jLabel6.setText("jLabel6");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        setClosable(true);
+        setMaximizable(true);
 
         jLabel1.setText("Marca:");
 
@@ -129,26 +193,23 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
                 .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 332, Short.MAX_VALUE)
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
             .addGroup(layout.createSequentialGroup()
@@ -192,7 +253,7 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
                     .addComponent(jLabel7))
                 .addGap(43, 43, 43)
                 .addComponent(jButton1)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(287, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,24 +261,34 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+        String filtro1 = "", filtro2 = "", filtro3 = "";
+        if (this.indiceComboBox == 0) {
+            filtro1 = this.jTextField1.getText();
+            filtro2 = this.jTextField2.getText();
+            filtro3 = this.jTextField3.getText();
+        } else if(this.indiceComboBox > 0){
+            filtro1 = this.jTextField4.getText();
+            filtro2 = this.jTextField5.getText();
+            filtro3 = this.jTextField6.getText();
+        }
+        this.obtenerDatosProducto(filtro1, filtro2, filtro3);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
-        this.indiceComboBox = this.jComboBox2.getSelectedIndex() + 1;
-        System.out.println("INDICE COMBO BOX: " + this.indiceComboBox);
+        this.indiceComboBox = this.jComboBox2.getSelectedIndex();
         this.tomarPosiciones();
-        if (this.indiceComboBox == 1) {
+        if (this.indiceComboBox == 0) {
             this.mostrarFiltrosAccesorioComponente(false);
             this.mostrarFiltrosVehiculo(true);
             this.jButton1.setVisible(true);
-        } else if (this.indiceComboBox > 1) {
+        } else if (this.indiceComboBox >= 1) {
             this.mostrarFiltrosAccesorioComponente(true);
             this.mostrarFiltrosVehiculo(false);
             this.jButton1.setVisible(true);
         }
-        this.indiceComboBox = 0;
+        this.crearTablaDatos(this.jComboBox2.getSelectedIndex());
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
@@ -229,7 +300,6 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void mostrarFiltrosAccesorioComponente(boolean mostrar) {
-
         this.jLabel4.setVisible(mostrar);
         this.jLabel5.setVisible(mostrar);
         this.jLabel7.setVisible(mostrar);
@@ -243,27 +313,27 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
         this.jTextField6.setVisible(mostrar);
         this.jTextField6.setPreferredSize(new Dimension(15, 24));
         if (mostrar) {
-            // Agregar un pequeño espacio entre los elementos al establecer sus posiciones
-            int espacioY = 10; // Puedes ajustar este valor según tus necesidades
+            int espacioY = 10;
 
             this.jLabel4.setBounds(this.posX, this.posY, this.jLabel4.getWidth(), this.jLabel4.getHeight());
             this.jLabel5.setBounds(this.posX1, this.posY1 + this.jLabel4.getHeight() + espacioY, this.jLabel5.getWidth(), this.jLabel5.getHeight());
             this.jLabel7.setBounds(this.posX2, this.posY2 + this.jLabel5.getHeight() + espacioY, this.jLabel7.getWidth(), this.jLabel7.getHeight());
 
-            this.jTextField4.setBounds(this.posXText1+3, this.posYText1, this.jTextField4.getWidth()-4, this.jTextField4.getHeight());
-            this.jTextField5.setBounds(this.posXText2+5, this.posYText2 + this.jTextField4.getHeight()-8 + espacioY, this.jTextField5.getWidth(), this.jTextField5.getHeight());
-            this.jTextField6.setBounds(this.posXText3+13, this.posYText3 + this.jTextField5.getHeight()-8+ espacioY, this.jTextField6.getWidth(), this.jTextField6.getHeight());
+            this.jTextField4.setBounds(this.posXText1 + 3, this.posYText1, this.jTextField4.getWidth() - 4, this.jTextField4.getHeight());
+            this.jTextField5.setBounds(this.posXText2 + 5, this.posYText2 + this.jTextField4.getHeight() - 8 + espacioY, this.jTextField5.getWidth(), this.jTextField5.getHeight());
+            this.jTextField6.setBounds(this.posXText3 + 13, this.posYText3 + this.jTextField5.getHeight() - 8 + espacioY, this.jTextField6.getWidth(), this.jTextField6.getHeight());
         }
+        this.repaint();
     }
 
     private void mostrarFiltrosVehiculo(boolean mostrar) {
-
         this.jLabel1.setVisible(mostrar);
         this.jLabel2.setVisible(mostrar);
         this.jLabel3.setVisible(mostrar);
         this.jTextField1.setVisible(mostrar);
         this.jTextField2.setVisible(mostrar);
         this.jTextField3.setVisible(mostrar);
+        this.repaint();
 
     }
 
@@ -291,36 +361,103 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
             // Etiquetas
             this.posX = this.jLabel1.getBounds().x;
             this.posY = this.jLabel1.getBounds().y;
-            System.out.println("X: " + this.posX);
-            System.out.println("Y: " + this.posY);
 
             this.posX1 = this.jLabel2.getBounds().x;
             this.posY1 = this.jLabel2.getBounds().y;
-            System.out.println("X1: " + this.posX1);
-            System.out.println("Y1: " + this.posY1);
 
             this.posX2 = this.jLabel3.getBounds().x;
             this.posY2 = this.jLabel3.getBounds().y;
-            System.out.println("X2: " + this.posX2);
-            System.out.println("Y2: " + this.posY2);
 
             // Campos de texto
             this.posXText1 = this.jTextField1.getBounds().x;
             this.posYText1 = this.jTextField1.getBounds().y;
-            System.out.println("XText1: " + this.posXText1);
-            System.out.println("YText1: " + this.posYText1);
 
             this.posXText2 = this.jTextField2.getBounds().x;
             this.posYText2 = this.jTextField2.getBounds().y;
-            System.out.println("XText2: " + this.posXText2);
-            System.out.println("YText2: " + this.posYText2);
 
             this.posXText3 = this.jTextField3.getBounds().x;
             this.posYText3 = this.jTextField3.getBounds().y;
-            System.out.println("XText3: " + this.posXText3);
-            System.out.println("YText3: " + this.posYText3);
         }
         this.contador++;
+    }
+
+    private void obtenerDatosProducto(String filtro1, String filtro2, String filtro3) {
+        if (this.indiceComboBox >= 0) {
+            switch (this.indiceComboBox) {
+                case 0 -> {
+                    float precio = 0;
+                    if (!filtro3.equals("")) {
+                         precio = Float.parseFloat(filtro3);
+                    }
+                    ArrayList<VehiculoDisponible> vehiculoDisponibles = this.vehiculoData.obtenerVehiculos(new Vehiculo(filtro1, filtro2, precio));
+                    this.llenarTablaVehiculo(vehiculoDisponibles);
+                }
+                case 1 -> {
+                    ArrayList<AccesorioAux> accesorioAuxs = this.accesorioData.obtenerAccesorios(new Accesorio(filtro1, filtro2, filtro3));
+                    this.llenarTablaComponenteAccesorio(accesorioAuxs, null);
+                }
+                case 2 -> {
+                    ArrayList<ComponenteAux> componenteAuxs = this.componenteData.obtenerComponentes(new Componente(filtro1, filtro2, filtro3));
+                    this.llenarTablaComponenteAccesorio(null, componenteAuxs);
+                }
+
+            }
+        }
+    }
+
+    private void llenarTablaComponenteAccesorio(ArrayList<AccesorioAux> accesorioAuxs, ArrayList<ComponenteAux> componenteAuxs) {
+        // Limpiar la tabla antes de llenar con nuevos datos
+        this.dftModeloTabla.setRowCount(0);
+
+        if (accesorioAuxs != null) {
+            for (AccesorioAux accesorio : accesorioAuxs) {
+                Object[] rowData = {
+                    accesorio.getIdProducto(),
+                    accesorio.getNombreAccesorio(),
+                    accesorio.getMarcaAccesorio(),
+                    accesorio.getDescripcionAccesorio(),
+                    accesorio.getCategoriaAccesorio(),
+                    accesorio.getStock(),
+                    accesorio.getUbicacion(),
+                    accesorio.isDisponible()
+                };
+                this.dftModeloTabla.addRow(rowData);
+            }
+        }
+
+        if (componenteAuxs != null) {
+            for (ComponenteAux componente : componenteAuxs) {
+                this.dftModeloTabla.addRow(new Object[]{
+                    componente.getIdProducto(),
+                    componente.getNombreComponente(),
+                    componente.getMarcaComponente(),
+                    componente.getDescripcionComponente(),
+                    componente.getCategoriaComponente(),
+                    componente.getCantidadProducto(),
+                    componente.getUbicacion(),
+                    componente.isDisponible()
+                });
+            }
+        }
+    }
+
+    private void llenarTablaVehiculo(ArrayList<VehiculoDisponible> vehiculoDisponibles) {
+
+        this.dftModeloTabla.setRowCount(0);
+
+        for (VehiculoDisponible vehiculo : vehiculoDisponibles) {
+            Object[] rowData = {
+                vehiculo.getIdProducto(),
+                vehiculo.getMarcaVehiculo(),
+                vehiculo.getModeloVehiculo(),
+                vehiculo.getPaisImportacion(),
+                vehiculo.isDestinadoVenta(),
+                vehiculo.getPrecio(),
+                vehiculo.getCantidadProducto(),
+                vehiculo.getUbicacion()
+            };
+            this.dftModeloTabla.addRow(rowData);
+        }
     }
 
 }

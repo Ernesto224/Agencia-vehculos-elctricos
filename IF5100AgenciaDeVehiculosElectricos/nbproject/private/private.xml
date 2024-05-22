@@ -5,6 +5,8 @@
         <group>
             <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/Domain/VehiculoDisponible.java</file>
             <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/GUI/JFVentanPrincipal.java</file>
+            <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/GUI/JIFGenerarFactura.java</file>
+            <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/GUI/JIFListarVehiculos.java</file>
             <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/Data/ClienteData.java</file>
             <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/Domain/Vehiculo.java</file>
             <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/Data/VehiculoData.java</file>
@@ -20,6 +22,7 @@
             <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/Domain/Cliente.java</file>
             <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/GUI/JIFRegistrarCliente.java</file>
             <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/Domain/ComponenteAux.java</file>
+            <file>file:/C:/Users/User/Desktop/Agencia-vehculos-elctricos/IF5100AgenciaDeVehiculosElectricos/src/Domain/Componente.java</file>
         </group>
     </open-files>
 </project-private>
