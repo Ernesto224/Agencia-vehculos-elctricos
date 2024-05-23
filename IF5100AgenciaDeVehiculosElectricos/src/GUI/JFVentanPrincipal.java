@@ -14,7 +14,6 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     public JFVentanPrincipal(String puesto) {
         initComponents();
         this.puesto = puesto.toLowerCase();
-        
         switch (this.puesto) {
             case "vendedor":
                 jm3.setVisible(true);
@@ -29,6 +28,8 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
                 jm6.setVisible(false);
                 jm7.setVisible(false);
                 jmiVenta.setVisible(false);
+                break;
+            case "Gerente de RRHH":
                 break;
             default:
                 jm3.setVisible(false);

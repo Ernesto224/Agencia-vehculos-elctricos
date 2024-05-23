@@ -117,11 +117,10 @@ public class JFInicioSesion extends javax.swing.JFrame {
 
         // Establecer los parámetros del procedimiento almacenado
         callableStatement.setString(1, nombreUsuario);
-        callableStatement.setString(2, contrasenia);
+        callableStatement.setString(2, hashedContrasenia);
 
         // Ejecutar el procedimiento almacenado
         boolean hasResults = callableStatement.execute();
-
         if (hasResults) {
             ResultSet rs = callableStatement.getResultSet();
             if (rs.next()) {

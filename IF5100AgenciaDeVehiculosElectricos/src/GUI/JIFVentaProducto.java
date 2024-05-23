@@ -29,17 +29,6 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
      * Creates new form JIFVentaProducto
      */
     private int indiceComboBox;
-    private int posX;
-    private int posY;
-    private int posX1;
-    private int posY1;
-    private int posX2;
-    private int posY2;
-    private int posXText1;
-    private int posYText1;
-    private int posXText2;
-    private int posYText2;
-    private int posXText3;
     private int posYText3;
     private int contador;
     private JTable tablaAccesoriosPartes;
@@ -58,15 +47,9 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
         this.jLabel1.setVisible(false);
         this.jLabel2.setVisible(false);
         this.jLabel3.setVisible(false);
-        this.jLabel4.setVisible(false);
-        this.jLabel5.setVisible(false);
-        this.jLabel7.setVisible(false);
         this.jTextField1.setVisible(false);
         this.jTextField2.setVisible(false);
         this.jTextField3.setVisible(false);
-        this.jTextField4.setVisible(false);
-        this.jTextField5.setVisible(false);
-        this.jTextField6.setVisible(false);
         this.jButton1.setVisible(false);
         this.componenteData = new ComponenteData();
         this.accesorioData = new AccesorioData();
@@ -132,12 +115,6 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox<>();
 
         jLabel6.setText("jLabel6");
@@ -166,18 +143,6 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setText("Marca:");
-
-        jLabel5.setText("Nombre:");
-
-        jLabel7.setText("Categoria:");
-
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
-            }
-        });
-
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,32 +159,22 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
-                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
+                        .addGap(39, 39, 39)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 332, Short.MAX_VALUE)
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel7)))
+                .addGap(127, 127, 127)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -239,21 +194,9 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addGap(43, 43, 43)
+                .addGap(51, 51, 51)
                 .addComponent(jButton1)
-                .addContainerGap(287, Short.MAX_VALUE))
+                .addContainerGap(404, Short.MAX_VALUE))
         );
 
         pack();
@@ -267,9 +210,9 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
             filtro2 = this.jTextField2.getText();
             filtro3 = this.jTextField3.getText();
         } else if(this.indiceComboBox > 0){
-            filtro1 = this.jTextField4.getText();
-            filtro2 = this.jTextField5.getText();
-            filtro3 = this.jTextField6.getText();
+            filtro1 = this.jTextField1.getText();
+            filtro2 = this.jTextField2.getText();
+            filtro3 = this.jTextField3.getText();
         }
         this.obtenerDatosProducto(filtro1, filtro2, filtro3);
 
@@ -278,55 +221,37 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
         this.indiceComboBox = this.jComboBox2.getSelectedIndex();
-        this.tomarPosiciones();
         if (this.indiceComboBox == 0) {
-            this.mostrarFiltrosAccesorioComponente(false);
             this.mostrarFiltrosVehiculo(true);
             this.jButton1.setVisible(true);
         } else if (this.indiceComboBox >= 1) {
             this.mostrarFiltrosAccesorioComponente(true);
-            this.mostrarFiltrosVehiculo(false);
             this.jButton1.setVisible(true);
         }
         this.crearTablaDatos(this.jComboBox2.getSelectedIndex());
     }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void mostrarFiltrosAccesorioComponente(boolean mostrar) {
-        this.jLabel4.setVisible(mostrar);
-        this.jLabel5.setVisible(mostrar);
-        this.jLabel7.setVisible(mostrar);
-
-        this.jTextField4.setVisible(mostrar);
-        this.jTextField4.setPreferredSize(new Dimension(15, 24));
-
-        this.jTextField5.setVisible(mostrar);
-        this.jTextField5.setPreferredSize(new Dimension(15, 24));
-
-        this.jTextField6.setVisible(mostrar);
-        this.jTextField6.setPreferredSize(new Dimension(15, 24));
+        
         if (mostrar) {
-            int espacioY = 10;
-
-            this.jLabel4.setBounds(this.posX, this.posY, this.jLabel4.getWidth(), this.jLabel4.getHeight());
-            this.jLabel5.setBounds(this.posX1, this.posY1 + this.jLabel4.getHeight() + espacioY, this.jLabel5.getWidth(), this.jLabel5.getHeight());
-            this.jLabel7.setBounds(this.posX2, this.posY2 + this.jLabel5.getHeight() + espacioY, this.jLabel7.getWidth(), this.jLabel7.getHeight());
-
-            this.jTextField4.setBounds(this.posXText1 + 3, this.posYText1, this.jTextField4.getWidth() - 4, this.jTextField4.getHeight());
-            this.jTextField5.setBounds(this.posXText2 + 5, this.posYText2 + this.jTextField4.getHeight() - 8 + espacioY, this.jTextField5.getWidth(), this.jTextField5.getHeight());
-            this.jTextField6.setBounds(this.posXText3 + 13, this.posYText3 + this.jTextField5.getHeight() - 8 + espacioY, this.jTextField6.getWidth(), this.jTextField6.getHeight());
+            this.jLabel1.setVisible(mostrar);
+            this.jLabel2.setVisible(mostrar);
+            this.jLabel3.setVisible(mostrar);
+            this.jLabel1.setText("Marca: ");
+            this.jLabel2.setText("Nombre: ");
+            this.jLabel3.setText("Categoria: ");
         }
         this.repaint();
     }
 
     private void mostrarFiltrosVehiculo(boolean mostrar) {
+        this.jLabel1.setText("Marca: ");
+        this.jLabel2.setText("Modelo: ");
+        this.jLabel3.setText("Precio: ");
         this.jLabel1.setVisible(mostrar);
         this.jLabel2.setVisible(mostrar);
         this.jLabel3.setVisible(mostrar);
@@ -344,42 +269,13 @@ public class JIFVentaProducto extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 
-    private void tomarPosiciones() {
-        if (this.contador == 0) {
-            // Etiquetas
-            this.posX = this.jLabel1.getBounds().x;
-            this.posY = this.jLabel1.getBounds().y;
-
-            this.posX1 = this.jLabel2.getBounds().x;
-            this.posY1 = this.jLabel2.getBounds().y;
-
-            this.posX2 = this.jLabel3.getBounds().x;
-            this.posY2 = this.jLabel3.getBounds().y;
-
-            // Campos de texto
-            this.posXText1 = this.jTextField1.getBounds().x;
-            this.posYText1 = this.jTextField1.getBounds().y;
-
-            this.posXText2 = this.jTextField2.getBounds().x;
-            this.posYText2 = this.jTextField2.getBounds().y;
-
-            this.posXText3 = this.jTextField3.getBounds().x;
-            this.posYText3 = this.jTextField3.getBounds().y;
-        }
-        this.contador++;
-    }
+    
 
     private void obtenerDatosProducto(String filtro1, String filtro2, String filtro3) {
         if (this.indiceComboBox >= 0) {

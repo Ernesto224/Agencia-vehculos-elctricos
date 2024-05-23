@@ -13,13 +13,14 @@ public class Cliente {
     private String nombreCliente;
     private String telefono;
     private String correo;
-    private int identificador;
+    private String identificacion;
 
     // Constructor
-    public Cliente(String nombreCliente, String telefono, String correo) {
+    public Cliente(String nombreCliente, String telefono, String correo, String identificacion) {
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
         this.correo = correo;
+        this.identificacion = identificacion;
     }
 
     // Getters y Setters
@@ -47,6 +48,14 @@ public class Cliente {
         this.correo = correo;
     }
 
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
+    }
+    
     // Método toString para imprimir los detalles del cliente
     @Override
     public String toString() {
