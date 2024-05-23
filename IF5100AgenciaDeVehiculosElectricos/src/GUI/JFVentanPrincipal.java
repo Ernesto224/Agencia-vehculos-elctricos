@@ -76,14 +76,18 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addGap(226, 226, 226)
                 .addComponent(jLabel1)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(316, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addComponent(jLabel1)
+<<<<<<< HEAD
                 .addContainerGap(133, Short.MAX_VALUE))
+=======
+                .addContainerGap(255, Short.MAX_VALUE))
+>>>>>>> d599c051a80280f8a99c05df24d7b8aa1e7f3214
         );
 
         jMenu1.setBackground(new java.awt.Color(0, 153, 204));

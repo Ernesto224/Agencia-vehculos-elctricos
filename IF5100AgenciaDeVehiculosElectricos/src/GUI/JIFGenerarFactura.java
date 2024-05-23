@@ -42,13 +42,17 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+<<<<<<< HEAD
+=======
+        jTextField2 = new javax.swing.JTextField();
+>>>>>>> d599c051a80280f8a99c05df24d7b8aa1e7f3214
         jLabel10 = new javax.swing.JLabel();
 
         setClosable(true);
@@ -62,10 +66,14 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ID Cliente");
 
+<<<<<<< HEAD
         jButton1.setBackground(new java.awt.Color(0, 102, 255));
         jButton1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Buscar pedidos");
+=======
+        jButton1.setText("Mostrar Pedidos");
+>>>>>>> d599c051a80280f8a99c05df24d7b8aa1e7f3214
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -74,16 +82,34 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {}
+
             },
             new String [] {
-
+                "ID Pedido", "Fecha Pedido", "Estado Pedido", "Monto"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
+            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         jButton2.setBackground(new java.awt.Color(0, 102, 255));
         jButton2.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
@@ -107,8 +133,18 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Proveedor");
 
+<<<<<<< HEAD
         jLabel6.setFont(new java.awt.Font("Segoe UI", 2, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+=======
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
+>>>>>>> d599c051a80280f8a99c05df24d7b8aa1e7f3214
         jLabel6.setText("(Opcional)");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 2, 11)); // NOI18N
@@ -123,9 +159,13 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("(Opcional)");
 
+<<<<<<< HEAD
         jLabel10.setBackground(new java.awt.Color(0, 153, 204));
         jLabel10.setForeground(new java.awt.Color(0, 153, 204));
         jLabel10.setOpaque(true);
+=======
+        jLabel10.setText("ID Pedido");
+>>>>>>> d599c051a80280f8a99c05df24d7b8aa1e7f3214
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,75 +175,112 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
                 .addGap(212, 212, 212)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+<<<<<<< HEAD
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
+=======
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+>>>>>>> d599c051a80280f8a99c05df24d7b8aa1e7f3214
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4)
                                     .addComponent(jLabel5)
-                                    .addComponent(jLabel8))
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel4))
                                 .addGap(26, 26, 26)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
-                                    .addComponent(jTextField4))
-                                .addGap(26, 26, 26)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel9))))
-                        .addGap(33, 33, 33))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel6))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                                            .addComponent(jTextField5))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel9))))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton2)
+<<<<<<< HEAD
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(23, 23, 23))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
+=======
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(6, 6, 6)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel10)
+                                        .addComponent(jLabel2))
+                                    .addGap(60, 60, 60)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(31, 31, 31)
+                                    .addComponent(jButton1))))
+                        .addGap(0, 25, Short.MAX_VALUE))))
+>>>>>>> d599c051a80280f8a99c05df24d7b8aa1e7f3214
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(37, 37, 37)
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addGap(23, 23, 23)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(39, 39, 39)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel4))
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addGap(34, 34, 34)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
+<<<<<<< HEAD
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+=======
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+>>>>>>> d599c051a80280f8a99c05df24d7b8aa1e7f3214
                 .addGap(31, 31, 31)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
+<<<<<<< HEAD
                 .addContainerGap(66, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 841, Short.MAX_VALUE))
+=======
+                .addContainerGap(15, Short.MAX_VALUE))
+>>>>>>> d599c051a80280f8a99c05df24d7b8aa1e7f3214
         );
 
         pack();
@@ -214,47 +291,73 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
     String text1 = jTextField1.getText();
     String text2 = jTextField2.getText();
     String text3 = jTextField3.getText();
+    String text4 = jTextField4.getText();
+    String text5 = jTextField5.getText();
     
     // Validar si el primer dato es un número entero válido
     int parametro1;
+    int parametro2;
     try {
         parametro1 = Integer.parseInt(text1);
+        parametro2 = Integer.parseInt(text2);
     } catch (NumberFormatException e) {
         // Mostrar un mensaje de error si el primer dato no es un número entero válido
-        JOptionPane.showMessageDialog(this, "El valor ingresado en el primer campo no es un número entero válido", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "No es un número entero válido", "Error", JOptionPane.ERROR_MESSAGE);
         return; // Salir del método si hay un error
     }
     
     // Llamar al método para ejecutar el procedimiento almacenado
-    generaFactura(parametro1, text2, text3);
+    generaFactura(parametro1, parametro2, text2, text3, text4);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void generaFactura(int parametro1, String parametro2, String parametro3) {
-    try {
+    private void generaFactura(int parametro1, int parametro2, String parametro3, String parametro4, String parametro5) {
+     try {
         // Obtener la conexión a la base de datos
         BaseData baseData = new BaseData() {};
-          java.sql.Connection connection = baseData.getSqlConnection();
-        
+        java.sql.Connection connection = baseData.getSqlConnection();
+
         // Preparar la llamada al procedimiento almacenado
-        String sql = "{call InsertarFactura(?, ?, ?)}";
+        String sql = "{? = call FinanzaVenta.sp_RegistrarFactura(?, ?, ?, ?, ?)}";
         CallableStatement callableStatement = connection.prepareCall(sql);
-        
+
+        // Registrar el parámetro de salida para el valor de retorno
+        callableStatement.registerOutParameter(1, java.sql.Types.INTEGER);
+
         // Establecer los parámetros del procedimiento almacenado
-        callableStatement.setInt(1, parametro1);
-        callableStatement.setString(2, parametro2);
-        callableStatement.setString(3, parametro3);
-        
+        callableStatement.setInt(2, parametro1);
+        callableStatement.setInt(3, parametro2);
+        callableStatement.setString(4, parametro4);
+        callableStatement.setString(5, parametro3);
+        callableStatement.setString(6, parametro5);
+
         // Ejecutar el procedimiento almacenado
         callableStatement.execute();
-        
+
+        // Obtener el valor de retorno del procedimiento almacenado
+        int resultado = callableStatement.getInt(1);
+
         // Cerrar la conexión
         connection.close();
-        
-        // Mostrar un mensaje de éxito
-        JOptionPane.showMessageDialog(this, "Procedimiento almacenado ejecutado con éxito");
+
+        // Mostrar un mensaje con el valor de retorno y la información del pedido
+        String mensaje;
+        if (resultado == -1) {
+            mensaje = "Error al generar la factura.\nEl pedido o el cliente no existen.";
+        } else {
+            mensaje = "Se ha generado la factura con éxito.\n\n" +
+                      "ID de la Factura: " + resultado + "\n" +
+                      "ID del Pedido: " + parametro1 + "\n" +
+                      "ID del Cliente: " + parametro2 + "\n" +
+                      "Proveedor de Envío: " + parametro4 + "\n" +
+                      "ID de Dirección: " + parametro3 + "\n" +
+                      "Tracking del Pedido: " + parametro5 + "\n";
+        }
+        JOptionPane.showMessageDialog(this, mensaje, "Factura Generada", JOptionPane.INFORMATION_MESSAGE);
+         cargarDatos(parametro2);
+         limpiar();
     } catch (SQLException ex) {
         // Mostrar un mensaje de error si ocurre alguna excepción SQL
-        JOptionPane.showMessageDialog(this, "Error al ejecutar el procedimiento almacenado: " + ex.getMessage());
+        JOptionPane.showMessageDialog(this, "Error al ejecutar el procedimiento almacenado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
     
@@ -273,14 +376,18 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(this, "El valor ingresado no es un número entero válido", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
 private void cargarDatos(int value) {
     DefaultTableModel modelo = new DefaultTableModel();
-    modelo.addColumn("Id Producto");
-    modelo.addColumn("ID Almacén");
-    modelo.addColumn("Cantidad");
-    modelo.addColumn("ID Cliente");
+    modelo.addColumn("ID Pedido");
+    modelo.addColumn("Fecha Pedido");
+    modelo.addColumn("Estado de Pedido");
+    modelo.addColumn("Monto");
 
-    String sql = "SELECT IDProducto, IDAlmacen, Cantidad, IDCliente FROM Producto WHERE IDCliente = ?";
+   String sql = "{call FinanzaVenta.sp_ListarPedidosPendientesPorCliente(?)}";
 
     try {
         BaseData baseData = new BaseData() {};
@@ -294,10 +401,10 @@ private void cargarDatos(int value) {
 
         while (resultSet.next()) {
             Object[] fila = new Object[4];
-            fila[0] = resultSet.getInt("IDProducto");
-            fila[1] = resultSet.getInt("IDAlmacen");
-            fila[2] = resultSet.getInt("Cantidad");
-            fila[3] = resultSet.getInt("IDCliente");
+            fila[0] = resultSet.getInt("IDPedido");
+            fila[1] = resultSet.getString("FechaPedido");
+            fila[2] = resultSet.getString("EstadoPedido");
+            fila[3] = resultSet.getFloat("MontoPedido");
             modelo.addRow(fila);
         }
 
@@ -331,5 +438,13 @@ private void cargarDatos(int value) {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
+
+    private void limpiar() {
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
+    }
 }
