@@ -1120,30 +1120,24 @@ ALTER SERVER ROLE sysadmin ADD MEMBER Topacio;
 -- Asignar permisos al rol Rubi (DBOwner)+
 ALTER ROLE db_owner ADD MEMBER Rubi;
 
--- Asignar permisos al rol Zafiro (Aplicación)
-GRANT EXECUTE ON SCHEMA::Stock TO Zafiro;
-GRANT EXECUTE ON SCHEMA::FinanzaVenta TO Zafiro;
-GRANT EXECUTE ON SCHEMA::Servicio TO Zafiro;
-GRANT EXECUTE ON SCHEMA::RRHH TO Zafiro;
-GRANT SELECT, INSERT, UPDATE, DELETE ON Stock.Producto TO Zafiro;
-GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Cliente TO Zafiro;
-GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Pedido TO Zafiro;
-GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Factura TO Zafiro;
-
+-- Asignar permisos al rol Zafiro (Aplicación)+
 -- Permisos específicos para procedimientos almacenados y vistas
--- Ajustar según los procedimientos y vistas definidos en el sistema
-
 -- Ejemplo de permisos en procedimientos almacenados
 GRANT EXECUTE ON OBJECT::RRHH.sp_InicioSesion TO Zafiro;
 GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_RegistrarPedido TO Zafiro;
+GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_CalcularMontoTotalPedido TO Zafiro;
 GRANT EXECUTE ON OBJECT::Stock.sp_AgregarMovimientoInventario TO Zafiro;
+GRANT EXECUTE ON OBJECT::Stock.sp_EliminarMovimientoInventario TO Zafiro;
+
 GRANT EXECUTE ON OBJECT::Stock.sp_FiltrarAccesoriosDisponibles TO Zafiro;
 GRANT EXECUTE ON OBJECT::Stock.sp_FiltrarVehiculosDisponibles TO Zafiro;
 GRANT EXECUTE ON OBJECT::Stock.sp_FiltararComponentesDisponibles TO Zafiro;
 
--- Ejemplo de permisos en vistas
-GRANT SELECT ON OBJECT::Stock.vw_ProductosDisponibles TO ZafiroRojo;
-GRANT SELECT ON OBJECT::FinanzaVenta.vw_ReporteVentas TO ZafiroVerde;
+GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_ListarPedidosPendientesPorCliente TO Zafiro;
+GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_RegistrarFactura TO Zafiro;
+
+GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_RegistrarCliente TO Zafiro;
+GRANT EXECUTE ON OBJECT::Stock.sp_FiltrarVehiculosVendidos TO Zafiro;
 
 
 -- Asignar permisos al rol ZafiroRojo (Ventas)
@@ -1153,7 +1147,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Factura TO ZafiroRojo;
 GRANT SELECT ON Stock.Producto TO ZafiroRojo;
 GRANT SELECT ON Stock.Stock TO ZafiroRojo;
 
--- Asignar permisos al rol ZafiroVerde (Contabilidad)
+-- Asignar permisos al rol ZafiroVerde (Contabilidad)+
 GRANT SELECT ON FinanzaVenta.Cliente TO ZafiroVerde;
 GRANT SELECT ON FinanzaVenta.Pedido TO ZafiroVerde;
 GRANT SELECT ON FinanzaVenta.Factura TO ZafiroVerde;
@@ -1179,7 +1173,7 @@ GO
 BEGIN
 
 -- Crear login y usuario para el rol Topacio (SYSAdmin)
-CREATE LOGIN TopacioLogin WITH PASSWORD = 'YourSecurePassword1!';
+CREATE LOGIN TopacioLogin WITH PASSWORD = 'topacio123';
 CREATE USER TopacioUser FOR LOGIN TopacioLogin;
 ALTER SERVER ROLE sysadmin ADD MEMBER TopacioLogin;
 
@@ -1193,7 +1187,7 @@ CREATE LOGIN ZafiroLogin WITH PASSWORD = 'zafiro123';
 CREATE USER ZafiroUser FOR LOGIN ZafiroLogin;
 EXEC sp_addrolemember 'Zafiro', 'ZafiroUser';
 
--- Crear login y usuario para el rol ZafiroRojo (Ventas)
+-- Crear login y usuario para el rol ZafiroRojo (Ventas)*
 CREATE LOGIN ZafiroRojoLogin WITH PASSWORD = 'YourSecurePassword4!';
 CREATE USER ZafiroRojoUser FOR LOGIN ZafiroRojoLogin;
 EXEC sp_addrolemember 'ZafiroRojo', 'ZafiroRojoUser';
@@ -1212,17 +1206,6 @@ EXEC sp_addrolemember 'Bronce', 'BronceUser';
 CREATE LOGIN AmatistaLogin WITH PASSWORD = 'amatista123';
 CREATE USER AmatistaUser FOR LOGIN AmatistaLogin;
 EXEC sp_addrolemember 'Amatista', 'AmatistaUser';
-
-
--- Asignar roles a los usuarios
-ALTER ROLE Topacio ADD MEMBER [NombreUsuarioTopacio];
-ALTER ROLE Rubi ADD MEMBER [NombreUsuarioRubi];
-ALTER ROLE Zafiro ADD MEMBER [NombreUsuarioZafiro];
-ALTER ROLE ZafiroRojo ADD MEMBER [NombreUsuarioZafiroRojo];
-ALTER ROLE ZafiroVerde ADD MEMBER [NombreUsuarioZafiroVerde];
-ALTER ROLE Bronce ADD MEMBER [NombreUsuarioBronce];
-ALTER ROLE Amatista ADD MEMBER [NombreUsuarioAmatista];
-
 
 END
 GO
