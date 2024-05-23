@@ -25,7 +25,7 @@ public class AccesorioData extends BaseData {
     public ArrayList<AccesorioAux> obtenerAccesorios(Accesorio accesorio) {
         ArrayList<AccesorioAux> accesorios = new ArrayList<>();
 
-        String sqlCallStoreProcedure = "{call [Stock].[sp_FiltararAccesoriosDisponibles](?,?,?)}";
+        String sqlCallStoreProcedure = "{call [Stock].[sp_FiltrarAccesoriosDisponibles](?,?,?)}";
 
         try ( java.sql.Connection connection = getSqlConnection();  CallableStatement callable = connection.prepareCall(sqlCallStoreProcedure)) {
             if (accesorio != null) {

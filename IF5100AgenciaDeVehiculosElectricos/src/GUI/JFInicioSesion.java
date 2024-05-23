@@ -120,7 +120,6 @@ public class JFInicioSesion extends javax.swing.JFrame {
 
         // Ejecutar el procedimiento almacenado
         boolean hasResults = callableStatement.execute();
-
         if (hasResults) {
             ResultSet rs = callableStatement.getResultSet();
             if (rs.next()) {
