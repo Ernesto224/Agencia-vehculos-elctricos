@@ -5,8 +5,6 @@
 package GUI;
 
 import Data.BaseData;
-import com.sun.jdi.connect.spi.Connection;
-import javax.swing.JOptionPane;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,14 +49,22 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         setClosable(true);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Generar Factura");
 
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ID Cliente");
 
+        jButton1.setBackground(new java.awt.Color(0, 102, 255));
+        jButton1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Buscar pedidos");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,6 +85,9 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButton2.setBackground(new java.awt.Color(0, 102, 255));
+        jButton2.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Generar Factura");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,22 +95,37 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Pedidos del cliente");
 
+        jLabel4.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Dirección");
 
+        jLabel5.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Proveedor");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 2, 11)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("(Opcional)");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 2, 11)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("(Opcional)");
 
+        jLabel8.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Tracking pedido");
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 2, 11)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("(Opcional)");
+
+        jLabel10.setBackground(new java.awt.Color(0, 153, 204));
+        jLabel10.setForeground(new java.awt.Color(0, 153, 204));
+        jLabel10.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,7 +136,7 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,6 +165,10 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
                             .addComponent(jButton2)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(23, 23, 23))))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,14 +194,16 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 841, Short.MAX_VALUE))
         );
 
         pack();
@@ -286,6 +316,7 @@ private void cargarDatos(int value) {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

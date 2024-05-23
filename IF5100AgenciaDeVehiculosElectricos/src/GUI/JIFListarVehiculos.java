@@ -75,12 +75,15 @@ public class JIFListarVehiculos extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableVehiculos = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
 
         setClosable(true);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Reporte de Vehículos");
 
+        jTableVehiculos.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jTableVehiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -94,18 +97,23 @@ public class JIFListarVehiculos extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTableVehiculos);
 
+        jLabel2.setBackground(new java.awt.Color(0, 153, 204));
+        jLabel2.setForeground(new java.awt.Color(0, 153, 204));
+        jLabel2.setOpaque(true);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 862, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addGap(343, 343, 343)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(349, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 874, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 788, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 86, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,6 +123,10 @@ public class JIFListarVehiculos extends javax.swing.JInternalFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)))
         );
 
         pack();
@@ -123,6 +135,7 @@ public class JIFListarVehiculos extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableVehiculos;
     // End of variables declaration//GEN-END:variables

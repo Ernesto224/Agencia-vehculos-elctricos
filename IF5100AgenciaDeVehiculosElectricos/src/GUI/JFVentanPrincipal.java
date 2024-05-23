@@ -14,6 +14,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     public JFVentanPrincipal(String puesto) {
         initComponents();
         this.puesto = puesto.toLowerCase();
+        this.puesto = "vendedor";
         switch (this.puesto) {
             case "vendedor":
                 jm3.setVisible(true);
@@ -82,11 +83,16 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addComponent(jLabel1)
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
 
+        jMenu1.setBackground(new java.awt.Color(0, 153, 204));
+        jMenu1.setBorder(null);
+        jMenu1.setForeground(new java.awt.Color(0, 0, 0));
         jMenu1.setText("Gestionar");
 
+        jmiVenta.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jmiVenta.setForeground(new java.awt.Color(0, 0, 0));
         jmiVenta.setText("Venta");
         jmiVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,6 +101,8 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jmiVenta);
 
+        jm3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jm3.setForeground(new java.awt.Color(0, 0, 0));
         jm3.setText("Generar Factura");
         jm3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,6 +111,8 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm3);
 
+        jm5.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jm5.setForeground(new java.awt.Color(0, 0, 0));
         jm5.setText("Listar  Vehículos Vendidos");
         jm5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,6 +121,8 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm5);
 
+        jm6.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jm6.setForeground(new java.awt.Color(0, 0, 0));
         jm6.setText("Generar Pedido");
         jm6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,6 +131,8 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm6);
 
+        jm7.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jm7.setForeground(new java.awt.Color(0, 0, 0));
         jm7.setText("Registrar Cliente");
         jm7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

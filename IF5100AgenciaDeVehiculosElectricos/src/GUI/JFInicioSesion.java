@@ -5,14 +5,15 @@
 package GUI;
 
 import Data.BaseData;
+import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-    import java.security.MessageDigest;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 
 public class JFInicioSesion extends javax.swing.JFrame {
 
@@ -38,9 +39,12 @@ public class JFInicioSesion extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jtfContrasennia = new javax.swing.JPasswordField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jButton1.setBackground(new java.awt.Color(0, 51, 204));
+        jButton1.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         jButton1.setText("Iniciar Sesión");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -48,12 +52,21 @@ public class JFInicioSesion extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Contraseña");
 
+        jLabel2.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Usuario");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Inicio de Sesión");
+
+        jLabel4.setBackground(new java.awt.Color(0, 153, 255));
+        jLabel4.setForeground(new java.awt.Color(0, 153, 204));
+        jLabel4.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -62,115 +75,127 @@ public class JFInicioSesion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
                         .addGap(53, 53, 53)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jtfContrasennia)
-                                .addComponent(jtfNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(81, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jtfContrasennia)
+                            .addComponent(jtfNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(154, 154, 154)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(136, 136, 136)
+                        .addComponent(jLabel3)))
+                .addContainerGap(52, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(36, 36, 36)
                 .addComponent(jLabel3)
-                .addGap(53, 53, 53)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jtfContrasennia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(46, 46, 46)
                 .addComponent(jButton1)
                 .addGap(30, 30, 30))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     // Obtener los datos de los campos de texto
-    String nombreUsuario = jtfNombreUsuario.getText();
-    char[] passwordArray = jtfContrasennia.getPassword();
-    String contrasenia = new String(passwordArray);
 
-    // Encriptar la contraseña usando SHA-256
-    String hashedContrasenia = hashPassword(contrasenia); 
-    Connection connection = null;
-    try {
-        BaseData baseData = new BaseData() {};
-        connection = baseData.getSqlConnection();
+        // Obtener los datos de los campos de texto
+        String nombreUsuario = jtfNombreUsuario.getText();
+        char[] passwordArray = jtfContrasennia.getPassword();
+        String contrasenia = new String(passwordArray);
 
-        // Preparar la llamada al procedimiento almacenado
-        String sql = "{call RRHH.sp_InicioSesion(?, ?)}";
-        CallableStatement callableStatement = connection.prepareCall(sql);
-
-        // Establecer los parámetros del procedimiento almacenado
-        callableStatement.setString(1, nombreUsuario);
-        callableStatement.setString(2, hashedContrasenia);
-
-        // Ejecutar el procedimiento almacenado
-        boolean hasResults = callableStatement.execute();
-        if (hasResults) {
-            ResultSet rs = callableStatement.getResultSet();
-            if (rs.next()) {
-                String puesto = rs.getString("Respuesta");
-                if (puesto != null) {
-                    // Mostrar un mensaje de éxito si las credenciales son válidas
-                    JOptionPane.showMessageDialog(this, "Inicio de sesión correcto. Puesto: " + puesto, "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    JFVentanPrincipal jFVentanPrincipal = new JFVentanPrincipal(puesto);
-                    jFVentanPrincipal.setVisible(true);
-                    this.dispose();
-                } else {
-                    // Mostrar un mensaje de error si las credenciales no son válidas
-                    JOptionPane.showMessageDialog(this, "Credenciales incorrectas, debe de llenar todos los campos y proporcionar credenciales válidas.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Usuario no encontrado o credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        System.out.println("Contraseña + " + contrasenia);
+        int idUsuario;
+        try {
+            idUsuario = Integer.parseInt(nombreUsuario);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El nombre de usuario debe ser un número entero válido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        // Cerrar la llamada
-        callableStatement.close();
-    } catch (SQLException ex) {
-        // Mostrar un mensaje de error si ocurre alguna excepción SQL
-        JOptionPane.showMessageDialog(this, "Error al intentar iniciar sesión: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    } finally {
-        // Asegurarse de cerrar la conexión en caso de excepción
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+        // Encriptar la contraseña usando SHA-256
+        String hashedContrasenia = hashPassword(contrasenia);
+        Connection connection = null;
+        try {
+            BaseData baseData = new BaseData() {
+            };
+            connection = baseData.getSqlConnection();
+
+            // Preparar la llamada al procedimiento almacenado
+            String sql = "{call IniciarSesion(?, ?, ?)}";
+            CallableStatement callableStatement = connection.prepareCall(sql);
+
+            // Establecer los parámetros del procedimiento almacenado
+            callableStatement.setInt(1, idUsuario);
+            callableStatement.setString(2, hashedContrasenia);
+            callableStatement.registerOutParameter(3, java.sql.Types.NVARCHAR);
+
+            // Ejecutar el procedimiento almacenado
+            callableStatement.execute();
+
+            // Obtener el valor del parámetro de salida
+            String puesto = callableStatement.getString(3);
+
+            if (puesto != null) {
+                // Mostrar un mensaje de éxito si las credenciales son válidas
+                JOptionPane.showMessageDialog(this, "Inicio de sesión correcto. Puesto: " + puesto, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                JFVentanPrincipal jFVentanPrincipal = new JFVentanPrincipal(puesto);
+                jFVentanPrincipal.setVisible(true);
+                this.dispose();
+            } else {
+                // Mostrar un mensaje de error si las credenciales no son válidas
+                JOptionPane.showMessageDialog(this, "Credenciales incorrectas, debe de llenar todos los campos y proporcionar credenciales válidas.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            // Cerrar la llamada
+            callableStatement.close();
+        } catch (SQLException ex) {
+            // Mostrar un mensaje de error si ocurre alguna excepción SQL
+            JOptionPane.showMessageDialog(this, "Error al intentar iniciar sesión: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            // Asegurarse de cerrar la conexión en caso de excepción
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
-}
-   
 
 // Método para encriptar la contraseña
-private String hashPassword(String password) {
-    try {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] hashedPassword = md.digest(password.getBytes());
-        StringBuilder sb = new StringBuilder();
-        for (byte b : hashedPassword) {
-            sb.append(String.format("%02x", b));
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedPassword = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedPassword) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
-        return sb.toString();
-    } catch (NoSuchAlgorithmException e) {
-        throw new RuntimeException(e);
-    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -207,9 +232,6 @@ private String hashPassword(String password) {
             }
         });
     }
-    
-
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -217,6 +239,7 @@ private String hashPassword(String password) {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField jtfContrasennia;
     private javax.swing.JTextField jtfNombreUsuario;
     // End of variables declaration//GEN-END:variables
