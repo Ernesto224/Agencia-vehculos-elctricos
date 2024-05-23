@@ -103,21 +103,20 @@ public class JFInicioSesion extends javax.swing.JFrame {
     String nombreUsuario = jtfNombreUsuario.getText();
     char[] passwordArray = jtfContrasennia.getPassword();
     String contrasenia = new String(passwordArray);
-
+        
     // Encriptar la contraseña usando SHA-256
     String hashedContrasenia = hashPassword(contrasenia); 
     Connection connection = null;
     try {
         BaseData baseData = new BaseData() {};
         connection = baseData.getSqlConnection();
-
         // Preparar la llamada al procedimiento almacenado
         String sql = "{call RRHH.sp_InicioSesion(?, ?)}";
         CallableStatement callableStatement = connection.prepareCall(sql);
 
         // Establecer los parámetros del procedimiento almacenado
         callableStatement.setString(1, nombreUsuario);
-        callableStatement.setString(2, contrasenia);
+        callableStatement.setString(2, hashedContrasenia);
 
         // Ejecutar el procedimiento almacenado
         boolean hasResults = callableStatement.execute();
