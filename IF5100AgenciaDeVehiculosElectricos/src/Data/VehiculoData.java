@@ -4,6 +4,7 @@
  */
 package Data;
 
+import Domain.Compra;
 import Domain.Vehiculo;
 import Domain.VehiculoDisponible;
 import java.sql.CallableStatement;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  *
@@ -80,6 +82,68 @@ public class VehiculoData extends BaseData {
             Logger.getLogger(VehiculoData.class.getName()).log(Level.SEVERE, null, ex);
         }
         return vehiculos;
+    }
+
+    public ArrayList<Compra> obtenerVehiculo(String fechaInicio, String fechaFin, String marca, String modelo, int idTipoVehiculo) {
+        ArrayList<Compra> compras = new ArrayList<>();
+        String sp = "{call Stock.sp_FiltrarVehiculosVendidos(?,?,?,?,?)}";
+
+        try ( Connection connection = getSqlConnection();  CallableStatement callable = connection.prepareCall(sp)) {
+            System.out.println("Data.VehiculoData.obtenerVehiculo()");
+            fechaInicio = (fechaInicio.isEmpty()) ? null : fechaInicio;
+            fechaFin = (fechaFin.isEmpty()) ? null : fechaFin;
+
+            if (fechaInicio != null) {
+                callable.setDate(1, java.sql.Date.valueOf(fechaInicio));
+            } else {
+                callable.setNull(1, java.sql.Types.DATE);
+            }
+            if (fechaFin != null) {
+                callable.setDate(2, java.sql.Date.valueOf(fechaFin));
+            } else {
+                callable.setNull(2, java.sql.Types.DATE);
+            }
+            if (marca == null) {
+                callable.setNull(3, java.sql.Types.VARCHAR);
+            } else {
+                callable.setString(3, marca);
+            }
+            if (modelo == null) {
+                callable.setNull(4, java.sql.Types.VARCHAR);
+            } else {
+                callable.setString(4, modelo);
+            }
+            if (idTipoVehiculo == -1) {
+                callable.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                callable.setInt(5, idTipoVehiculo);
+            }
+
+            // Ejecutar el procedimiento almacenado
+            ResultSet resultSet = callable.executeQuery();
+
+            // Procesar los resultados
+            while (resultSet.next()) {
+                // Crear objeto Compra y agregarlo a la lista
+                Compra compra = new Compra(
+                        resultSet.getString("MarcaVehiculo"),
+                        resultSet.getString("ModeloVehiculo"),
+                        resultSet.getDouble("Precio"),
+                        resultSet.getInt("IDPedido"),
+                        resultSet.getDate("FechaVenta"),
+                        resultSet.getString("NombreCliente"),
+                        resultSet.getString("CorreoCliente"),
+                        resultSet.getDouble("PrecioVenta")
+                );
+                compras.add(compra);
+            }
+            System.out.println("COMPRAS SIZE: "+compras.size());
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return compras;
     }
 
 }

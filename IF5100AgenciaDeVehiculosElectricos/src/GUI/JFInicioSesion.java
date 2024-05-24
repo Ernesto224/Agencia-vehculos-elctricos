@@ -5,14 +5,14 @@
 package GUI;
 
 import Data.BaseData;
+import Domain.UsuarioActivo;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-    import java.security.MessageDigest;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 
 public class JFInicioSesion extends javax.swing.JFrame {
 
@@ -99,77 +99,83 @@ public class JFInicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     // Obtener los datos de los campos de texto
-    String nombreUsuario = jtfNombreUsuario.getText();
-    char[] passwordArray = jtfContrasennia.getPassword();
-    String contrasenia = new String(passwordArray);
-        
-    // Encriptar la contraseña usando SHA-256
-    String hashedContrasenia = hashPassword(contrasenia); 
-    Connection connection = null;
-    try {
-        BaseData baseData = new BaseData() {};
-        connection = baseData.getSqlConnection();
-        // Preparar la llamada al procedimiento almacenado
-        String sql = "{call RRHH.sp_InicioSesion(?, ?)}";
-        CallableStatement callableStatement = connection.prepareCall(sql);
+        // Obtener los datos de los campos de texto
+        if (this.jtfContrasennia.getPassword().length > 0 && !this.jtfNombreUsuario.getText().isEmpty()) {
+            String nombreUsuario = jtfNombreUsuario.getText();
+            char[] passwordArray = jtfContrasennia.getPassword();
+            String contrasenia = new String(passwordArray);
 
-        // Establecer los parámetros del procedimiento almacenado
-        callableStatement.setString(1, nombreUsuario);
-        callableStatement.setString(2, hashedContrasenia);
-
-        // Ejecutar el procedimiento almacenado
-        boolean hasResults = callableStatement.execute();
-        if (hasResults) {
-            ResultSet rs = callableStatement.getResultSet();
-            if (rs.next()) {
-                String puesto = rs.getString("Respuesta");
-                if (puesto != null) {
-                    // Mostrar un mensaje de éxito si las credenciales son válidas
-                    JOptionPane.showMessageDialog(this, "Inicio de sesión correcto. Puesto: " + puesto, "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    JFVentanPrincipal jFVentanPrincipal = new JFVentanPrincipal(puesto);
-                    jFVentanPrincipal.setVisible(true);
-                    this.dispose();
-                } else {
-                    // Mostrar un mensaje de error si las credenciales no son válidas
-                    JOptionPane.showMessageDialog(this, "Credenciales incorrectas, debe de llenar todos los campos y proporcionar credenciales válidas.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Usuario no encontrado o credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
-        // Cerrar la llamada
-        callableStatement.close();
-    } catch (SQLException ex) {
-        // Mostrar un mensaje de error si ocurre alguna excepción SQL
-        JOptionPane.showMessageDialog(this, "Error al intentar iniciar sesión: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    } finally {
-        // Asegurarse de cerrar la conexión en caso de excepción
-        if (connection != null) {
+            // Encriptar la contraseña usando SHA-256
+            String hashedContrasenia = hashPassword(contrasenia);
+            Connection connection = null;
             try {
-                connection.close();
+                BaseData baseData = new BaseData() {
+                };
+                connection = baseData.getSqlConnection();
+                // Preparar la llamada al procedimiento almacenado
+                String sql = "{call RRHH.sp_InicioSesion(?, ?)}";
+                CallableStatement callableStatement = connection.prepareCall(sql);
+
+                // Establecer los parámetros del procedimiento almacenado
+                callableStatement.setString(1, nombreUsuario);
+                callableStatement.setString(2, hashedContrasenia);
+
+                // Ejecutar el procedimiento almacenado
+                boolean hasResults = callableStatement.execute();
+                if (hasResults) {
+                    ResultSet rs = callableStatement.getResultSet();
+                    if (rs.next()) {
+                        String puesto = rs.getString("Respuesta");
+                        int IdEmpleado = rs.getInt("IDEmpleado");
+                        if (puesto != null) {
+                            // Mostrar un mensaje de éxito si las credenciales son válidas
+                            JOptionPane.showMessageDialog(this, "Inicio de sesión correcto. Puesto: " + puesto, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                            UsuarioActivo usuarioActivo = new UsuarioActivo(IdEmpleado, nombreUsuario, hashedContrasenia);
+                            JFVentanPrincipal jFVentanPrincipal = new JFVentanPrincipal(puesto,usuarioActivo);
+                            jFVentanPrincipal.setVisible(true);
+                            this.dispose();
+                        } else {
+                            // Mostrar un mensaje de error si las credenciales no son válidas
+                            JOptionPane.showMessageDialog(this, "Credenciales incorrectas, debe de llenar todos los campos y proporcionar credenciales válidas.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Usuario no encontrado o credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
+                // Cerrar la llamada
+                callableStatement.close();
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                // Mostrar un mensaje de error si ocurre alguna excepción SQL
+                JOptionPane.showMessageDialog(this, "Error al intentar iniciar sesión: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                // Asegurarse de cerrar la conexión en caso de excepción
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
+        }else{
+            JOptionPane.showMessageDialog(this, "Llena todos los campos de texto");
         }
     }
-}
-   
 
 // Método para encriptar la contraseña
-private String hashPassword(String password) {
-    try {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] hashedPassword = md.digest(password.getBytes());
-        StringBuilder sb = new StringBuilder();
-        for (byte b : hashedPassword) {
-            sb.append(String.format("%02x", b));
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedPassword = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedPassword) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
-        return sb.toString();
-    } catch (NoSuchAlgorithmException e) {
-        throw new RuntimeException(e);
-    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -206,9 +212,6 @@ private String hashPassword(String password) {
             }
         });
     }
-    
-
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

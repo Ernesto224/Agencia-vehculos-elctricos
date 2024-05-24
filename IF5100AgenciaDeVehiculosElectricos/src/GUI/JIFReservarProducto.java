@@ -5,19 +5,45 @@
 package GUI;
 
 import Data.BaseData;
+import Data.MovimientoData;
+import Domain.Movimiento;
+import Domain.UsuarioActivo;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class JIFReservarProducto extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form JIFReservarProducto
      */
-    public JIFReservarProducto() {
+    private JTable tablaAccesoriosPartes;
+    private DefaultTableModel dftModeloTabla;
+    private JScrollPane scrollPane;
+    private MovimientoData movimientoData;
+    private int idPedido;
+    private int idProducto;
+    private int idEmpleado;
+    public JIFReservarProducto(UsuarioActivo usuarioActivo) {
         initComponents();
         inhabilitarEementos();
+        this.dftModeloTabla = new DefaultTableModel();
+        this.tablaAccesoriosPartes = new JTable();
+        this.tablaAccesoriosPartes.setModel(this.dftModeloTabla);
+        this.scrollPane = new JScrollPane(this.tablaAccesoriosPartes);
+        this.scrollPane.setBounds(3, 350, 600, 200);
+        this.add(this.scrollPane);
+        this.idPedido = -1;
+        this.idProducto = -1;
+        this.movimientoData = new MovimientoData();
+        this.crearTabla();
+        this.idEmpleado = usuarioActivo.getId();
+
     }
 
     /**
@@ -39,15 +65,13 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jlabelIDPedido = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        jlbTotal = new javax.swing.JLabel();
 
         setClosable(true);
         setMaximizable(true);
@@ -76,19 +100,6 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
         jButton2.setText("Agregar producto");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,23 +110,45 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
         jLabel6.setText("Lista de productos agregados");
 
         jButton3.setText("Remover producto");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("ID Pedido");
 
         jlabelIDPedido.setText("ID DEL PEDIDO");
 
-        jLabel8.setText("ID Empleado");
+        jButton4.setText("Terminar Pedido");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jlbTotal.setText("Total: 0.0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -130,27 +163,21 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel5)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel2)
                                         .addComponent(jLabel3)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jLabel8))
-                                    .addGap(44, 44, 44)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jTextField2)
-                                            .addComponent(jTextField3)
-                                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jLabel4))
+                                    .addGap(49, 49, 49)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextField2)
+                                        .addComponent(jTextField3)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)))))
+                        .addGap(38, 38, 38)
+                        .addComponent(jlbTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,7 +191,8 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlbTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -177,21 +205,16 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(jLabel6)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53))
         );
 
         pack();
@@ -203,150 +226,173 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-  // Obtener los datos de los campos de texto
-    String idClienteText = jTextField4.getText();
+        // Obtener los datos de los campos de texto
+        String idClienteText = jTextField4.getText();
 
-    // Validar si los datos son números enteros válidos
-    int idCliente, cantidadMovida, idProducto, idAlmacen, idEmpleado;
-    try {
-        idCliente = Integer.parseInt(idClienteText);
-        
-    } catch (NumberFormatException e) {
-        // Mostrar un mensaje de error si algún dato no es un número entero válido
-        JOptionPane.showMessageDialog(this, "El ID debe ser enteros válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-        return; // Salir del método si hay un error
-    }
+        // Validar si los datos son números enteros válidos
+        int idCliente, cantidadMovida, idAlmacen;
+        try {
+            idCliente = Integer.parseInt(idClienteText);
 
-    // Inicializar el ID del pedido
-    int idPedido = -1;
-
-    // Registrar el pedido solo si el ID del pedido no está ya establecido
-    if (this.jlabelIDPedido.getText().equals("ID DEL PEDIDO")) {
-        idPedido = registrarPedido(idCliente);
-        if (idPedido == -1) {
-            JOptionPane.showMessageDialog(this, "El cliente no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException e) {
+            // Mostrar un mensaje de error si algún dato no es un número entero válido
+            JOptionPane.showMessageDialog(this, "El ID debe ser enteros válidos.", "Error", JOptionPane.ERROR_MESSAGE);
             return; // Salir del método si hay un error
         }
-        // Actualizar el JLabel con el ID del pedido
-        jlabelIDPedido.setText(String.valueOf(idPedido));
-    } else {
-        // Obtener el ID del pedido desde el JLabel
-        idPedido = Integer.parseInt(jlabelIDPedido.getText());
-    }
+
+        // Inicializar el ID del pedido
+        this.idPedido = -1;
+
+        // Registrar el pedido solo si el ID del pedido no está ya establecido
+        if (this.jlabelIDPedido.getText().equals("ID DEL PEDIDO")) {
+            this.idPedido = registrarPedido(idCliente);
+            if (this.idPedido == -1) {
+                JOptionPane.showMessageDialog(this, "El cliente no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Salir del método si hay un error
+            }
+            // Actualizar el JLabel con el ID del pedido
+            jlabelIDPedido.setText(String.valueOf(idPedido));
+        } else {
+            // Obtener el ID del pedido desde el JLabel
+            idPedido = Integer.parseInt(jlabelIDPedido.getText());
+        }
 
         habilitarEementos();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-      // Obtener los datos de los campos de texto
-    String idClienteText = jTextField4.getText();
-    String cantidadMovidaText = jTextField3.getText();
-    String idProductoText = jTextField1.getText();
-    String idAlmacenText = jTextField2.getText();
-    String idEmpleadoText = jTextField5.getText();
+        // Obtener los datos de los campos de texto
+        String idClienteText = jTextField4.getText();
+        String cantidadMovidaText = jTextField3.getText();
+        String idProductoText = jTextField1.getText();
+        String idAlmacenText = jTextField2.getText();
 
-    // Validar si los datos son números enteros válidos
-    int idCliente, cantidadMovida, idProducto, idAlmacen, idEmpleado;
-    try {
-        idCliente = Integer.parseInt(idClienteText);
-        cantidadMovida = Integer.parseInt(cantidadMovidaText);
-        idProducto = Integer.parseInt(idProductoText);
-        idAlmacen = Integer.parseInt(idAlmacenText);
-        idEmpleado = Integer.parseInt(idEmpleadoText);
-    } catch (NumberFormatException e) {
-        // Mostrar un mensaje de error si algún dato no es un número entero válido
-        JOptionPane.showMessageDialog(this, "Todos los campos deben contener números enteros válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-        return; // Salir del método si hay un error
-    }
+        // Validar si los datos son números enteros válidos
+        int idCliente, cantidadMovida, idAlmacen;
+        try {
+            idCliente = Integer.parseInt(idClienteText);
+            cantidadMovida = Integer.parseInt(cantidadMovidaText);
+            this.idProducto = Integer.parseInt(idProductoText);
+            idAlmacen = Integer.parseInt(idAlmacenText);
+        } catch (NumberFormatException e) {
+            // Mostrar un mensaje de error si algún dato no es un número entero válido
+            JOptionPane.showMessageDialog(this, "Todos los campos deben contener números enteros válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir del método si hay un error
+        }
 
-    // Inicializar el ID del pedido
-    int idPedido = Integer.parseInt(jlabelIDPedido.getText());
-    // Ejecutar el segundo procedimiento almacenado
-    int resultado = agregarMovimientoInventario(cantidadMovida, idProducto, idAlmacen, idEmpleado, idPedido);
-    if (resultado == 0) {
-        JOptionPane.showMessageDialog(this, "Movimiento de inventario registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        this.jButton1.setEnabled(true);
-        registrarPedido(idCliente);
-    } else {
-        JOptionPane.showMessageDialog(this, "Error al registrar el movimiento de inventario.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        // Inicializar el ID del pedido
+        int idPedido = Integer.parseInt(jlabelIDPedido.getText());
+        // Ejecutar el segundo procedimiento almacenado
+        int resultado = agregarMovimientoInventario(cantidadMovida, this.idProducto, idAlmacen, this.idEmpleado, this.idPedido);
+        if (resultado == 0) {
+            JOptionPane.showMessageDialog(this, "Movimiento de inventario registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            this.jButton1.setEnabled(true);
+            registrarPedido(idCliente);
+            this.cargarDatos();
+            this.jlbTotal.setText("Total: "+this.movimientoData.calcularMonto(this.idPedido));
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al registrar el movimiento de inventario.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
-private int registrarPedido(int idCliente) {
-    try {
-        // Obtener la conexión a la base de datos
-        BaseData baseData = new BaseData() {};
-        Connection connection = baseData.getSqlConnection();
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String idProductoText = jTextField1.getText();
+        if (!idProductoText.isEmpty()) {
+            this.idProducto = Integer.parseInt(idProductoText);
+            if (this.movimientoData.removerProducto(this.idPedido, this.idProducto)) {
+                this.cargarDatos();
+                this.jlbTotal.setText("Total: " + this.movimientoData.calcularMonto(this.idPedido));
+            }
+        }
 
-        // Preparar la llamada al procedimiento almacenado
-        String sql = "{? = call FinanzaVenta.sp_RegistrarPedido(?)}";
-        CallableStatement callableStatement = connection.prepareCall(sql);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-        // Registrar el parámetro de salida para el valor de retorno
-        callableStatement.registerOutParameter(1, java.sql.Types.INTEGER);
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
-        // Establecer los parámetros del procedimiento almacenado
-        callableStatement.setInt(2, idCliente);
+    private int registrarPedido(int idCliente) {
+        try {
+            // Obtener la conexión a la base de datos
+            BaseData baseData = new BaseData() {
+            };
+            Connection connection = baseData.getSqlConnection();
 
-        // Ejecutar el procedimiento almacenado
-        callableStatement.execute();
+            // Preparar la llamada al procedimiento almacenado
+            String sql = "{? = call FinanzaVenta.sp_RegistrarPedido(?)}";
+            CallableStatement callableStatement = connection.prepareCall(sql);
 
-        // Obtener el valor de retorno del procedimiento almacenado
-        int resultado = callableStatement.getInt(1);
+            // Registrar el parámetro de salida para el valor de retorno
+            callableStatement.registerOutParameter(1, java.sql.Types.INTEGER);
 
-        // Cerrar la conexión
-        connection.close();
+            // Establecer los parámetros del procedimiento almacenado
+            callableStatement.setInt(2, idCliente);
 
-        return resultado;
-    } catch (SQLException ex) {
-        // Mostrar un mensaje de error si ocurre alguna excepción SQL
-        JOptionPane.showMessageDialog(this, "Error el registro del pedido: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        return -1; // Retornar -1 en caso de error
-    }
-}
+            // Ejecutar el procedimiento almacenado
+            callableStatement.execute();
 
-private int agregarMovimientoInventario(int cantidadMovida, int idProducto, int idAlmacen, int idEmpleado, int idPedido) {
-    try {
-        // Obtener la conexión a la base de datos
-        BaseData baseData = new BaseData() {};
-        Connection connection = baseData.getSqlConnection();
+            // Obtener el valor de retorno del procedimiento almacenado
+            int resultado = callableStatement.getInt(1);
 
-        // Preparar la llamada al procedimiento almacenado
-        String sql = "{? = call Stock.sp_AgregarMovimientoInventario(?, ?, ?, ?, ?)}";
-        CallableStatement callableStatement = connection.prepareCall(sql);
+            // Cerrar la conexión
+            connection.close();
 
-        // Registrar el parámetro de salida para el valor de retorno
-        callableStatement.registerOutParameter(1, java.sql.Types.INTEGER);
-
-        // Establecer los parámetros del procedimiento almacenado
-        callableStatement.setInt(2, cantidadMovida);
-        callableStatement.setInt(3, idProducto);
-        callableStatement.setInt(4, idAlmacen);
-        callableStatement.setInt(5, idEmpleado);
-        callableStatement.setInt(6, idPedido);
-
-        // Ejecutar el procedimiento almacenado
-        callableStatement.execute();
-
-        // Obtener el valor de retorno del procedimiento almacenado
-        int resultado = callableStatement.getInt(1);
-
-        // Cerrar la conexión
-        connection.close();
-
-        return resultado;
-    } catch (SQLException ex) {
-        // Mostrar un mensaje de error si ocurre alguna excepción SQL
-        JOptionPane.showMessageDialog(this, "Error al ejecutar el movimiento de inventario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        return -1; // Retornar -1 en caso de error
+            return resultado;
+        } catch (SQLException ex) {
+            // Mostrar un mensaje de error si ocurre alguna excepción SQL
+            JOptionPane.showMessageDialog(this, "Error el registro del pedido: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return -1; // Retornar -1 en caso de error
+        }
     }
 
-}
+    private int agregarMovimientoInventario(int cantidadMovida, int idProducto, int idAlmacen, int idEmpleado, int idPedido) {
+        try {
+            // Obtener la conexión a la base de datos
+            BaseData baseData = new BaseData() {
+            };
+            Connection connection = baseData.getSqlConnection();
+
+            // Preparar la llamada al procedimiento almacenado
+            String sql = "{? = call Stock.sp_AgregarMovimientoInventario(?, ?, ?, ?, ?)}";
+            CallableStatement callableStatement = connection.prepareCall(sql);
+
+            // Registrar el parámetro de salida para el valor de retorno
+            callableStatement.registerOutParameter(1, java.sql.Types.INTEGER);
+
+            // Establecer los parámetros del procedimiento almacenado
+            callableStatement.setInt(2, cantidadMovida);
+            callableStatement.setInt(3, idProducto);
+            callableStatement.setInt(4, idAlmacen);
+            callableStatement.setInt(5, idEmpleado);
+            callableStatement.setInt(6, idPedido);
+
+            // Ejecutar el procedimiento almacenado
+            callableStatement.execute();
+
+            // Obtener el valor de retorno del procedimiento almacenado
+            int resultado = callableStatement.getInt(1);
+
+            // Cerrar la conexión
+            connection.close();
+
+            return resultado;
+        } catch (SQLException ex) {
+            // Mostrar un mensaje de error si ocurre alguna excepción SQL
+            JOptionPane.showMessageDialog(this, "Error al ejecutar el movimiento de inventario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return -1; // Retornar -1 en caso de error
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -354,32 +400,78 @@ private int agregarMovimientoInventario(int cantidadMovida, int idProducto, int 
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JLabel jlabelIDPedido;
+    private javax.swing.JLabel jlbTotal;
     // End of variables declaration//GEN-END:variables
 
     private void habilitarEementos() {
-     jTextField1.setEnabled(true);
-     jTextField2.setEnabled(true);
-     jTextField3.setEnabled(true);
-     jTextField5.setEnabled(true);
-     jButton2.setEnabled(true);
-     jButton3.setEnabled(true);
+        jTextField1.setEnabled(true);
+        jTextField2.setEnabled(true);
+        jTextField3.setEnabled(true);
+        jButton2.setEnabled(true);
+        jButton3.setEnabled(true);
     }
-    
+
     private void inhabilitarEementos() {
-     jTextField1.setEnabled(false);
-     jTextField2.setEnabled(false);
-     jTextField3.setEnabled(false);
-     jTextField5.setEnabled(false);
-     jButton2.setEnabled(false);
-     jButton3.setEnabled(false);
+        jTextField1.setEnabled(false);
+        jTextField2.setEnabled(false);
+        jTextField3.setEnabled(false);
+        jButton2.setEnabled(false);
+        jButton3.setEnabled(false);
     }
+
+    private void crearTabla() {
+        try {
+            // Limpiar las columnas existentes en el modelo de la tabla
+            if (this.dftModeloTabla != null) {
+                this.dftModeloTabla.setColumnCount(0); // Eliminar todas las columnas existentes
+
+                // Agregar las nuevas columnas con los nombres correspondientes
+                this.dftModeloTabla.addColumn("IDProducto");
+                this.dftModeloTabla.addColumn("Vehiculo");
+                this.dftModeloTabla.addColumn("Accesorio");
+                this.dftModeloTabla.addColumn("Componente");
+                this.dftModeloTabla.addColumn("CantidadMovida");
+            }
+            this.repaint();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void cargarDatos() {
+        // Obtener los movimientos del pedido actual
+        ArrayList<Movimiento> movimientos = this.movimientoData.obtenerMovimientos(this.idPedido);
+
+        // Limpiar los datos existentes en la tabla
+        if (this.dftModeloTabla != null) {
+            this.dftModeloTabla.setRowCount(0); // Eliminar todas las filas existentes
+        }
+
+        // Verificar si hay datos para cargar
+        if (movimientos != null && !movimientos.isEmpty()) {
+            // Iterar sobre cada movimiento y agregarlo a la tabla
+            for (Movimiento movimiento : movimientos) {
+                // Verificar si los valores de Vehiculo, Accesorio o Componente son nulos o están vacíos y reemplazarlos por "x" si es necesario
+                String vehiculo = (movimiento.getVehiculo() != null && !movimiento.getVehiculo().isEmpty()) ? movimiento.getVehiculo() : "x";
+                String accesorio = (movimiento.getAccesorio() != null && !movimiento.getAccesorio().isEmpty()) ? movimiento.getAccesorio() : "x";
+                String componente = (movimiento.getComponente() != null && !movimiento.getComponente().isEmpty()) ? movimiento.getComponente() : "x";
+
+                Object[] rowData = new Object[]{
+                    movimiento.getIDProducto(),
+                    vehiculo,
+                    accesorio,
+                    componente,
+                    movimiento.getCantidadMovida()
+                };
+                this.dftModeloTabla.addRow(rowData);
+            }
+        }
+        this.repaint();
+    }
+
 }

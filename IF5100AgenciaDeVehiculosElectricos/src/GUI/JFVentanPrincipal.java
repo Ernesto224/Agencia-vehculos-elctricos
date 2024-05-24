@@ -4,6 +4,8 @@
  */
 package GUI;
 
+import Domain.UsuarioActivo;
+
 /**
  *
  * @author josue
@@ -11,8 +13,11 @@ package GUI;
 public class JFVentanPrincipal extends javax.swing.JFrame {
 
     private String puesto;
-    public JFVentanPrincipal(String puesto) {
+    private UsuarioActivo usuarioActivo;
+
+    public JFVentanPrincipal(String puesto, UsuarioActivo usuarioActivo) {
         initComponents();
+        this.usuarioActivo = usuarioActivo;
         this.puesto = puesto.toLowerCase();
         switch (this.puesto) {
             case "vendedor":
@@ -59,6 +64,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         jm5 = new javax.swing.JMenuItem();
         jm6 = new javax.swing.JMenuItem();
         jm7 = new javax.swing.JMenuItem();
+        Clientes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -127,6 +133,14 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm7);
 
+        Clientes.setText("Clientes");
+        Clientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClientesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Clientes);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -152,21 +166,21 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jm3ActionPerformed
 
     private void jm6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm6ActionPerformed
-        JIFReservarProducto jIFReservarProducto = new JIFReservarProducto();
+        JIFReservarProducto jIFReservarProducto = new JIFReservarProducto(usuarioActivo);
         jDesktopPane1.add(jIFReservarProducto);
         jIFReservarProducto.setVisible(true);
     }//GEN-LAST:event_jm6ActionPerformed
 
     private void jm7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm7ActionPerformed
-       JIFRegistrarCliente jIFRegistrarCliente = new JIFRegistrarCliente();
-       jDesktopPane1.add(jIFRegistrarCliente);
-       jIFRegistrarCliente.setVisible(true);
+        JIFRegistrarCliente jIFRegistrarCliente = new JIFRegistrarCliente();
+        jDesktopPane1.add(jIFRegistrarCliente);
+        jIFRegistrarCliente.setVisible(true);
     }//GEN-LAST:event_jm7ActionPerformed
 
     private void jm5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm5ActionPerformed
-//        JIFListarVehiculos jIFListarVehiculos = new JIFListarVehiculos();
-//        jDesktopPane1.add(jIFListarVehiculos);
-//        jIFListarVehiculos.setVisible(true);
+        JIFListarVehiculosVendidos jIFListarVehiculos = new JIFListarVehiculosVendidos();
+        jDesktopPane1.add(jIFListarVehiculos);
+        jIFListarVehiculos.setVisible(true);
     }//GEN-LAST:event_jm5ActionPerformed
 
     private void jmiVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiVentaActionPerformed
@@ -176,42 +190,16 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         ventaProducto.setVisible(true);
     }//GEN-LAST:event_jmiVentaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFVentanPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFVentanPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFVentanPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFVentanPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void ClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClientesActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFVentanPrincipal("").setVisible(true);
-            }
-        });
-    }
+        JIFMostrarCliente mostrarCliente = new JIFMostrarCliente();
+        jDesktopPane1.add(mostrarCliente);
+        mostrarCliente.setVisible(true);
+    }//GEN-LAST:event_ClientesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Clientes;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
