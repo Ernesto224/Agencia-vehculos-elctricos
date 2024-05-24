@@ -23,16 +23,9 @@ public class ClienteData extends BaseData {
     }
 
     public boolean registrarCliente(Cliente cliente) {
-<<<<<<< HEAD
-        String sqlCallStoreProcedure = "{call [FinanzaVenta].[sp_RegistrarCliente](?,?,?,?)}";
-        
-        try (java.sql.Connection connection = getSqlConnection();
-             CallableStatement callable = connection.prepareCall(sqlCallStoreProcedure)) {
-=======
         String sqlCallStoreProcedure = "{call [FinanzaVenta].[sp_RegistrarCliente](?,?,?,?)}"; // Asegúrate de usar el nombre correcto del procedimiento almacenado
 
         try ( java.sql.Connection connection = getSqlConnection();  CallableStatement callable = connection.prepareCall(sqlCallStoreProcedure)) {
->>>>>>> 323dea9970a22f404142c4563f5eff74da8c50d7
 
             callable.setString(1, cliente.getNombreCliente());
             callable.setString(2, cliente.getTelefono());
