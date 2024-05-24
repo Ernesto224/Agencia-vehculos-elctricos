@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Data;
 
 import java.sql.Connection;
@@ -9,11 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public abstract class BaseData {
-    private final String sqlUrl = "jdbc:sqlserver://localhost:1433;databaseName=PRUEBA_JESNER;integratedSecurity=true;trustServerCertificate=true;encrypt=false";
+   private final String sqlUrl = "jdbc:sqlserver://20.169.167.245;databaseName=Agencia_De_Vehiculos_Electricos;user=ZafiroLogin;password=zafiro123;encrypt=false";
     public Connection getSqlConnection() throws SQLException {
         Connection connection = DriverManager.getConnection(sqlUrl);
         return connection;
     }
-}
-
-
+} 

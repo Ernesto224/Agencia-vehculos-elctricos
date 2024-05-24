@@ -10,39 +10,77 @@ package Domain;
  */
 public class Cliente {
     // Atributos
-    private String nombreCompleto;
-    private String numeroTelefono;
-    private String correoElectronico;
-
+    private String nombreCliente;
+    private String telefono;
+    private String correo;
+    private String identificacion;
+    private int IdCliente;
     // Constructor
-    public Cliente(String nombreCompleto, String numeroTelefono, String correoElectronico) {
-        this.nombreCompleto = nombreCompleto;
-        this.numeroTelefono = numeroTelefono;
-        this.correoElectronico = correoElectronico;
+    public Cliente(String nombreCliente, String telefono, String correo, String identificacion) {
+        this.nombreCliente = nombreCliente;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.identificacion = identificacion;
+        this.IdCliente= 0;
     }
 
-    // Métodos de acceso (getters y setters)
-    public String getNombreCompleto() {
-        return nombreCompleto;
+    public Cliente(String nombreCliente, String telefono, String correo, String identificacion, int IdCliente) {
+        this.nombreCliente = nombreCliente;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.identificacion = identificacion;
+        this.IdCliente = IdCliente;
+    }
+    
+    public int getIdCliente() {
+        return IdCliente;
     }
 
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
+    public void setIdCliente(int IdCliente) {
+        this.IdCliente = IdCliente;
+    }
+    
+
+    // Getters y Setters
+    public String getNombreCliente() {
+        return nombreCliente;
     }
 
-    public String getNumeroTelefono() {
-        return numeroTelefono;
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
     }
 
-    public void setNumeroTelefono(String numeroTelefono) {
-        this.numeroTelefono = numeroTelefono;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
+    }
+    
+    // Método toString para imprimir los detalles del cliente
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "nombreCliente='" + nombreCliente + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", correo='" + correo + '\'' +
+                '}';
     }
 }

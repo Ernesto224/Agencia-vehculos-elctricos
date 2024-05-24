@@ -4,31 +4,23 @@
  */
 package GUI;
 
-import Data.ComponenteData;
+import Data.BaseData;
+import Domain.UsuarioActivo;
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-/**
- *
- * @author User
- */
-public class JFInicioSesion extends javax.swing.JInternalFrame {
+public class JFInicioSesion extends javax.swing.JFrame {
 
     /**
      * Creates new form JFInicioSesion
      */
-    private ComponenteData componenteData;
     public JFInicioSesion() {
-        try {
-            initComponents();
-            this.componenteData = new ComponenteData();
-            String info = componenteData.listarPeliculasDisponiblesAsString();
-            System.out.println(info);
-        } catch (SQLException ex) {
-            Logger.getLogger(JFInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        initComponents();
     }
 
     /**
@@ -40,55 +32,151 @@ public class JFInicioSesion extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
+        jtfNombreUsuario = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jtfNombreUsuario = new javax.swing.JTextField();
-        jtfContrasenia = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jtfContrasennia = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nombre Usuario: ");
+        jButton1.setText("Iniciar Sesión");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("Contraseña:");
+        jLabel1.setText("Contraseña");
 
-        jButton1.setText("Ingresar");
+        jLabel2.setText("Usuario");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setText("Inicio de Sesión");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jtfContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-                        .addComponent(jtfNombreUsuario)))
-                .addContainerGap(42, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(154, 154, 154)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(53, 53, 53)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jtfContrasennia)
+                                .addComponent(jtfNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jLabel3)
+                .addGap(53, 53, 53)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jtfNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jtfContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
+                    .addComponent(jtfContrasennia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46)
+                .addComponent(jButton1)
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Obtener los datos de los campos de texto
+        if (this.jtfContrasennia.getPassword().length > 0 && !this.jtfNombreUsuario.getText().isEmpty()) {
+            String nombreUsuario = jtfNombreUsuario.getText();
+            char[] passwordArray = jtfContrasennia.getPassword();
+            String contrasenia = new String(passwordArray);
+
+            // Encriptar la contraseña usando SHA-256
+            String hashedContrasenia = hashPassword(contrasenia);
+            Connection connection = null;
+            try {
+                BaseData baseData = new BaseData() {
+                };
+                connection = baseData.getSqlConnection();
+                // Preparar la llamada al procedimiento almacenado
+                String sql = "{call RRHH.sp_InicioSesion(?, ?)}";
+                CallableStatement callableStatement = connection.prepareCall(sql);
+
+                // Establecer los parámetros del procedimiento almacenado
+                callableStatement.setString(1, nombreUsuario);
+                callableStatement.setString(2, hashedContrasenia);
+
+                // Ejecutar el procedimiento almacenado
+                boolean hasResults = callableStatement.execute();
+                if (hasResults) {
+                    ResultSet rs = callableStatement.getResultSet();
+                    if (rs.next()) {
+                        String puesto = rs.getString("Respuesta");
+                        int IdEmpleado = rs.getInt("IDEmpleado");
+                        if (puesto != null) {
+                            // Mostrar un mensaje de éxito si las credenciales son válidas
+                            JOptionPane.showMessageDialog(this, "Inicio de sesión correcto. Puesto: " + puesto, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                            UsuarioActivo usuarioActivo = new UsuarioActivo(IdEmpleado, nombreUsuario, hashedContrasenia);
+                            JFVentanPrincipal jFVentanPrincipal = new JFVentanPrincipal(puesto,usuarioActivo);
+                            jFVentanPrincipal.setVisible(true);
+                            this.dispose();
+                        } else {
+                            // Mostrar un mensaje de error si las credenciales no son válidas
+                            JOptionPane.showMessageDialog(this, "Credenciales incorrectas, debe de llenar todos los campos y proporcionar credenciales válidas.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Usuario no encontrado o credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
+                // Cerrar la llamada
+                callableStatement.close();
+            } catch (SQLException ex) {
+                // Mostrar un mensaje de error si ocurre alguna excepción SQL
+                JOptionPane.showMessageDialog(this, "Error al intentar iniciar sesión: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                // Asegurarse de cerrar la conexión en caso de excepción
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Llena todos los campos de texto");
+        }
+    }
+
+// Método para encriptar la contraseña
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedPassword = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedPassword) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -125,11 +213,13 @@ public class JFInicioSesion extends javax.swing.JInternalFrame {
         });
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jtfContrasenia;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPasswordField jtfContrasennia;
     private javax.swing.JTextField jtfNombreUsuario;
     // End of variables declaration//GEN-END:variables
 }
