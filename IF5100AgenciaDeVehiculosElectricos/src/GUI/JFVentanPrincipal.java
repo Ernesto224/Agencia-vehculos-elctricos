@@ -4,6 +4,12 @@
  */
 package GUI;
 
+<<<<<<< HEAD
+import javax.swing.ImageIcon;
+=======
+import Domain.UsuarioActivo;
+>>>>>>> 323dea9970a22f404142c4563f5eff74da8c50d7
+
 /**
  *
  * @author josue
@@ -11,8 +17,15 @@ package GUI;
 public class JFVentanPrincipal extends javax.swing.JFrame {
 
     private String puesto;
-    public JFVentanPrincipal(String puesto) {
+    private UsuarioActivo usuarioActivo;
+
+    public JFVentanPrincipal(String puesto, UsuarioActivo usuarioActivo) {
         initComponents();
+<<<<<<< HEAD
+        this.setIconImage(new ImageIcon(getClass().getResource("/Assets/icon.png")).getImage());
+=======
+        this.usuarioActivo = usuarioActivo;
+>>>>>>> 323dea9970a22f404142c4563f5eff74da8c50d7
         this.puesto = puesto.toLowerCase();
         switch (this.puesto) {
             case "vendedor":
@@ -59,12 +72,15 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         jm5 = new javax.swing.JMenuItem();
         jm6 = new javax.swing.JMenuItem();
         jm7 = new javax.swing.JMenuItem();
+        Clientes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImages(null);
+        setResizable(false);
 
         jDesktopPane1.setBackground(new java.awt.Color(152, 197, 197));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/logo.jpeg"))); // NOI18N
 
         jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -72,22 +88,24 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(226, 226, 226)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
+                .addContainerGap(159, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(316, Short.MAX_VALUE))
+                .addGap(129, 129, 129))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jLabel1)
-                .addContainerGap(255, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/menu.png"))); // NOI18N
         jMenu1.setText("Gestionar");
+        jMenu1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
 
-        jmiVenta.setText("Venta");
+        jmiVenta.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jmiVenta.setText("Visualizar Productos");
         jmiVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jmiVentaActionPerformed(evt);
@@ -95,6 +113,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jmiVenta);
 
+        jm3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jm3.setText("Generar Factura");
         jm3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,6 +122,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm3);
 
+        jm5.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jm5.setText("Listar  Vehículos Vendidos");
         jm5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,6 +131,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm5);
 
+        jm6.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jm6.setText("Generar Pedido");
         jm6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,6 +140,7 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm6);
 
+        jm7.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jm7.setText("Registrar Cliente");
         jm7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,6 +148,14 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jm7);
+
+        Clientes.setText("Clientes");
+        Clientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClientesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(Clientes);
 
         jMenuBar1.add(jMenu1);
 
@@ -152,21 +182,21 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jm3ActionPerformed
 
     private void jm6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm6ActionPerformed
-        JIFReservarProducto jIFReservarProducto = new JIFReservarProducto();
+        JIFReservarProducto jIFReservarProducto = new JIFReservarProducto(usuarioActivo);
         jDesktopPane1.add(jIFReservarProducto);
         jIFReservarProducto.setVisible(true);
     }//GEN-LAST:event_jm6ActionPerformed
 
     private void jm7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm7ActionPerformed
-       JIFRegistrarCliente jIFRegistrarCliente = new JIFRegistrarCliente();
-       jDesktopPane1.add(jIFRegistrarCliente);
-       jIFRegistrarCliente.setVisible(true);
+        JIFRegistrarCliente jIFRegistrarCliente = new JIFRegistrarCliente();
+        jDesktopPane1.add(jIFRegistrarCliente);
+        jIFRegistrarCliente.setVisible(true);
     }//GEN-LAST:event_jm7ActionPerformed
 
     private void jm5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm5ActionPerformed
-//        JIFListarVehiculos jIFListarVehiculos = new JIFListarVehiculos();
-//        jDesktopPane1.add(jIFListarVehiculos);
-//        jIFListarVehiculos.setVisible(true);
+        JIFListarVehiculosVendidos jIFListarVehiculos = new JIFListarVehiculosVendidos();
+        jDesktopPane1.add(jIFListarVehiculos);
+        jIFListarVehiculos.setVisible(true);
     }//GEN-LAST:event_jm5ActionPerformed
 
     private void jmiVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiVentaActionPerformed
@@ -176,42 +206,16 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         ventaProducto.setVisible(true);
     }//GEN-LAST:event_jmiVentaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFVentanPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFVentanPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFVentanPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFVentanPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void ClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClientesActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFVentanPrincipal("").setVisible(true);
-            }
-        });
-    }
+        JIFMostrarCliente mostrarCliente = new JIFMostrarCliente();
+        jDesktopPane1.add(mostrarCliente);
+        mostrarCliente.setVisible(true);
+    }//GEN-LAST:event_ClientesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Clientes;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;

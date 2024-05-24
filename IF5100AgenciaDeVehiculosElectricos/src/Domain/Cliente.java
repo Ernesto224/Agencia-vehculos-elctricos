@@ -14,14 +14,32 @@ public class Cliente {
     private String telefono;
     private String correo;
     private String identificacion;
-
+    private int IdCliente;
     // Constructor
     public Cliente(String nombreCliente, String telefono, String correo, String identificacion) {
         this.nombreCliente = nombreCliente;
         this.telefono = telefono;
         this.correo = correo;
         this.identificacion = identificacion;
+        this.IdCliente= 0;
     }
+
+    public Cliente(String nombreCliente, String telefono, String correo, String identificacion, int IdCliente) {
+        this.nombreCliente = nombreCliente;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.identificacion = identificacion;
+        this.IdCliente = IdCliente;
+    }
+    
+    public int getIdCliente() {
+        return IdCliente;
+    }
+
+    public void setIdCliente(int IdCliente) {
+        this.IdCliente = IdCliente;
+    }
+    
 
     // Getters y Setters
     public String getNombreCliente() {

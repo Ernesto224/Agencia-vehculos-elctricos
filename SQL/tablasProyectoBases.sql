@@ -1089,10 +1089,7 @@ BEGIN
             VehiculoVendidos.PrecioVenta
         FROM Stock.view_VehiculosVendidos AS VehiculoVendidos
         INNER JOIN Stock.Vehiculo AS Vehiculo ON VehiculoVendidos.IDVehiculo = Vehiculo.IDVehiculo
-        WHERE VehiculoVendidos.FechaVenta BETWEEN @FechaInicio AND @FechaFin
-            AND (VehiculoVendidos.MarcaVehiculo = @Marca OR @Marca IS NULL)
-            AND (VehiculoVendidos.ModeloVehiculo = @Modelo OR @Modelo IS NULL)
-            AND (Vehiculo.IDTipoVehiculo = @IDTipoVehiculo OR @IDTipoVehiculo IS NULL);
+        
     END TRY
     BEGIN CATCH
         SELECT 'NO DATA' AS Respuesta;
@@ -1100,6 +1097,11 @@ BEGIN
 END
 GO
 
+--WHERE (VehiculoVendidos.MarcaVehiculo = @Marca OR @Marca IS NULL)
+--            AND (VehiculoVendidos.ModeloVehiculo = @Modelo OR @Modelo IS NULL)
+--            AND (Vehiculo.IDTipoVehiculo = @IDTipoVehiculo OR @IDTipoVehiculo IS NULL);
+
+--VehiculoVendidos.FechaVenta BETWEEN @FechaInicio AND @FechaFin
 --Requerimiento 6
 
 --ROLES
