@@ -4,11 +4,8 @@
  */
 package GUI;
 
-<<<<<<< HEAD
 import javax.swing.ImageIcon;
-=======
 import Domain.UsuarioActivo;
->>>>>>> 323dea9970a22f404142c4563f5eff74da8c50d7
 
 /**
  *
@@ -21,36 +18,33 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
 
     public JFVentanPrincipal(String puesto, UsuarioActivo usuarioActivo) {
         initComponents();
-<<<<<<< HEAD
         this.setIconImage(new ImageIcon(getClass().getResource("/Assets/icon.png")).getImage());
-=======
         this.usuarioActivo = usuarioActivo;
->>>>>>> 323dea9970a22f404142c4563f5eff74da8c50d7
         this.puesto = puesto.toLowerCase();
         switch (this.puesto) {
-            case "vendedor":
+            case "vendedor" -> {
                 jm3.setVisible(true);
                 jm5.setVisible(true);
                 jm6.setVisible(true);
                 jm7.setVisible(true);
                 jmiVenta.setVisible(true);
-                break;
-            case "contador":
+            }
+            case "contador" -> {
                 jm3.setVisible(false);
                 jm5.setVisible(true);
                 jm6.setVisible(false);
                 jm7.setVisible(false);
                 jmiVenta.setVisible(false);
-                break;
-            case "Gerente de RRHH":
-                break;
-            default:
+            }
+            case "Gerente de RRHH" -> {
+            }
+            default -> {
                 jm3.setVisible(false);
                 jm5.setVisible(false);
                 jm6.setVisible(false);
                 jm7.setVisible(false);
                 jmiVenta.setVisible(false);
-                break;
+            }
         }
     }
 

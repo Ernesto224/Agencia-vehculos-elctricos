@@ -40,7 +40,14 @@ GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_RegistrarFactura TO Zafiro;
 
 GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_RegistrarCliente TO Zafiro;
 GRANT EXECUTE ON OBJECT::Stock.sp_FiltrarVehiculosVendidos TO Zafiro;
+GRANT SELECT ON OBJECT::FinanzaVenta.MovimientosInventario TO Zafiro;
+GRANT SELECT ON OBJECT::FinanzaVenta.view_ResumenVentas TO Zafiro;
 
+GRANT EXECUTE ON OBJECT::Servicio.sp_InsertarServicioPedido TO Zafiro;
+GRANT EXECUTE ON OBJECT::Servicio.sp_RegistrarServicioPedido TO Zafiro;
+GRANT SELECT ON OBJECT::Servicio.view_ListarTodosLosServicios TO Zafiro;
+GRANT EXECUTE ON OBJECT::FinanzaVenta.sp_ActualizarMontoPedido TO Zafiro;
+GRANT EXECUTE ON OBJECT::Servicio.sp_ListarServiciosPorPedido TO Zafiro;
 
 -- Asignar permisos al rol ZafiroRojo (Ventas)
 GRANT SELECT, INSERT, UPDATE, DELETE ON FinanzaVenta.Cliente TO ZafiroRojo;

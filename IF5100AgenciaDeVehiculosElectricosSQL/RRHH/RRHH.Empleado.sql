@@ -20,3 +20,4 @@ CREATE TABLE RRHH.Empleado (
 	FOREIGN KEY (IDDepartamento)
 	REFERENCES RRHH.Departamento(IDDepartamento)
 );
+

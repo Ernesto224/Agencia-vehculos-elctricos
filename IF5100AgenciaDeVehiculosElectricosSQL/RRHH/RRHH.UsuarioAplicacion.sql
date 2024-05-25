@@ -11,3 +11,4 @@ CREATE TABLE RRHH.UsuarioAplicacion(
 	REFERENCES RRHH.Empleado(IDEmpleado),
 	PRIMARY KEY(IDEmpleado)
 )
+

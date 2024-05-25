@@ -5,8 +5,6 @@
 package GUI;
 
 import Data.BaseData;
-import com.sun.jdi.connect.spi.Connection;
-import javax.swing.JOptionPane;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +12,6 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.CallableStatement;
-
 
 public class JIFGenerarFactura extends javax.swing.JInternalFrame {
 
@@ -230,136 +227,138 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Obtener los datos de los campos de texto
-    String text1 = jTextField1.getText();
-    String text2 = jTextField2.getText();
-    String text3 = jTextField3.getText();
-    String text4 = jTextField4.getText();
-    String text5 = jTextField5.getText();
-    
-    // Validar si el primer dato es un número entero válido
-    int parametro1;
-    int parametro2;
-    try {
-        parametro1 = Integer.parseInt(text1);
-        parametro2 = Integer.parseInt(text2);
-    } catch (NumberFormatException e) {
-        // Mostrar un mensaje de error si el primer dato no es un número entero válido
-        JOptionPane.showMessageDialog(this, "No es un número entero válido", "Error", JOptionPane.ERROR_MESSAGE);
-        return; // Salir del método si hay un error
-    }
-    
-    // Llamar al método para ejecutar el procedimiento almacenado
-    generaFactura(parametro1, parametro2, text2, text3, text4);
+        String text1 = jTextField1.getText();
+        String text2 = jTextField2.getText();
+        String text3 = jTextField3.getText();
+        String text4 = jTextField4.getText();
+        String text5 = jTextField5.getText();
+
+        // Validar si el primer dato es un número entero válido
+        int parametro1;
+        int parametro2;
+        try {
+            parametro1 = Integer.parseInt(text1);
+            parametro2 = Integer.parseInt(text2);
+        } catch (NumberFormatException e) {
+            // Mostrar un mensaje de error si el primer dato no es un número entero válido
+            JOptionPane.showMessageDialog(this, "No es un número entero válido", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir del método si hay un error
+        }
+
+        // Llamar al método para ejecutar el procedimiento almacenado
+        generaFactura(parametro1, parametro2, text2, text3, text4);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void generaFactura(int parametro1, int parametro2, String parametro3, String parametro4, String parametro5) {
-     try {
-        // Obtener la conexión a la base de datos
-        BaseData baseData = new BaseData() {};
-        java.sql.Connection connection = baseData.getSqlConnection();
+        try {
+            // Obtener la conexión a la base de datos
+            BaseData baseData = new BaseData() {
+            };
+            java.sql.Connection connection = baseData.getSqlConnection();
 
-        // Preparar la llamada al procedimiento almacenado
-        String sql = "{? = call FinanzaVenta.sp_RegistrarFactura(?, ?, ?, ?, ?)}";
-        CallableStatement callableStatement = connection.prepareCall(sql);
+            // Preparar la llamada al procedimiento almacenado
+            String sql = "{? = call FinanzaVenta.sp_RegistrarFactura(?, ?, ?, ?, ?)}";
+            CallableStatement callableStatement = connection.prepareCall(sql);
 
-        // Registrar el parámetro de salida para el valor de retorno
-        callableStatement.registerOutParameter(1, java.sql.Types.INTEGER);
+            // Registrar el parámetro de salida para el valor de retorno
+            callableStatement.registerOutParameter(1, java.sql.Types.INTEGER);
 
-        // Establecer los parámetros del procedimiento almacenado
-        callableStatement.setInt(2, parametro1);
-        callableStatement.setInt(3, parametro2);
-        callableStatement.setString(4, parametro4);
-        callableStatement.setString(5, parametro3);
-        callableStatement.setString(6, parametro5);
+            // Establecer los parámetros del procedimiento almacenado
+            callableStatement.setInt(2, parametro1);
+            callableStatement.setInt(3, parametro2);
+            callableStatement.setString(4, parametro4);
+            callableStatement.setString(5, parametro3);
+            callableStatement.setString(6, parametro5);
 
-        // Ejecutar el procedimiento almacenado
-        callableStatement.execute();
+            // Ejecutar el procedimiento almacenado
+            callableStatement.execute();
 
-        // Obtener el valor de retorno del procedimiento almacenado
-        int resultado = callableStatement.getInt(1);
+            // Obtener el valor de retorno del procedimiento almacenado
+            int resultado = callableStatement.getInt(1);
 
-        // Cerrar la conexión
-        connection.close();
+            // Cerrar la conexión
+            connection.close();
 
-        // Mostrar un mensaje con el valor de retorno y la información del pedido
-        String mensaje;
-        if (resultado == -1) {
-            mensaje = "Error al generar la factura.\nEl pedido o el cliente no existen.";
-        } else {
-            mensaje = "Se ha generado la factura con éxito.\n\n" +
-                      "ID de la Factura: " + resultado + "\n" +
-                      "ID del Pedido: " + parametro1 + "\n" +
-                      "ID del Cliente: " + parametro2 + "\n" +
-                      "Proveedor de Envío: " + parametro4 + "\n" +
-                      "ID de Dirección: " + parametro3 + "\n" +
-                      "Tracking del Pedido: " + parametro5 + "\n";
+            // Mostrar un mensaje con el valor de retorno y la información del pedido
+            String mensaje;
+            if (resultado == -1) {
+                mensaje = "Error al generar la factura.\nEl pedido o el cliente no existen.";
+            } else {
+                mensaje = "Se ha generado la factura con éxito.\n\n"
+                        + "ID de la Factura: " + resultado + "\n"
+                        + "ID del Pedido: " + parametro1 + "\n"
+                        + "ID del Cliente: " + parametro2 + "\n"
+                        + "Proveedor de Envío: " + parametro4 + "\n"
+                        + "ID de Dirección: " + parametro3 + "\n"
+                        + "Tracking del Pedido: " + parametro5 + "\n";
+            }
+            JOptionPane.showMessageDialog(this, mensaje, "Factura Generada", JOptionPane.INFORMATION_MESSAGE);
+            cargarDatos(parametro2);
+            limpiar();
+        } catch (SQLException ex) {
+            // Mostrar un mensaje de error si ocurre alguna excepción SQL
+            JOptionPane.showMessageDialog(this, "Error al ejecutar el procedimiento almacenado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        JOptionPane.showMessageDialog(this, mensaje, "Factura Generada", JOptionPane.INFORMATION_MESSAGE);
-         cargarDatos(parametro2);
-         limpiar();
-    } catch (SQLException ex) {
-        // Mostrar un mensaje de error si ocurre alguna excepción SQL
-        JOptionPane.showMessageDialog(this, "Error al ejecutar el procedimiento almacenado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    // Obtener el texto del campo de texto
-    String text = jTextField1.getText();
-    
-    // Validar si el texto es un número entero válido
-    try {
-        int value = Integer.parseInt(text);
-        // Si se llega aquí, el valor es un número entero válido
-        // Llamar al método para cargar datos con el valor ingresado
-        cargarDatos(value);
-    } catch (NumberFormatException e) {
-        // Mostrar un mensaje de error si el texto no es un número entero válido
-        JOptionPane.showMessageDialog(this, "El valor ingresado no es un número entero válido", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        // Obtener el texto del campo de texto
+        String text = jTextField1.getText();
+
+        // Validar si el texto es un número entero válido
+        try {
+            int value = Integer.parseInt(text);
+            // Si se llega aquí, el valor es un número entero válido
+            // Llamar al método para cargar datos con el valor ingresado
+            cargarDatos(value);
+        } catch (NumberFormatException e) {
+            // Mostrar un mensaje de error si el texto no es un número entero válido
+            JOptionPane.showMessageDialog(this, "El valor ingresado no es un número entero válido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
-private void cargarDatos(int value) {
-    DefaultTableModel modelo = new DefaultTableModel();
-    modelo.addColumn("ID Pedido");
-    modelo.addColumn("Fecha Pedido");
-    modelo.addColumn("Estado de Pedido");
-    modelo.addColumn("Monto");
+    private void cargarDatos(int value) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID Pedido");
+        modelo.addColumn("Fecha Pedido");
+        modelo.addColumn("Estado de Pedido");
+        modelo.addColumn("Monto");
 
-   String sql = "{call FinanzaVenta.sp_ListarPedidosPendientesPorCliente(?)}";
+        String sql = "{call FinanzaVenta.sp_ListarPedidosPendientesPorCliente(?)}";
 
-    try {
-        BaseData baseData = new BaseData() {};
-        java.sql.Connection connection = baseData.getSqlConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        
-        // Establecer el valor del parámetro en la consulta SQL
-        preparedStatement.setInt(1, value);
-        
-        ResultSet resultSet = preparedStatement.executeQuery();
+        try {
+            BaseData baseData = new BaseData() {
+            };
+            java.sql.Connection connection = baseData.getSqlConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-        while (resultSet.next()) {
-            Object[] fila = new Object[4];
-            fila[0] = resultSet.getInt("IDPedido");
-            fila[1] = resultSet.getString("FechaPedido");
-            fila[2] = resultSet.getString("EstadoPedido");
-            fila[3] = resultSet.getFloat("MontoPedido");
-            modelo.addRow(fila);
+            // Establecer el valor del parámetro en la consulta SQL
+            preparedStatement.setInt(1, value);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Object[] fila = new Object[4];
+                fila[0] = resultSet.getInt("IDPedido");
+                fila[1] = resultSet.getString("FechaPedido");
+                fila[2] = resultSet.getString("EstadoPedido");
+                fila[3] = resultSet.getFloat("MontoPedido");
+                modelo.addRow(fila);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        resultSet.close();
-        preparedStatement.close();
-        connection.close();
-
-    } catch (Exception e) {
-        e.printStackTrace();
+        jTable1.setModel(modelo);
     }
-
-    jTable1.setModel(modelo);
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

@@ -10,9 +10,10 @@ import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 public class JFInicioSesion extends javax.swing.JFrame {
@@ -114,51 +115,15 @@ public class JFInicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Obtener los datos de los campos de texto
+       // Obtener los datos de los campos de texto
         if (this.jtfContrasennia.getPassword().length > 0 && !this.jtfNombreUsuario.getText().isEmpty()) {
             String nombreUsuario = jtfNombreUsuario.getText();
             char[] passwordArray = jtfContrasennia.getPassword();
             String contrasenia = new String(passwordArray);
 
-<<<<<<< HEAD
-        // Establecer los parámetros del procedimiento almacenado
-        callableStatement.setString(1, nombreUsuario);
-        callableStatement.setString(2, hashedContrasenia);
-
-        // Ejecutar el procedimiento almacenado
-        boolean hasResults = callableStatement.execute();
-        if (hasResults) {
-            ResultSet rs = callableStatement.getResultSet();
-            if (rs.next()) {
-                String puesto = rs.getString("Respuesta");
-                if (puesto != null) {
-                    // Mostrar un mensaje de éxito si las credenciales son válidas
-                    JOptionPane.showMessageDialog(this, "Bienvenido " + puesto, "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    JFVentanPrincipal jFVentanPrincipal = new JFVentanPrincipal(puesto);
-                    jFVentanPrincipal.setVisible(true);
-                    this.dispose();
-                } else {
-                    // Mostrar un mensaje de error si las credenciales no son válidas
-                    JOptionPane.showMessageDialog(this, "Credenciales incorrectas, debe de llenar todos los campos y proporcionar credenciales válidas.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Usuario no encontrado o credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
-        // Cerrar la llamada
-        callableStatement.close();
-    } catch (SQLException ex) {
-        // Mostrar un mensaje de error si ocurre alguna excepción SQL
-        JOptionPane.showMessageDialog(this, "Error al intentar iniciar sesión: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    } finally {
-        // Asegurarse de cerrar la conexión en caso de excepción
-        if (connection != null) {
-=======
             // Encriptar la contraseña usando SHA-256
             String hashedContrasenia = hashPassword(contrasenia);
             Connection connection = null;
->>>>>>> 323dea9970a22f404142c4563f5eff74da8c50d7
             try {
                 BaseData baseData = new BaseData() {
                 };
@@ -196,16 +161,17 @@ public class JFInicioSesion extends javax.swing.JFrame {
 
                 // Cerrar la llamada
                 callableStatement.close();
-            } catch (SQLException ex) {
-                // Mostrar un mensaje de error si ocurre alguna excepción SQL
-                JOptionPane.showMessageDialog(this, "Error al intentar iniciar sesión: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            } finally {
+            }catch (java.sql.SQLException ex) {
+                Logger.getLogger(JFInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            // Mostrar un mensaje de error si ocurre alguna excepción SQL
+             finally {
                 // Asegurarse de cerrar la conexión en caso de excepción
                 if (connection != null) {
                     try {
                         connection.close();
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
+                    } catch (java.sql.SQLException ex) {
+                        Logger.getLogger(JFInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -257,10 +223,8 @@ public class JFInicioSesion extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFInicioSesion().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new JFInicioSesion().setVisible(true);
         });
     }
 
@@ -275,4 +239,5 @@ public class JFInicioSesion extends javax.swing.JFrame {
     private javax.swing.JPasswordField jtfContrasennia;
     private javax.swing.JTextField jtfNombreUsuario;
     // End of variables declaration//GEN-END:variables
+
 }

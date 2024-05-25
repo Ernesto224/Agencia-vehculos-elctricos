@@ -2,6 +2,7 @@ USE Agencia_De_Vehiculos_Electricos
 GO
 
 -- Tabla: Mantenimiento 3NF
+-- Tabla: Mantenimiento 3NF
 CREATE TABLE Ensamblaje.Mantenimiento (
     IDMantenimiento INT PRIMARY KEY IDENTITY,
     FechaActualizacion DATE,
@@ -21,3 +22,4 @@ CREATE TABLE Ensamblaje.Mantenimiento (
 	FOREIGN KEY (IDServicio)
 	REFERENCES Servicio.Servicio(IDServicio),
 );
+

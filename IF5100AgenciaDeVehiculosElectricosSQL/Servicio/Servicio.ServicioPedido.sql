@@ -17,3 +17,4 @@ CREATE TABLE Servicio.ServicioPedido (
 	REFERENCES RRHH.Empleado(IDEmpleado),
     PRIMARY KEY (IDServicio, IDPedido)
 );
+
