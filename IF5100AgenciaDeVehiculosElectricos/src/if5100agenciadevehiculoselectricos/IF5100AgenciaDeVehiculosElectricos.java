@@ -1,8 +1,8 @@
-package Main;
+package if5100agenciadevehiculoselectricos;
 
 import GUI.JFInicioSesion;
 
-public class Main {
+public class IF5100AgenciaDeVehiculosElectricos {
 
     public static void main(String[] args) {
         

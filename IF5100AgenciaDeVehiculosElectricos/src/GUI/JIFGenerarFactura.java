@@ -5,6 +5,9 @@
 package GUI;
 
 import Data.BaseData;
+import Data.MovimientoData;
+import com.sun.jdi.connect.spi.Connection;
+import javax.swing.JOptionPane;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,8 +21,11 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
     /**
      * Creates new form JIFGenerarFactura
      */
+    private MovimientoData movimientoData;
     public JIFGenerarFactura() {
         initComponents();
+        this.movimientoData = new MovimientoData();
+        init();
     }
 
     /**
@@ -195,9 +201,9 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
                     .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel10)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
@@ -232,24 +238,25 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
         String text3 = jTextField3.getText();
         String text4 = jTextField4.getText();
         String text5 = jTextField5.getText();
-
         // Validar si el primer dato es un número entero válido
         int parametro1;
         int parametro2;
+        float montoTotal;
         try {
             parametro1 = Integer.parseInt(text1);
             parametro2 = Integer.parseInt(text2);
+            montoTotal = this.movimientoData.calcularMonto(parametro2);
         } catch (NumberFormatException e) {
             // Mostrar un mensaje de error si el primer dato no es un número entero válido
-            JOptionPane.showMessageDialog(this, "No es un número entero válido", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor rellene todos los campos y digite valores enteros", "Error", JOptionPane.ERROR_MESSAGE);
             return; // Salir del método si hay un error
         }
 
         // Llamar al método para ejecutar el procedimiento almacenado
-        generaFactura(parametro1, parametro2, text2, text3, text4);
+        generaFactura(parametro1, parametro2, text3, text4, text5, montoTotal);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void generaFactura(int parametro1, int parametro2, String parametro3, String parametro4, String parametro5) {
+    private void generaFactura(int parametro1, int parametro2, String parametro3, String parametro4, String parametro5, float montoTotal) {
         try {
             // Obtener la conexión a la base de datos
             BaseData baseData = new BaseData() {
@@ -257,18 +264,19 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
             java.sql.Connection connection = baseData.getSqlConnection();
 
             // Preparar la llamada al procedimiento almacenado
-            String sql = "{? = call FinanzaVenta.sp_RegistrarFactura(?, ?, ?, ?, ?)}";
+            String sql = "{? = call FinanzaVenta.sp_RegistrarFactura(?, ?, ?, ?, ?,?)}";
             CallableStatement callableStatement = connection.prepareCall(sql);
 
             // Registrar el parámetro de salida para el valor de retorno
             callableStatement.registerOutParameter(1, java.sql.Types.INTEGER);
 
             // Establecer los parámetros del procedimiento almacenado
-            callableStatement.setInt(2, parametro1);
-            callableStatement.setInt(3, parametro2);
+            callableStatement.setInt(2, parametro2);
+            callableStatement.setInt(3, parametro1);
             callableStatement.setString(4, parametro4);
             callableStatement.setString(5, parametro3);
             callableStatement.setString(6, parametro5);
+            callableStatement.setFloat(7, montoTotal);
 
             // Ejecutar el procedimiento almacenado
             callableStatement.execute();
@@ -286,8 +294,8 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
             } else {
                 mensaje = "Se ha generado la factura con éxito.\n\n"
                         + "ID de la Factura: " + resultado + "\n"
-                        + "ID del Pedido: " + parametro1 + "\n"
-                        + "ID del Cliente: " + parametro2 + "\n"
+                        + "ID del Pedido: " + parametro2 + "\n"
+                        + "ID del Cliente: " + parametro1 + "\n"
                         + "Proveedor de Envío: " + parametro4 + "\n"
                         + "ID de Dirección: " + parametro3 + "\n"
                         + "Tracking del Pedido: " + parametro5 + "\n";
@@ -348,7 +356,7 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
                 fila[3] = resultSet.getFloat("MontoPedido");
                 modelo.addRow(fila);
             }
-
+            this.repaint();
             resultSet.close();
             preparedStatement.close();
             connection.close();
@@ -387,5 +395,31 @@ public class JIFGenerarFactura extends javax.swing.JInternalFrame {
         jTextField3.setText("");
         jTextField4.setText("");
         jTextField5.setText("");
+    }
+
+    private void init() {
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+    }
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume();  // Ignora el evento si no es un dígito
+        }
     }
 }

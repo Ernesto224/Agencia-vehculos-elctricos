@@ -31,6 +31,7 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
     private int idEmpleado;
     public JIFReservarProducto(UsuarioActivo usuarioActivo) {
         initComponents();
+        init();
         inhabilitarEementos();
         this.dftModeloTabla = new DefaultTableModel();
         this.tablaAccesoriosPartes = new JTable();
@@ -266,7 +267,11 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
         String cantidadMovidaText = jTextField3.getText();
         String idProductoText = jTextField1.getText();
         String idAlmacenText = jTextField2.getText();
-
+        System.out.println("EMPLE: "+this.idEmpleado);
+        System.out.println("Id pedido: "+this.idPedido);
+        System.out.println("Id cliente: "+idClienteText);
+        System.out.println("Cantidad: "+cantidadMovidaText);
+        System.out.println("IdAlmacen: "+idAlmacenText);
         // Validar si los datos son números enteros válidos
         int idCliente, cantidadMovida, idAlmacen;
         try {
@@ -287,7 +292,7 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
         if (resultado == 0) {
             JOptionPane.showMessageDialog(this, "Movimiento de inventario registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             this.jButton1.setEnabled(true);
-            registrarPedido(idCliente);
+            //registrarPedido(idCliente);
             this.cargarDatos();
             this.jlbTotal.setText("Total: "+this.movimientoData.calcularMonto(this.idPedido));
 
@@ -369,7 +374,7 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
             callableStatement.setInt(4, idAlmacen);
             callableStatement.setInt(5, idEmpleado);
             callableStatement.setInt(6, idPedido);
-
+            
             // Ejecutar el procedimiento almacenado
             callableStatement.execute();
 
@@ -474,4 +479,34 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
         this.repaint();
     }
 
+    private void init() {
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            jTextField1KeyTyped(evt);
+        }
+    });
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            jTextField1KeyTyped(evt);
+        }
+    });
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            jTextField1KeyTyped(evt);
+        }
+    });
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            jTextField1KeyTyped(evt);
+        }
+    });
+    }
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {
+    char c = evt.getKeyChar();
+    if (!Character.isDigit(c)) {
+        evt.consume();  // Ignora el evento si no es un dígito
+    }
+}
+    
 }

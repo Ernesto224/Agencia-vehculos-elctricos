@@ -4,7 +4,6 @@
  */
 package GUI;
 
-import javax.swing.ImageIcon;
 import Domain.UsuarioActivo;
 
 /**
@@ -18,33 +17,49 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
 
     public JFVentanPrincipal(String puesto, UsuarioActivo usuarioActivo) {
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("/Assets/icon.png")).getImage());
         this.usuarioActivo = usuarioActivo;
         this.puesto = puesto.toLowerCase();
         switch (this.puesto) {
-            case "vendedor" -> {
+            case "vendedor":
+                
+                jMenuItem2.setVisible(true);
                 jm3.setVisible(true);
                 jm5.setVisible(true);
+                jMenuItem2.setVisible(true);
+                jMenuItem3.setVisible(true);
+                jMenuItem4.setVisible(true);
                 jm6.setVisible(true);
+                jMenuItem1.setVisible(true);
                 jm7.setVisible(true);
-                jmiVenta.setVisible(true);
-            }
-            case "contador" -> {
+                Clientes.setVisible(true);
+                 
+                break;
+            case "contador":
+                jMenuItem2.setVisible(false);
                 jm3.setVisible(false);
                 jm5.setVisible(true);
+                jMenuItem2.setVisible(true);
+                jMenuItem3.setVisible(true);
+                jMenuItem4.setVisible(true);
                 jm6.setVisible(false);
+                jMenuItem1.setVisible(false);
                 jm7.setVisible(false);
-                jmiVenta.setVisible(false);
-            }
-            case "Gerente de RRHH" -> {
-            }
-            default -> {
+                Clientes.setVisible(true);
+                break;
+            case "Gerente de RRHH":
+                break;
+            default:
+                jMenuItem2.setVisible(false);
                 jm3.setVisible(false);
                 jm5.setVisible(false);
+                jMenuItem2.setVisible(false);
+                jMenuItem3.setVisible(false);
+                jMenuItem4.setVisible(false);
                 jm6.setVisible(false);
+                jMenuItem1.setVisible(false);
                 jm7.setVisible(false);
-                jmiVenta.setVisible(false);
-            }
+                Clientes.setVisible(true);
+                break;
         }
     }
 
@@ -64,17 +79,19 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         jmiVenta = new javax.swing.JMenuItem();
         jm3 = new javax.swing.JMenuItem();
         jm5 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jm6 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jm7 = new javax.swing.JMenuItem();
         Clientes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setIconImages(null);
-        setResizable(false);
 
         jDesktopPane1.setBackground(new java.awt.Color(152, 197, 197));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/logo.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.jpeg"))); // NOI18N
 
         jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -82,24 +99,22 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
-                .addContainerGap(159, Short.MAX_VALUE)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(226, 226, 226)
                 .addComponent(jLabel1)
-                .addGap(129, 129, 129))
+                .addContainerGap(316, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(120, 120, 120)
+                .addComponent(jLabel1)
+                .addContainerGap(255, Short.MAX_VALUE))
         );
 
-        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/menu.png"))); // NOI18N
         jMenu1.setText("Gestionar");
-        jMenu1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
 
-        jmiVenta.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
-        jmiVenta.setText("Visualizar Productos");
+        jmiVenta.setText("Venta");
         jmiVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jmiVentaActionPerformed(evt);
@@ -107,7 +122,6 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jmiVenta);
 
-        jm3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jm3.setText("Generar Factura");
         jm3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,7 +130,6 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm3);
 
-        jm5.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jm5.setText("Listar  Vehículos Vendidos");
         jm5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,7 +138,30 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm5);
 
-        jm6.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jMenuItem2.setText("Ver Servicios");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("Movimientos Inventario");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setText("Resumen de las Ventas");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
+
         jm6.setText("Generar Pedido");
         jm6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,7 +170,14 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm6);
 
-        jm7.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jMenuItem1.setText("Venta Servicios");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         jm7.setText("Registrar Cliente");
         jm7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,6 +250,34 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         mostrarCliente.setVisible(true);
     }//GEN-LAST:event_ClientesActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        JIFVentaServicios ventaServicios = new JIFVentaServicios(this.usuarioActivo);
+        this.jDesktopPane1.add(ventaServicios);
+        ventaServicios.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+
+        JIFMostrarServicios mostrarServicios = new JIFMostrarServicios();
+        jDesktopPane1.add(mostrarServicios);
+        mostrarServicios.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        JIFMovimientosInventario resumenVentas = new JIFMovimientosInventario();
+        jDesktopPane1.add(resumenVentas);
+        resumenVentas.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        JIFResumenVentas resumenVentas = new JIFResumenVentas();
+        jDesktopPane1.add(resumenVentas);
+        resumenVentas.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Clientes;
@@ -214,6 +285,10 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jm3;
     private javax.swing.JMenuItem jm5;
     private javax.swing.JMenuItem jm6;
