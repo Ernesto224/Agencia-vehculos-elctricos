@@ -84,39 +84,15 @@ public class VehiculoData extends BaseData {
         return vehiculos;
     }
 
-    public ArrayList<Compra> obtenerVehiculo(String fechaInicio, String fechaFin, String marca, String modelo, int idTipoVehiculo) {
+    public ArrayList<Compra> obtenerVehiculo(String fecha) {
         ArrayList<Compra> compras = new ArrayList<>();
-        String sp = "{call Stock.sp_FiltrarVehiculosVendidos(?,?,?,?,?)}";
+        String sp = "{call Stock.sp_FiltrarVehiculosVendidos(?)}";
 
         try ( Connection connection = getSqlConnection();  CallableStatement callable = connection.prepareCall(sp)) {
-            System.out.println("Data.VehiculoData.obtenerVehiculo()");
-            fechaInicio = (fechaInicio.isEmpty()) ? null : fechaInicio;
-            fechaFin = (fechaFin.isEmpty()) ? null : fechaFin;
-
-            if (fechaInicio != null) {
-                callable.setDate(1, java.sql.Date.valueOf(fechaInicio));
-            } else {
+            if (fecha.isEmpty()) {
                 callable.setNull(1, java.sql.Types.DATE);
-            }
-            if (fechaFin != null) {
-                callable.setDate(2, java.sql.Date.valueOf(fechaFin));
             } else {
-                callable.setNull(2, java.sql.Types.DATE);
-            }
-            if (marca == null) {
-                callable.setNull(3, java.sql.Types.VARCHAR);
-            } else {
-                callable.setString(3, marca);
-            }
-            if (modelo == null) {
-                callable.setNull(4, java.sql.Types.VARCHAR);
-            } else {
-                callable.setString(4, modelo);
-            }
-            if (idTipoVehiculo == -1) {
-                callable.setNull(5, java.sql.Types.INTEGER);
-            } else {
-                callable.setInt(5, idTipoVehiculo);
+                callable.setDate(1, java.sql.Date.valueOf(fecha));
             }
 
             // Ejecutar el procedimiento almacenado
@@ -137,7 +113,7 @@ public class VehiculoData extends BaseData {
                 );
                 compras.add(compra);
             }
-            System.out.println("COMPRAS SIZE: "+compras.size());
+            System.out.println("COMPRAS SIZE: " + compras.size());
 
         } catch (SQLException ex) {
             ex.printStackTrace();
