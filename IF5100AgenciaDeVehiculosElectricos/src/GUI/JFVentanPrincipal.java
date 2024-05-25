@@ -62,7 +62,9 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         jmiVenta = new javax.swing.JMenuItem();
         jm3 = new javax.swing.JMenuItem();
         jm5 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jm6 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jm7 = new javax.swing.JMenuItem();
         Clientes = new javax.swing.JMenuItem();
 
@@ -117,6 +119,14 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(jm5);
 
+        jMenuItem2.setText("Ver Servicios");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
         jm6.setText("Generar Pedido");
         jm6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,6 +134,14 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jm6);
+
+        jMenuItem1.setText("Venta Servicios");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
 
         jm7.setText("Registrar Cliente");
         jm7.addActionListener(new java.awt.event.ActionListener() {
@@ -197,6 +215,20 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
         mostrarCliente.setVisible(true);
     }//GEN-LAST:event_ClientesActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        JIFVentaServicios ventaServicios = new JIFVentaServicios(this.usuarioActivo);
+        this.jDesktopPane1.add(ventaServicios);
+        ventaServicios.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+
+        JIFMostrarServicios mostrarServicios = new JIFMostrarServicios();
+        jDesktopPane1.add(mostrarServicios);
+        mostrarServicios.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Clientes;
@@ -204,6 +236,8 @@ public class JFVentanPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jm3;
     private javax.swing.JMenuItem jm5;
     private javax.swing.JMenuItem jm6;

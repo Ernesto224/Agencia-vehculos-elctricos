@@ -269,7 +269,7 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
         String idAlmacenText = jTextField2.getText();
         System.out.println("EMPLE: "+this.idEmpleado);
         System.out.println("Id pedido: "+this.idPedido);
-        System.out.println("Id cliente: "+idAlmacenText);
+        System.out.println("Id cliente: "+idClienteText);
         System.out.println("Cantidad: "+cantidadMovidaText);
         System.out.println("IdAlmacen: "+idAlmacenText);
         // Validar si los datos son números enteros válidos
@@ -292,7 +292,7 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
         if (resultado == 0) {
             JOptionPane.showMessageDialog(this, "Movimiento de inventario registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             this.jButton1.setEnabled(true);
-            registrarPedido(idCliente);
+            //registrarPedido(idCliente);
             this.cargarDatos();
             this.jlbTotal.setText("Total: "+this.movimientoData.calcularMonto(this.idPedido));
 
@@ -374,7 +374,7 @@ public class JIFReservarProducto extends javax.swing.JInternalFrame {
             callableStatement.setInt(4, idAlmacen);
             callableStatement.setInt(5, idEmpleado);
             callableStatement.setInt(6, idPedido);
-
+            
             // Ejecutar el procedimiento almacenado
             callableStatement.execute();
 
